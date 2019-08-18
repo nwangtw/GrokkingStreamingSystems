@@ -3,15 +3,12 @@ package com.miniStreaming.ch02.job;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Stream {
-  // List of all operations to be applied
-  private final Map<String, com.miniStreaming.ch02.job.Operation> operationMap;
+public class Stream<T> {
+  // List of all operations to be applied to this stream.
+  private final Map<String, Operator<T, ?>> operationMap =
+      new HashMap<String, Operator<T, ?>>();
 
-  public Stream() {
-    this.operationMap = new HashMap<String, com.miniStreaming.ch02.job.Operation>();
-  }
-
-  public Stream applyOperation(String operationName, com.miniStreaming.ch02.job.Operation operation) {
+  public <O> Stream applyOperation(String operationName, Operator<T, O> operation) {
     if (operationMap.containsKey(operationName)) {
       throw new RuntimeException("Operation " + operationName + " already exists!");
     }
@@ -19,7 +16,7 @@ public class Stream {
     return operation.getOutgoingStream();
   }
 
-  public Map<String, com.miniStreaming.ch02.job.Operation> getOperationMap() {
+  public Map<String, Operator<T, ?>> getOperationMap() {
     return operationMap;
   }
 }
