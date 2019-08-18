@@ -9,7 +9,6 @@ public class VehicleCount {
     Job job = new Job("ch02");
 
     Stream bridgeStream = job.addSource("bridge", new Bridge());
-
     bridgeStream.applyOperator("booth", new Booth());
 
     job.run();
