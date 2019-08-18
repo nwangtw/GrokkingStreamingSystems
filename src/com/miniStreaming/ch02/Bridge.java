@@ -10,6 +10,7 @@ class Bridge extends Source<String> {
   @Override
   public String[] readEvents() {
     String out[] = new String[1];
+
     String input = in.nextLine();
     out[0] = input;
 
