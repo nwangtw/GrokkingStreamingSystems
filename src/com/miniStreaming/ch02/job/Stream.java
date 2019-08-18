@@ -8,12 +8,12 @@ public class Stream<T> {
   private final Map<String, Operator<T, ?>> operationMap =
       new HashMap<String, Operator<T, ?>>();
 
-  public <O> Stream applyOperation(String operationName, Operator<T, O> operation) {
+  public <O> Stream applyOperator(String operationName, Operator<T, O> operator) {
     if (operationMap.containsKey(operationName)) {
       throw new RuntimeException("Operation " + operationName + " already exists!");
     }
-    operationMap.put(operationName, operation);
-    return operation.getOutgoingStream();
+    operationMap.put(operationName, operator);
+    return operator.getOutgoingStream();
   }
 
   public Map<String, Operator<T, ?>> getOperationMap() {
