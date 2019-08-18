@@ -1,11 +1,11 @@
 package com.miniStreaming.ch02;
 
-import com.miniStreaming.ch02.job.Operation;
+import com.miniStreaming.ch02.job.Operator;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class Booth extends Operation<String, String> {
+class Booth extends Operator<String, String> {
   private final Map<String, Integer> countMap;
 
   public Booth() {
