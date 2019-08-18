@@ -95,14 +95,16 @@ public class JobRunner {
     List<OperationRunner> operationRunners = new ArrayList<OperationRunner>();
 
     for (Map.Entry<String, Operation> entry: operationMap.entrySet()) {
+      Operation op = entry.getValue();
       // Setup downstream component first.
-      List<OperationRunner> operationrunners = traverseOperations(entry.getValue());
+      List<OperationRunner> downstreamRunners = traverseOperations(op);
       // Start the current component.
       OperationRunner runner = startOperation(entry.getValue());
 
-      for (OperationRunner operationRunner : operationRunners) {
-        addConnection(runner, operationRunner);
+      for (OperationRunner downstreamRunner : downstreamRunners) {
+        addConnection(runner, downstreamRunner);
       }
+      operationRunners.add(runner);
     }
 
     return operationRunners;
