@@ -31,11 +31,13 @@ public class OperationRunner<I, T> extends ComponentRunner<T> {
     // Apply operation
     T[] outputs = operation.apply(event);
     // Send out
-    for (T output: outputs) {
-      try {
-        outgoingStream.put(output);
-      } catch (InterruptedException e) {
-        return false;  // exit thread
+    if (outputs != null) {
+      for (T output : outputs) {
+        try {
+          outgoingStream.put(output);
+        } catch (InterruptedException e) {
+          return false;  // exit thread
+        }
       }
     }
     return true;
