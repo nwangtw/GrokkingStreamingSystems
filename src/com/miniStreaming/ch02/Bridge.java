@@ -8,7 +8,7 @@ class Bridge extends Source<String> {
   private Scanner in = new Scanner(System.in);
 
   @Override
-  public String[] readEvents() {
+  public String[] getEvents() {
     String out[] = new String[1];
 
     String input = in.nextLine();

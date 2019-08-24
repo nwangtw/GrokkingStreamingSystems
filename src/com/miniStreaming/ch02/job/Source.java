@@ -1,10 +1,22 @@
 package com.miniStreaming.ch02.job;
 
-public abstract class Source<T> implements ISource<T> {
-  protected Stream<T> outgoingStream = new Stream();
+/**
+ * This Source class is the base class for all user defined sources.
+ * @param <O> The data type of the events in the outgoing stream
+ */
+public abstract class Source<O> implements ISource<O> {
+  protected Stream<O> outgoingStream = new Stream();
 
-  public Stream<T> getOutgoingStream() { return outgoingStream; }
+  /**
+   * Get the outgoing stream of the component.
+   * @return The outgoing stream
+   */
+  public Stream<O> getOutgoingStream() { return outgoingStream; }
 
-  // To be implemented.
-  public abstract T[] readEvents();
+  /**
+   * Accept events from external into the system.
+   * The function is abstract and needs to be implemented by users.
+   * @return The events emitted by the source
+   */
+  public abstract O[] getEvents();
 }

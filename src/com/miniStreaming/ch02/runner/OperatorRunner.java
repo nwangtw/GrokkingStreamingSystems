@@ -5,43 +5,33 @@ import com.miniStreaming.ch02.job.Operator;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-public class OperatorRunner<I, T> implements IComponentRunner<I, T> {
-  private final int MAX_QUEUE_SIZE = 64;
-
-  private final Operator<I, T> operation;
-
+/**
+ * The runner for operator components. When the runner is started,
+ * a new thread is created to call the apply() function of
+ * the operator component repeatedly.
+ * @param <I> The data type of the events in the incoming event queue
+ * @param <O> The data type of the events in the outgoing event queue
+ */
+public class OperatorRunner<I, O> extends ComponentRunner<I, O> {
+  private final int MAX_INCOMNG_QUEUE_SIZE = 64;
   private final BlockingQueue<I> incomingStream =
-      new ArrayBlockingQueue<I>(MAX_QUEUE_SIZE);
-  private final BlockingQueue<T> outgoingStream =
-      new ArrayBlockingQueue<T>(MAX_QUEUE_SIZE);
+      new ArrayBlockingQueue<I>(MAX_INCOMNG_QUEUE_SIZE);
 
-  private final Thread thread;
+  private final Operator<I, O> operation;
 
-  public OperatorRunner(Operator<I, T> operation) {
+  public OperatorRunner(Operator<I, O> operation) {
     this.operation = operation;
-    this.thread = new Thread() {
-      public void run() {
-        for (;;) {
-          runOnce();
-        }
-      }
-    };
   }
 
-  public BlockingQueue<I> getIncomingStream() {
+  public BlockingQueue<I> getIncomingQueue() {
     return incomingStream;
-  }
-  public BlockingQueue<T> getOutgoingStream() {  return outgoingStream; }
-
-  public void start() {
-    thread.start();
   }
 
   /**
    * Run process once.
    * @return true if the thread should continue; false if the thread should exist.
    */
-  public boolean runOnce() {
+  protected boolean runOnce() {
     I event;
     try {
       // Read input
@@ -49,13 +39,15 @@ public class OperatorRunner<I, T> implements IComponentRunner<I, T> {
     } catch (InterruptedException e) {
       return false;
     }
+
     // Apply operation
-    T[] outputs = operation.apply(event);
-    // Send out
+    O[] outputs = operation.apply(event);
+
+    // Emit out
     if (outputs != null) {
-      for (T output : outputs) {
+      for (O output : outputs) {
         try {
-          outgoingStream.put(output);
+          getOutgoingQueue().put(output);
         } catch (InterruptedException e) {
           return false;  // exit thread
         }

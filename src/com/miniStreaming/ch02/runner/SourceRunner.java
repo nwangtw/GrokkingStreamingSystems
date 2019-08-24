@@ -5,52 +5,36 @@ import com.miniStreaming.ch02.job.Source;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-public class SourceRunner<T> implements IComponentRunner<Object, T> {
-  private  final int MAX_QUEUE_SIZE = 64;
-
+/**
+ * The runner for source components. When the runner is started,
+ * a new thread is created to call the getEvents() function of
+ * the source component repeatedly.
+ * @param <T> The data type of the events in the outgoing event queue
+ */
+public class SourceRunner<T> extends ComponentRunner<Object, T> {
   private final Source<T> source;
 
-  private final BlockingQueue<T> outgoingStream =
-      new ArrayBlockingQueue<T>(MAX_QUEUE_SIZE);
-
-  private final Thread thread;
 
   public SourceRunner(Source<T> source) {
     this.source = source;
-    this.thread = new Thread() {
-      public void run() {
-        for (;;) {
-          runOnce();
-        }
-      }
-    };
-  }
-
-  public BlockingQueue<Object> getIncomingStream() {
-    throw new RuntimeException("getIncomingStream is not supported by SourceRunner");
-  }
-  public BlockingQueue<T> getOutgoingStream() {  return outgoingStream; }
-
-  public void start() {
-    thread.start();
   }
 
   /**
    * Run process once.
    * @return true if the thread should continue; false if the thread should exist.
    */
-  boolean runOnce() {
+  protected boolean runOnce() {
     // Generate data
     T[] events;
     try {
-      events = source.readEvents();
+      events = source.getEvents();
     } catch (Exception e) {
       return false;  // exit thread
     }
     // Send out
     for (T event: events) {
       try {
-        outgoingStream.put(event);
+        getOutgoingQueue().put(event);
       } catch (InterruptedException e) {
         return false;  // exit thread
       }
