@@ -1,4 +1,4 @@
-package com.miniStreaming.ch02.job;
+package com.gss.ch02.job;
 
 /**
  * This Source class is the base class for all user defined sources.

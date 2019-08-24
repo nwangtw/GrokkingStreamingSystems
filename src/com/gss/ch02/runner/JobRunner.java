@@ -1,10 +1,10 @@
-package com.miniStreaming.ch02.runner;
+package com.gss.ch02.runner;
 
-import com.miniStreaming.ch02.job.IComponent;
-import com.miniStreaming.ch02.job.Job;
-import com.miniStreaming.ch02.job.Operator;
-import com.miniStreaming.ch02.job.Source;
-import com.miniStreaming.ch02.job.Stream;
+import com.gss.ch02.job.IComponent;
+import com.gss.ch02.job.Job;
+import com.gss.ch02.job.Operator;
+import com.gss.ch02.job.Source;
+import com.gss.ch02.job.Stream;
 
 import java.util.ArrayList;
 import java.util.HashMap;

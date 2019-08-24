@@ -1,4 +1,4 @@
-package com.miniStreaming.ch02.runner;
+package com.gss.ch02.runner;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;

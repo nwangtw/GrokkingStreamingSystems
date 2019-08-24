@@ -1,8 +1,6 @@
-package com.miniStreaming.ch02.job;
+package com.gss.ch02.job;
 
-import com.miniStreaming.ch02.job.Source;
-import com.miniStreaming.ch02.job.Stream;
-import com.miniStreaming.ch02.runner.JobRunner;
+import com.gss.ch02.runner.JobRunner;
 
 import java.util.HashMap;
 import java.util.Map;
