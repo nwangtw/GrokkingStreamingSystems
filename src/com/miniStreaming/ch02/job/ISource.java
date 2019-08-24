@@ -1,8 +1,10 @@
 package com.miniStreaming.ch02.job;
 
-public interface ISource<T> extends IComponent<Object, T> {
-  default Stream<Object> getIncomingStream() {
-    throw new RuntimeException("getIncomingStream is not supported by Source");
-  }
-  Stream<T> getOutgoingStream();
+/**
+ * The interface for the sources.
+ * A source accepts events from the outside world and emits into the system
+ * via the outgoing stream,
+ * @param <O> The data type of the events in the outgoing stream
+ */
+public interface ISource<O> extends IComponent<O> {
 }

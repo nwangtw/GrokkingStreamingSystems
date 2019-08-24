@@ -14,31 +14,31 @@ import java.util.concurrent.BlockingQueue;
 
 public class JobRunner {
   private class Connection {
-    private final IComponentRunner from;
-    private final IComponentRunner to;
+    private final ComponentRunner from;
+    private final ComponentRunner to;
 
-    public Connection(IComponentRunner from, IComponentRunner to) {
+    public Connection(ComponentRunner from, ComponentRunner to) {
       this.from = from;
       this.to = to;
     }
 
-    public IComponentRunner getFrom() { return from; }
-    public IComponentRunner getTo() { return to; }
+    public ComponentRunner getFrom() { return from; }
+    public ComponentRunner getTo() { return to; }
   }
 
   private final Job job;
-  private final List<IComponentRunner> runnerList;
-  private final Map<IComponentRunner, List<OperatorRunner>> connectionMap;
+  private final List<ComponentRunner> runnerList;
+  private final Map<ComponentRunner, List<OperatorRunner>> connectionMap;
   private final List<StreamManager> streamManagerList;
 
   public JobRunner(Job job) {
     this.job = job;
-    this.runnerList = new ArrayList<IComponentRunner>();
-    this.connectionMap = new HashMap<IComponentRunner, List<OperatorRunner>>();
+    this.runnerList = new ArrayList<ComponentRunner>();
+    this.connectionMap = new HashMap<ComponentRunner, List<OperatorRunner>>();
     this.streamManagerList = new ArrayList<StreamManager>();
   }
 
-  public void addConnection(IComponentRunner from, OperatorRunner to) {
+  public void addConnection(ComponentRunner from, OperatorRunner to) {
     if (!connectionMap.containsKey(from)) {
       connectionMap.put(from, new ArrayList<OperatorRunner>());
     }
@@ -65,14 +65,15 @@ public class JobRunner {
       }
     }
 
-    // All the components are started, Build the stream managers for the connections.
-    for (Map.Entry<IComponentRunner, List<OperatorRunner>> entry: connectionMap.entrySet()) {
-      List<BlockingQueue> toStreams = new ArrayList<BlockingQueue>();
-      for (OperatorRunner to: entry.getValue()) {
-        toStreams.add(to.getIncomingStream());
+    // All components are created now. Build the stream managers for the connections to
+    // connect the component together.
+    for (Map.Entry<ComponentRunner, List<OperatorRunner>> entry: connectionMap.entrySet()) {
+      List<BlockingQueue> targetQueues = new ArrayList<BlockingQueue>();
+      for (OperatorRunner target: entry.getValue()) {
+        targetQueues.add(target.getIncomingQueue());
       }
       // 1 stream manager per "from" component
-      StreamManager manager = new StreamManager(entry.getKey().getOutgoingStream(), toStreams);
+      StreamManager manager = new StreamManager(entry.getKey().getOutgoingQueue(), targetQueues);
       streamManagerList.add(manager);
     }
   }
@@ -107,7 +108,7 @@ public class JobRunner {
 
     for (Map.Entry<String, Operator> entry: operationMap.entrySet()) {
       Operator op = entry.getValue();
-      // Setup downstream component first.
+      // Setup runners for the downstrea operators first.
       List<OperatorRunner> downstreamRunners = traverseComponent(op);
       // Start the current component.
       OperatorRunner runner = setupOperationRunner(entry.getValue());
@@ -122,7 +123,7 @@ public class JobRunner {
   }
 
   private void startComponentRunners() {
-    for (IComponentRunner runner: runnerList) {
+    for (ComponentRunner runner: runnerList) {
       runner.start();
     }
   }
