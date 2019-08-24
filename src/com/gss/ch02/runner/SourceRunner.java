@@ -1,9 +1,6 @@
-package com.miniStreaming.ch02.runner;
+package com.gss.ch02.runner;
 
-import com.miniStreaming.ch02.job.Source;
-
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import com.gss.ch02.job.Source;
 
 /**
  * The runner for source components. When the runner is started,

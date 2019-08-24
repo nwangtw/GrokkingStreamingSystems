@@ -1,6 +1,4 @@
-package com.miniStreaming.ch02.runner;
-
-import java.util.concurrent.BlockingQueue;
+package com.gss.ch02.runner;
 
 /**
  * This is the interface of all component runners.

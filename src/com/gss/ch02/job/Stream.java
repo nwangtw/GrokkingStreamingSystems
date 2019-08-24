@@ -1,4 +1,4 @@
-package com.miniStreaming.ch02.job;
+package com.gss.ch02.job;
 
 import java.util.HashMap;
 import java.util.Map;

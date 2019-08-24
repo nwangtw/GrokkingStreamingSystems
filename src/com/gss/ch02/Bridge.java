@@ -1,6 +1,6 @@
-package com.miniStreaming.ch02;
+package com.gss.ch02;
 
-import com.miniStreaming.ch02.job.Source;
+import com.gss.ch02.job.Source;
 
 import java.util.Scanner;
 

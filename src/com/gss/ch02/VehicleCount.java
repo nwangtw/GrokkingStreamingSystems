@@ -1,7 +1,7 @@
-package com.miniStreaming.ch02;
+package com.gss.ch02;
 
-import com.miniStreaming.ch02.job.Job;
-import com.miniStreaming.ch02.job.Stream;
+import com.gss.ch02.job.Job;
+import com.gss.ch02.job.Stream;
 
 public class VehicleCount {
 

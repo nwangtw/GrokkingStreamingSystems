@@ -1,6 +1,6 @@
-package com.miniStreaming.ch02.runner;
+package com.gss.ch02.runner;
 
-import com.miniStreaming.ch02.job.Operator;
+import com.gss.ch02.job.Operator;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
