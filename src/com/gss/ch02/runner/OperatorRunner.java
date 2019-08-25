@@ -14,8 +14,11 @@ import java.util.concurrent.BlockingQueue;
  */
 public class OperatorRunner<I, O> extends ComponentRunner<I, O> {
   private final int MAX_INCOMNG_QUEUE_SIZE = 64;
-  private final BlockingQueue<I> incomingStream =
+  private final int MAX_OUTGOING_QUEUE_SIZE = 64;
+  private final BlockingQueue<I> incomingEvents =
       new ArrayBlockingQueue<I>(MAX_INCOMNG_QUEUE_SIZE);
+  private final BlockingQueue<O> outgoingeEvents =
+      new ArrayBlockingQueue<O>(MAX_OUTGOING_QUEUE_SIZE);
 
   private final Operator<I, O> operation;
 
@@ -24,8 +27,9 @@ public class OperatorRunner<I, O> extends ComponentRunner<I, O> {
   }
 
   public BlockingQueue<I> getIncomingQueue() {
-    return incomingStream;
+    return incomingEvents;
   }
+  public BlockingQueue<O> getOutgoingQueue() { return outgoingeEvents; }
 
   /**
    * Run process once.
@@ -35,7 +39,7 @@ public class OperatorRunner<I, O> extends ComponentRunner<I, O> {
     I event;
     try {
       // Read input
-      event = incomingStream.take();
+      event = incomingEvents.take();
     } catch (InterruptedException e) {
       return false;
     }

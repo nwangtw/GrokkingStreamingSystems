@@ -1,5 +1,7 @@
 package com.gss.ch02.runner;
 
+import java.util.concurrent.BlockingQueue;
+
 /**
  * This is the interface of all component runners.
  * Each component runner has an incoming event queue and an outgoing event queue.
@@ -11,4 +13,8 @@ public interface IComponentRunner<I, O> {
    * Start the runner.
    */
   void start();
+  /**
+   * Get the outgoing event queue.
+   */
+  BlockingQueue<O> getOutgoingQueue();
 }
