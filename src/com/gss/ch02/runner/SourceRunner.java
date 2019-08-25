@@ -2,6 +2,9 @@ package com.gss.ch02.runner;
 
 import com.gss.ch02.api.Source;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
 /**
  * The runner for source components. When the runner is started,
  * a new thread is created to call the getEvents() function of
@@ -11,10 +14,15 @@ import com.gss.ch02.api.Source;
 public class SourceRunner<T> extends ComponentRunner<Object, T> {
   private final Source<T> source;
 
+  private final int MAX_OUTGOING_QUEUE_SIZE = 64;
+  private final BlockingQueue<T> outgoingeEvents =
+      new ArrayBlockingQueue<T>(MAX_OUTGOING_QUEUE_SIZE);
 
   public SourceRunner(Source<T> source) {
     this.source = source;
   }
+
+  public BlockingQueue<T> getOutgoingQueue() { return outgoingeEvents; }
 
   /**
    * Run process once.
