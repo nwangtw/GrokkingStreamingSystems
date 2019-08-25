@@ -1,10 +1,10 @@
 package com.gss.ch02.runner;
 
-import com.gss.ch02.job.IComponent;
-import com.gss.ch02.job.Job;
-import com.gss.ch02.job.Operator;
-import com.gss.ch02.job.Source;
-import com.gss.ch02.job.Stream;
+import com.gss.ch02.api.IComponent;
+import com.gss.ch02.api.Job;
+import com.gss.ch02.api.Operator;
+import com.gss.ch02.api.Source;
+import com.gss.ch02.api.Stream;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,14 +46,23 @@ public class JobRunner {
   }
 
   public void start() {
-    SetupRunners();
+    // Set up runners for all the components.
+    setupComponentRunners();
 
-    startRunners();
+    // All components are created now. Build the stream managers for the connections to
+    // connect the component together.
+    setupStreamManagers();
+
+    // Start all stream managers first.
+    startStreamManagers();
+
+    // Start all component runners.
+    startComponentRunners();
   }
 
-  private void SetupRunners() {
+  private void setupComponentRunners() {
     // Start from sources in the job.
-    for (Map.Entry<String, Source> entry: job.getSourceMap().entrySet()) {
+    for (Map.Entry<String, Source> entry : job.getSourceMap().entrySet()) {
       // For each source, traverse the the operations connected to it.
       List<OperatorRunner> operatorRunners = traverseComponent(entry.getValue());
 
@@ -64,7 +73,9 @@ public class JobRunner {
         addConnection(runner, operatorRunner);
       }
     }
+  }
 
+  private void setupStreamManagers() {
     // All components are created now. Build the stream managers for the connections to
     // connect the component together.
     for (Map.Entry<ComponentRunner, List<OperatorRunner>> entry: connectionMap.entrySet()) {
@@ -79,11 +90,7 @@ public class JobRunner {
   }
 
   private void startRunners() {
-    // Start all stream managers first.
-    startStreamManagers();
 
-    // Start all components.
-    startComponentRunners();
   }
 
   private <T> SourceRunner<T> setupSourceRunner(Source<T> source) {

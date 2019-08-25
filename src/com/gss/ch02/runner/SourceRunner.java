@@ -1,6 +1,6 @@
 package com.gss.ch02.runner;
 
-import com.gss.ch02.job.Source;
+import com.gss.ch02.api.Source;
 
 /**
  * The runner for source components. When the runner is started,

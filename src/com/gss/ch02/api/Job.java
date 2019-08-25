@@ -1,4 +1,4 @@
-package com.gss.ch02.job;
+package com.gss.ch02.api;
 
 import com.gss.ch02.runner.JobRunner;
 

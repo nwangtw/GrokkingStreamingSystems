@@ -1,7 +1,7 @@
 package com.gss.ch02;
 
-import com.gss.ch02.job.Job;
-import com.gss.ch02.job.Stream;
+import com.gss.ch02.api.Job;
+import com.gss.ch02.api.Stream;
 
 public class VehicleCount {
 
