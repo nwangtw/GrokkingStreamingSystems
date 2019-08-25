@@ -1,6 +1,6 @@
 package com.gss.ch02;
 
-import com.gss.ch02.job.Source;
+import com.gss.ch02.api.Source;
 
 import java.util.Scanner;
 
