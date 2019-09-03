@@ -1,11 +1,11 @@
-package com.gss.ch02;
+package com.gss.ch02.job;
 
 import com.gss.ch02.api.Operator;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class Booth extends Operator<String, String> {
+class Booth extends Operator<String, Object> {
   private final Map<String, Integer> countMap = new HashMap<String, Integer>();
 
   @Override

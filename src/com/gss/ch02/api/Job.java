@@ -1,6 +1,6 @@
 package com.gss.ch02.api;
 
-import com.gss.ch02.runner.JobRunner;
+import com.gss.ch02.engine.JobRunner;
 
 import java.util.HashMap;
 import java.util.Map;

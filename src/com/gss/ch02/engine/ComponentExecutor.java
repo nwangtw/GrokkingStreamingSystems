@@ -1,16 +1,16 @@
-package com.gss.ch02.runner;
+package com.gss.ch02.engine;
 
 /**
- * The runner for source components. When the runner is started,
+ * The executor for source components. When the executor is started,
  * a new thread is created to call the getEvents() function of
  * the source component repeatedly.
  * @param <I> The data type of the events in the incoming event queue
  * @param <O> The data type of the events in the outgoing event queue
  */
-public abstract class ComponentRunner<I, O> implements IComponentRunner<I, O> {
+public abstract class ComponentExecutor<I, O> implements IComponentExecutor<I, O> {
   private final Thread thread;
 
-  public ComponentRunner() {
+  public ComponentExecutor() {
     this.thread = new Thread() {
       public void run() {
         for (;;) {

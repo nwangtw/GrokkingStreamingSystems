@@ -1,4 +1,4 @@
-package com.gss.ch02.runner;
+package com.gss.ch02.engine;
 
 import com.gss.ch02.api.IComponent;
 import com.gss.ch02.api.Job;
@@ -14,33 +14,33 @@ import java.util.concurrent.BlockingQueue;
 
 public class JobRunner {
   private class Connection {
-    private final ComponentRunner from;
-    private final ComponentRunner to;
+    private final ComponentExecutor from;
+    private final ComponentExecutor to;
 
-    public Connection(ComponentRunner from, ComponentRunner to) {
+    public Connection(ComponentExecutor from, ComponentExecutor to) {
       this.from = from;
       this.to = to;
     }
 
-    public ComponentRunner getFrom() { return from; }
-    public ComponentRunner getTo() { return to; }
+    public ComponentExecutor getFrom() { return from; }
+    public ComponentExecutor getTo() { return to; }
   }
 
   private final Job job;
-  private final List<ComponentRunner> runnerList;
-  private final Map<ComponentRunner, List<OperatorRunner>> connectionMap;
+  private final List<ComponentExecutor> runnerList;
+  private final Map<ComponentExecutor, List<OperatorExecutor>> connectionMap;
   private final List<StreamManager> streamManagerList;
 
   public JobRunner(Job job) {
     this.job = job;
-    this.runnerList = new ArrayList<ComponentRunner>();
-    this.connectionMap = new HashMap<ComponentRunner, List<OperatorRunner>>();
+    this.runnerList = new ArrayList<ComponentExecutor>();
+    this.connectionMap = new HashMap<ComponentExecutor, List<OperatorExecutor>>();
     this.streamManagerList = new ArrayList<StreamManager>();
   }
 
-  public void addConnection(ComponentRunner from, OperatorRunner to) {
+  public void addConnection(ComponentExecutor from, OperatorExecutor to) {
     if (!connectionMap.containsKey(from)) {
-      connectionMap.put(from, new ArrayList<OperatorRunner>());
+      connectionMap.put(from, new ArrayList<OperatorExecutor>());
     }
     connectionMap.get(from).add(to);
   }
@@ -64,12 +64,12 @@ public class JobRunner {
     // Start from sources in the job.
     for (Map.Entry<String, Source> entry : job.getSourceMap().entrySet()) {
       // For each source, traverse the the operations connected to it.
-      List<OperatorRunner> operatorRunners = traverseComponent(entry.getValue());
+      List<OperatorExecutor> operatorRunners = traverseComponent(entry.getValue());
 
       // Start the current component.
-      SourceRunner runner = setupSourceRunner(entry.getValue());
+      SourceExecutor runner = setupSourceRunner(entry.getValue());
 
-      for (OperatorRunner operatorRunner : operatorRunners) {
+      for (OperatorExecutor operatorRunner : operatorRunners) {
         addConnection(runner, operatorRunner);
       }
     }
@@ -78,9 +78,9 @@ public class JobRunner {
   private void setupStreamManagers() {
     // All components are created now. Build the stream managers for the connections to
     // connect the component together.
-    for (Map.Entry<ComponentRunner, List<OperatorRunner>> entry: connectionMap.entrySet()) {
+    for (Map.Entry<ComponentExecutor, List<OperatorExecutor>> entry: connectionMap.entrySet()) {
       List<BlockingQueue> targetQueues = new ArrayList<BlockingQueue>();
-      for (OperatorRunner target: entry.getValue()) {
+      for (OperatorExecutor target: entry.getValue()) {
         targetQueues.add(target.getIncomingQueue());
       }
       // 1 stream manager per "from" component
@@ -89,38 +89,34 @@ public class JobRunner {
     }
   }
 
-  private void startRunners() {
-
-  }
-
-  private <T> SourceRunner<T> setupSourceRunner(Source<T> source) {
-    SourceRunner<T> runner = new SourceRunner<T>(source);
+  private <T> SourceExecutor<T> setupSourceRunner(Source<T> source) {
+    SourceExecutor<T> runner = new SourceExecutor<T>(source);
     runnerList.add(runner);
 
     return runner;
   }
 
-  private <I, T> OperatorRunner<I, T> setupOperationRunner(Operator<I, T> operation) {
-    OperatorRunner<I, T> runner = new OperatorRunner<I, T>(operation);
+  private <I, T> OperatorExecutor<I, T> setupOperationRunner(Operator<I, T> operation) {
+    OperatorExecutor<I, T> runner = new OperatorExecutor<I, T>(operation);
     runnerList.add(runner);
 
     return runner;
   }
 
-  private List<OperatorRunner> traverseComponent(IComponent component) {
+  private List<OperatorExecutor> traverseComponent(IComponent component) {
     Stream stream = component.getOutgoingStream();
 
     Map<String, Operator> operationMap = stream.getOperationMap();
-    List<OperatorRunner> operatorRunners = new ArrayList<OperatorRunner>();
+    List<OperatorExecutor> operatorRunners = new ArrayList<OperatorExecutor>();
 
     for (Map.Entry<String, Operator> entry: operationMap.entrySet()) {
       Operator op = entry.getValue();
       // Setup runners for the downstrea operators first.
-      List<OperatorRunner> downstreamRunners = traverseComponent(op);
+      List<OperatorExecutor> downstreamRunners = traverseComponent(op);
       // Start the current component.
-      OperatorRunner runner = setupOperationRunner(entry.getValue());
+      OperatorExecutor runner = setupOperationRunner(entry.getValue());
 
-      for (OperatorRunner downstreamRunner : downstreamRunners) {
+      for (OperatorExecutor downstreamRunner : downstreamRunners) {
         addConnection(runner, downstreamRunner);
       }
       operatorRunners.add(runner);
@@ -130,7 +126,7 @@ public class JobRunner {
   }
 
   private void startComponentRunners() {
-    for (ComponentRunner runner: runnerList) {
+    for (ComponentExecutor runner: runnerList) {
       runner.start();
     }
   }

@@ -1,4 +1,4 @@
-package com.gss.ch02;
+package com.gss.ch02.job;
 
 import com.gss.ch02.api.Source;
 
