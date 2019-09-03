@@ -1,4 +1,4 @@
-package com.gss.ch02.runner;
+package com.gss.ch02.engine;
 
 import com.gss.ch02.api.Operator;
 
@@ -6,13 +6,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * The runner for operator components. When the runner is started,
+ * The executor for operator components. When the executor is started,
  * a new thread is created to call the apply() function of
  * the operator component repeatedly.
  * @param <I> The data type of the events in the incoming event queue
  * @param <O> The data type of the events in the outgoing event queue
  */
-public class OperatorRunner<I, O> extends ComponentRunner<I, O> {
+public class OperatorExecutor<I, O> extends ComponentExecutor<I, O> {
   private final int MAX_INCOMNG_QUEUE_SIZE = 64;
   private final int MAX_OUTGOING_QUEUE_SIZE = 64;
   private final BlockingQueue<I> incomingEvents =
@@ -22,7 +22,7 @@ public class OperatorRunner<I, O> extends ComponentRunner<I, O> {
 
   private final Operator<I, O> operation;
 
-  public OperatorRunner(Operator<I, O> operation) {
+  public OperatorExecutor(Operator<I, O> operation) {
     this.operation = operation;
   }
 
