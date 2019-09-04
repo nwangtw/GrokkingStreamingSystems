@@ -1,4 +1,4 @@
-package com.gss.ch02.api;
+package com.gss.ch03.api;
 
 /**
  * The interface for all components, including Source and Operator.
@@ -16,4 +16,10 @@ public interface IComponent<O> {
    * @return The name of this component.
    */
   String getName();
+
+  /**
+   * Get the parallelism (number of instances) of this component.
+   * @return The parallelism (number of instances) of this component.
+   */
+  int getParallelism();
 }

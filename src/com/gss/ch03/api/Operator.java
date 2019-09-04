@@ -1,4 +1,4 @@
-package com.gss.ch02.api;
+package com.gss.ch03.api;
 
 /**
  * This Operator class is the base class for all user defined operators.
@@ -7,14 +7,16 @@ package com.gss.ch02.api;
  */
 public abstract class Operator<I, O> implements IOperator<I, O> {
   private String name;
-  private Stream<O> outgoingStream = new Stream<O>();
+  private int parallelism;
+  protected Stream<O> outgoingStream = new Stream<O>();
 
-  public Operator(String name) {
+  public Operator(String name, int parallelism) {
     this.name = name;
+    this.parallelism = parallelism;
   }
 
   /**
-   * Get the outgoing stream of this component.
+   * Get the outgoing stream of the component.
    * @return The outgoing stream
    */
   public Stream<O> getOutgoingStream() { return outgoingStream; }
@@ -24,6 +26,12 @@ public abstract class Operator<I, O> implements IOperator<I, O> {
    * @return The name of this component.
    */
   public String getName() { return name; }
+
+  /**
+   * Get the parallelism (number of instances) of this component.
+   * @return The parallelism (number of instances) of this component.
+   */
+  public int getParallelism() { return parallelism; }
 
   /**
    * Apply logic to the incoming event and generate results.
