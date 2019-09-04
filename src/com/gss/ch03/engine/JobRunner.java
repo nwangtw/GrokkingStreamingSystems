@@ -79,12 +79,12 @@ public class JobRunner {
     // All components are created now. Build the stream managers for the connections to
     // connect the component together.
     for (Map.Entry<ComponentExecutor, List<OperatorExecutor>> entry: connectionMap.entrySet()) {
-      List<BlockingQueue> targetQueues = new ArrayList<BlockingQueue>();
+      List<BlockingQueue[]> targetQueues = new ArrayList<BlockingQueue[]>();
       for (OperatorExecutor target: entry.getValue()) {
-        targetQueues.add(target.getIncomingQueue());
+        targetQueues.add(target.getIncomingQueueArray());
       }
       // 1 stream manager per "from" component
-      StreamManager manager = new StreamManager(entry.getKey().getOutgoingQueue(), targetQueues);
+      StreamManager manager = new StreamManager(entry.getKey().getOutgoingQueueArray(), targetQueues);
       streamManagerList.add(manager);
     }
   }

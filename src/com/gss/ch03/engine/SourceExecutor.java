@@ -1,9 +1,8 @@
 package com.gss.ch03.engine;
 
+import com.google.gson.Gson;
 import com.gss.ch03.api.Source;
 
-import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -12,18 +11,22 @@ import java.util.concurrent.BlockingQueue;
  * the source component repeatedly.
  * @param <T> The data type of the events in the outgoing event queue
  */
-public class SourceExecutor<T> {
+public class SourceExecutor<T>  extends ComponentExecutor<Object, T> {
   private final Source<T> source;
-  protected InstanceExecutor<?, T> [] instanceExecutors;
+  private final InstanceExecutor<?, T> [] instanceExecutors;
+  private final BlockingQueue<T> [] outgoingQueueArray;
 
   public SourceExecutor(Source<T> source) {
     this.source = source;
     this.instanceExecutors = new SourceInstanceExecutor[source.getParallelism()];
+    this.outgoingQueueArray = new BlockingQueue[source.getParallelism()];
 
     Class sourceClass = source.getClass();
+    Gson gson = new Gson();
     for (int i = 0; i < source.getParallelism(); ++i) {
-      instanceExecutors[i] =
-          new SourceInstanceExecutor<T>(i, sourceClass.newInstance());
+      Source<T> cloned = gson.fromJson(gson.toJson(source), source.getClass());
+      instanceExecutors[i] = new SourceInstanceExecutor<T>(i, cloned);
+      outgoingQueueArray[i] = instanceExecutors[i].getOutgoingQueue();
     }
   }
 
@@ -35,4 +38,7 @@ public class SourceExecutor<T> {
       }
     }
   }
+
+  @Override
+  public BlockingQueue<T>[] getOutgoingQueueArray() { return outgoingQueueArray; }
 }

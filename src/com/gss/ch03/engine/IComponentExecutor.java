@@ -13,4 +13,8 @@ public interface IComponentExecutor<I, O> {
    * Start the executor.
    */
   void start();
+  /**
+   * Get the outgoing event queue.
+   */
+  BlockingQueue<O> [] getOutgoingQueueArray();
 }
