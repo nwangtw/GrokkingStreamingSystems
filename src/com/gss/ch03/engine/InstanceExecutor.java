@@ -7,7 +7,7 @@ package com.gss.ch03.engine;
  * @param <I> The data type of the events in the incoming event queue
  * @param <O> The data type of the events in the outgoing event queue
  */
-public abstract class InstanceExecutor<I, O> implements IComponentExecutor<I, O> {
+public abstract class InstanceExecutor<I, O> implements IInstanceExecutor<I, O> {
   private final Thread thread;
 
   public InstanceExecutor() {

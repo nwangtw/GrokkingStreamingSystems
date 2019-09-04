@@ -10,26 +10,26 @@ import java.util.concurrent.BlockingQueue;
  * @param <T> The data type of the events in the queues
  */
 public class StreamManager<T> {
-  private final BlockingQueue<T> incomingQueue;
-  private final List<BlockingQueue<T>> outgoingQueueList;
+  private final BlockingQueue<T>[] incomingQueueArray;
+  private final List<BlockingQueue<T>[]> outgoingQueueArrayList;
   private final Thread thread;
 
-  public StreamManager(BlockingQueue<T> incomingQueue,
-                       List<BlockingQueue<T>> outgoingQueueList) {
-    this.incomingQueue = incomingQueue;
-    this.outgoingQueueList = outgoingQueueList;
+  public StreamManager(BlockingQueue<T>[] incomingQueue,
+                       List<BlockingQueue<T>[]> outgoingQueueList) {
+    this.incomingQueueArray = incomingQueue;
+    this.outgoingQueueArrayList = outgoingQueueList;
     this.thread = new Thread() {
       public void run() {
         while (true) {
           T event;
           try {
-            event = incomingQueue.take();
+            event = incomingQueueArray[0].take();  // TODO
           } catch (InterruptedException e) {
             return;
           }
-          for (BlockingQueue<T> queue: outgoingQueueList) {
+          for (BlockingQueue<T>[] queue: outgoingQueueList) {
             try {
-              queue.put(event);
+              queue[0].put(event);  // TODO
             } catch (InterruptedException e) {
               return;
             }
