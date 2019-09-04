@@ -1,13 +1,13 @@
-package com.gss.ch02.job;
+package com.gss.ch03.job;
 
-import com.gss.ch02.api.Source;
+import com.gss.ch03.api.Source;
 
 import java.util.Scanner;
 
 class Bridge extends Source<String> {
   private Scanner in = new Scanner(System.in);
 
-  public Bridge(String name) {  super(name);  }
+  public Bridge(String name, int parallelism) {  super(name, parallelism);  }
 
   @Override
   public String[] getEvents() {

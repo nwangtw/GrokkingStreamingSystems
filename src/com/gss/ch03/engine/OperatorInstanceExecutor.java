@@ -1,6 +1,6 @@
-package com.gss.ch02.engine;
+package com.gss.ch03.engine;
 
-import com.gss.ch02.api.Operator;
+import com.gss.ch03.api.Operator;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -12,7 +12,8 @@ import java.util.concurrent.BlockingQueue;
  * @param <I> The data type of the events in the incoming event queue
  * @param <O> The data type of the events in the outgoing event queue
  */
-public class OperatorExecutor<I, O> extends ComponentExecutor<I, O> {
+public class OperatorInstanceExecutor<I, O> extends InstanceExecutor<I, O> {
+  private final int instanceId;
   private final Operator<I, O> operator;
 
   private final int MAX_INCOMNG_QUEUE_SIZE = 64;
@@ -22,7 +23,10 @@ public class OperatorExecutor<I, O> extends ComponentExecutor<I, O> {
   private final BlockingQueue<O> outgoingeEvents =
       new ArrayBlockingQueue<O>(MAX_OUTGOING_QUEUE_SIZE);
 
-  public OperatorExecutor(Operator<I, O> operator) { this.operator = operator; }
+  public OperatorInstanceExecutor(int instanceId, Operator<I, O> operator) {
+    this.instanceId = instanceId;
+    this.operator = operator;
+  }
 
   public BlockingQueue<I> getIncomingQueue() {
     return incomingEvents;
@@ -42,7 +46,7 @@ public class OperatorExecutor<I, O> extends ComponentExecutor<I, O> {
       return false;
     }
 
-    // Apply operation
+    // Apply operator
     O[] outputs = operator.apply(event);
 
     // Emit out
