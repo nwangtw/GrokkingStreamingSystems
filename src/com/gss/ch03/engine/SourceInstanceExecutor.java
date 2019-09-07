@@ -2,6 +2,8 @@ package com.gss.ch03.engine;
 
 import com.gss.ch03.api.Source;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -31,15 +33,16 @@ public class SourceInstanceExecutor<T> extends InstanceExecutor<Object, T> {
    * @return true if the thread should continue; false if the thread should exist.
    */
   protected boolean runOnce() {
-    // Generate data
-    T[] events;
+    // Generate events
+    List<T> collector = new ArrayList<>();
     try {
-      events = source.getEvents();
+      source.getEvents(collector);
     } catch (Exception e) {
       return false;  // exit thread
     }
-    // Send out
-    for (T event: events) {
+
+    // Emit out
+    for (T event: collector) {
       try {
         getOutgoingQueue().put(event);
       } catch (InterruptedException e) {

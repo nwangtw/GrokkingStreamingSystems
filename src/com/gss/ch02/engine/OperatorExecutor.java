@@ -2,6 +2,8 @@ package com.gss.ch02.engine;
 
 import com.gss.ch02.api.Operator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -43,17 +45,16 @@ public class OperatorExecutor<I, O> extends ComponentExecutor<I, O> {
     }
 
     // Apply operation
-    O[] outputs = operator.apply(event);
+    List<O> collector = new ArrayList<>();
+    operator.apply(event, collector);
 
     // Emit out
-    if (outputs != null) {
-      for (O output : outputs) {
-        try {
-          getOutgoingQueue().put(output);
-        } catch (InterruptedException e) {
-          return false;  // exit thread
-        }
+    try {
+      for (O output : collector) {
+        getOutgoingQueue().put(output);
       }
+    } catch (InterruptedException e) {
+      return false;  // exit thread
     }
     return true;
   }
