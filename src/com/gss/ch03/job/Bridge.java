@@ -2,6 +2,7 @@ package com.gss.ch03.job;
 
 import com.gss.ch03.api.Source;
 
+import java.util.List;
 import java.util.Scanner;
 
 class Bridge extends Source<String> {
@@ -10,12 +11,8 @@ class Bridge extends Source<String> {
   public Bridge(String name, int parallelism) {  super(name, parallelism);  }
 
   @Override
-  public String[] getEvents() {
-    String out[] = new String[1];
-
+  public void getEvents(List<String> eventCollector) {
     String input = in.nextLine();
-    out[0] = input;
-
-    return out;
+    eventCollector.add(input);
   }
 }

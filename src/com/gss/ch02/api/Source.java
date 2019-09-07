@@ -1,5 +1,7 @@
 package com.gss.ch02.api;
 
+import java.util.List;
+
 /**
  * This Source class is the base class for all user defined sources.
  * @param <O> The data type of the events in the outgoing stream
@@ -27,7 +29,7 @@ public abstract class Source<O> implements ISource<O> {
   /**
    * Accept events from external into the system.
    * The function is abstract and needs to be implemented by users.
-   * @return The events emitted by the source
+   * @param eventCollector The outgoing event collector
    */
-  public abstract O[] getEvents();
+  public abstract void getEvents(List<O> eventCollector);
 }
