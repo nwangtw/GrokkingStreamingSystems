@@ -1,35 +1,34 @@
 package com.gss.ch02.engine;
 
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 
 /**
  * StreamManager is responsible for transporting events from
- * the outgoing event queue of the upstream component to
- * the incoming event queue of the downstream component.
+ * the outgoing event queue of the incoming (upstream) component to
+ * the incoming event queue of the (outgoing) downstream component.
  * @param <T> The data type of the events in the queues
  */
 public class StreamManager<T> {
-  private final BlockingQueue<T> incomingQueue;
-  private final List<BlockingQueue<T>> outgoingQueueList;
+  private final ComponentExecutor<?, T> incoming;
+  private final List<OperatorExecutor<T, ?>> outgoingList;
   private final Thread thread;
 
-  public StreamManager(BlockingQueue<T> incomingQueue,
-                       List<BlockingQueue<T>> outgoingQueueList) {
-    this.incomingQueue = incomingQueue;
-    this.outgoingQueueList = outgoingQueueList;
+  public StreamManager(ComponentExecutor<?, T> incoming,
+                       List<OperatorExecutor<T, ?>> outgoingList) {
+    this.incoming = incoming;
+    this.outgoingList = outgoingList;
     this.thread = new Thread() {
       public void run() {
         while (true) {
           T event;
           try {
-            event = incomingQueue.take();
+            event = incoming.getOutgoingQueue().take();
           } catch (InterruptedException e) {
             return;
           }
-          for (BlockingQueue<T> queue: outgoingQueueList) {
+          for (OperatorExecutor<T, ?> outgoing: outgoingList) {
             try {
-              queue.put(event);
+              outgoing.getIncomingQueue().put(event);
             } catch (InterruptedException e) {
               return;
             }

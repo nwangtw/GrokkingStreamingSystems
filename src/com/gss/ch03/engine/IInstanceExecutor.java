@@ -13,8 +13,4 @@ public interface IInstanceExecutor<I, O> {
    * Start the executor.
    */
   void start();
-  /**
-   * Get the outgoing event queue.
-   */
-  BlockingQueue<O> getOutgoingQueue();
 }

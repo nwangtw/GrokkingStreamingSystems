@@ -8,13 +8,21 @@ import java.util.List;
  * @param <O> The data type of the events in the outgoing stream
  */
 public abstract class Operator<I, O> implements IOperator<I, O> {
-  private String name;
-  private int parallelism;
-  protected Stream<O> outgoingStream = new Stream<O>();
+  private final String name;
+  private final int parallelism;
+  private final GroupingStrategy<I> grouping;
+  protected final Stream<O> outgoingStream = new Stream<O>();
 
   public Operator(String name, int parallelism) {
     this.name = name;
     this.parallelism = parallelism;
+    this.grouping = new ShuffleGrouping<I>();
+  }
+
+  public Operator(String name, int parallelism, GroupingStrategy<I> grouping) {
+    this.name = name;
+    this.parallelism = parallelism;
+    this.grouping = grouping;
   }
 
   /**
@@ -31,9 +39,17 @@ public abstract class Operator<I, O> implements IOperator<I, O> {
 
   /**
    * Get the parallelism (number of instances) of this component.
-   * @return The parallelism (number of instances) of this component.
+   * @return The parallelism (number of instances) of this component
    */
   public int getParallelism() { return parallelism; }
+
+  /**
+   * Get the grouping key of an event.
+   * @return The grouping strategy of this operator
+   */
+  public GroupingStrategy<I> getGroupingStrategy() {
+    return grouping;
+  }
 
   /**
    * Apply logic to the incoming event and generate results.
