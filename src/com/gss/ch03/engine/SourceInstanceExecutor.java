@@ -3,7 +3,6 @@ package com.gss.ch03.engine;
 import com.gss.ch03.api.Source;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -16,17 +15,16 @@ import java.util.concurrent.BlockingQueue;
 public class SourceInstanceExecutor<T> extends InstanceExecutor<Object, T> {
   private final int instanceId;
   private final Source<T> source;
+  private final BlockingQueue<T> outgoingEvents;
+  private final ArrayList<T> eventCollector = new ArrayList<>();
 
-  private final int MAX_OUTGOING_QUEUE_SIZE = 64;
-  private final BlockingQueue<T> outgoingeEvents =
-      new ArrayBlockingQueue<T>(MAX_OUTGOING_QUEUE_SIZE);
-
-  public SourceInstanceExecutor(int instanceId, Source<T> source) {
+  public SourceInstanceExecutor(int instanceId,
+                                Source<T> source,
+                                BlockingQueue<T> outgoingEvents) {
     this.instanceId = instanceId;
     this.source = source;
+    this.outgoingEvents = outgoingEvents;
   }
-
-  public BlockingQueue<T> getOutgoingQueue() { return outgoingeEvents; }
 
   /**
    * Run process once.
@@ -34,20 +32,20 @@ public class SourceInstanceExecutor<T> extends InstanceExecutor<Object, T> {
    */
   protected boolean runOnce() {
     // Generate events
-    List<T> collector = new ArrayList<>();
     try {
-      source.getEvents(collector);
+      source.getEvents(eventCollector);
     } catch (Exception e) {
       return false;  // exit thread
     }
 
     // Emit out
-    for (T event: collector) {
-      try {
-        getOutgoingQueue().put(event);
-      } catch (InterruptedException e) {
-        return false;  // exit thread
+    try {
+      for (T event: eventCollector) {
+        outgoingEvents.put(event);
       }
+      eventCollector.clear();
+    } catch (InterruptedException e) {
+      return false;  // exit thread
     }
     return true;
   }

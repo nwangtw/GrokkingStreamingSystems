@@ -1,10 +1,9 @@
 package com.gss.ch03.engine;
 
+import com.gss.ch03.api.GroupingStrategy;
 import com.gss.ch03.api.Operator;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -17,23 +16,24 @@ import java.util.concurrent.BlockingQueue;
 public class OperatorInstanceExecutor<I, O> extends InstanceExecutor<I, O> {
   private final int instanceId;
   private final Operator<I, O> operator;
+  private final BlockingQueue<I> incomingEvents;
+  private final BlockingQueue<O> outgoingEvents;
 
-  private final int MAX_INCOMNG_QUEUE_SIZE = 64;
-  private final int MAX_OUTGOING_QUEUE_SIZE = 64;
-  private final BlockingQueue<I> incomingEvents =
-      new ArrayBlockingQueue<I>(MAX_INCOMNG_QUEUE_SIZE);
-  private final BlockingQueue<O> outgoingeEvents =
-      new ArrayBlockingQueue<O>(MAX_OUTGOING_QUEUE_SIZE);
+  private final ArrayList<O> eventCollector = new ArrayList<O>();
 
-  public OperatorInstanceExecutor(int instanceId, Operator<I, O> operator) {
+  public OperatorInstanceExecutor(int instanceId,
+                                  Operator<I, O> operator,
+                                  BlockingQueue<I> incomingEvents,
+                                  BlockingQueue<O> outgoingEvents) {
     this.instanceId = instanceId;
     this.operator = operator;
+    this.incomingEvents = incomingEvents;
+    this.outgoingEvents = outgoingEvents;
   }
 
   public BlockingQueue<I> getIncomingQueue() {
     return incomingEvents;
   }
-  public BlockingQueue<O> getOutgoingQueue() { return outgoingeEvents; }
 
   /**
    * Run process once.
@@ -49,17 +49,21 @@ public class OperatorInstanceExecutor<I, O> extends InstanceExecutor<I, O> {
     }
 
     // Apply operator
-    List<O> collector = new ArrayList<>();
-    operator.apply(event, collector);
+    operator.apply(event, eventCollector);
 
     // Emit out
     try {
-      for (O output : collector) {
-        getOutgoingQueue().put(output);
+      for (O output : eventCollector) {
+        outgoingEvents.put(output);
       }
+      eventCollector.clear();
     } catch (InterruptedException e) {
       return false;  // exit thread
     }
     return true;
+  }
+
+  public GroupingStrategy<I> getGroupingStrategy() {
+    return operator.getGroupingStrategy();
   }
 }

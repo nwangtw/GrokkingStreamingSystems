@@ -3,7 +3,6 @@ package com.gss.ch02.engine;
 import com.gss.ch02.api.Source;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -17,14 +16,15 @@ public class SourceExecutor<T> extends ComponentExecutor<Object, T> {
   private final Source<T> source;
 
   private final int MAX_OUTGOING_QUEUE_SIZE = 64;
-  private final BlockingQueue<T> outgoingeEvents =
+  private final BlockingQueue<T> outgoingEvents =
       new ArrayBlockingQueue<T>(MAX_OUTGOING_QUEUE_SIZE);
+  private final ArrayList<T> eventCollector = new ArrayList<T>();
 
   public SourceExecutor(Source<T> source) {
     this.source = source;
   }
 
-  public BlockingQueue<T> getOutgoingQueue() { return outgoingeEvents; }
+  public BlockingQueue<T> getOutgoingQueue() { return outgoingEvents; }
 
   /**
    * Run process once.
@@ -32,20 +32,20 @@ public class SourceExecutor<T> extends ComponentExecutor<Object, T> {
    */
   protected boolean runOnce() {
     // Generate events
-    List<T> collector = new ArrayList<>();
     try {
-      source.getEvents(collector);
+      source.getEvents(eventCollector);
     } catch (Exception e) {
       return false;  // exit thread
     }
 
     // Emit out
-    for (T event: collector) {
-      try {
+    try {
+      for (T event: eventCollector) {
         getOutgoingQueue().put(event);
-      } catch (InterruptedException e) {
-        return false;  // exit thread
       }
+      eventCollector.clear();
+    } catch (InterruptedException e) {
+      return false;  // exit thread
     }
     return true;
   }

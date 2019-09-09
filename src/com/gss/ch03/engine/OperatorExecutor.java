@@ -1,9 +1,10 @@
 package com.gss.ch03.engine;
 
 import com.google.gson.Gson;
+import com.gss.ch03.api.GroupingStrategy;
 import com.gss.ch03.api.Operator;
-import com.gss.ch03.api.Source;
 
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -15,23 +16,27 @@ import java.util.concurrent.BlockingQueue;
  */
 public class OperatorExecutor<I, O> extends ComponentExecutor<I, O> {
   private final Operator<I, O> operator;
+  private final int parallelism;
   protected InstanceExecutor<I, O> [] instanceExecutors;
-  private final BlockingQueue<I> [] incomingQueueArray;
-  private final BlockingQueue<O> [] outgoingQueueArray;
+
+  private final int MAX_INCOMNG_QUEUE_SIZE = 64;
+  private final int MAX_OUTGOING_QUEUE_SIZE = 64;
+  private final BlockingQueue<O> outgoingEvents =
+      new ArrayBlockingQueue<O>(MAX_OUTGOING_QUEUE_SIZE);
+  private final BlockingQueue<I>[] incomingEventsArray;
 
   public OperatorExecutor(Operator<I, O> operator) {
     this.operator = operator;
-    this.instanceExecutors = new OperatorInstanceExecutor[operator.getParallelism()];
-    this.incomingQueueArray = new BlockingQueue[operator.getParallelism()];
-    this.outgoingQueueArray = new BlockingQueue[operator.getParallelism()];
+    this.parallelism = operator.getParallelism();
+    this.instanceExecutors = new OperatorInstanceExecutor[parallelism];
+    this.incomingEventsArray = new BlockingQueue[parallelism];
 
     Gson gson = new Gson();
-    for (int i = 0; i < operator.getParallelism(); ++i) {
+    for (int i = 0; i < parallelism; ++i) {
       Operator<I, O> cloned = gson.fromJson(gson.toJson(operator), operator.getClass());
+      incomingEventsArray[i] = new ArrayBlockingQueue<I>(MAX_INCOMNG_QUEUE_SIZE);
       OperatorInstanceExecutor<I, O> operatorInstanceExecutor =
-          new OperatorInstanceExecutor<I, O>(i, cloned);
-      incomingQueueArray[i] = operatorInstanceExecutor.getIncomingQueue();
-      outgoingQueueArray[i] = operatorInstanceExecutor.getOutgoingQueue();
+          new OperatorInstanceExecutor<I, O>(i, cloned, incomingEventsArray[i], outgoingEvents);
       instanceExecutors[i] = operatorInstanceExecutor;
     }
   }
@@ -45,8 +50,14 @@ public class OperatorExecutor<I, O> extends ComponentExecutor<I, O> {
     }
   }
 
-  public BlockingQueue<I>[] getIncomingQueueArray() { return incomingQueueArray; }
+  public BlockingQueue<I> getIncomingQueueByKey(int key) {
+    return incomingEventsArray[key % parallelism];
+  }
 
   @Override
-  public BlockingQueue<O>[] getOutgoingQueueArray() { return outgoingQueueArray; }
+  public BlockingQueue<O> getOutgoingQueue() { return outgoingEvents; }
+
+  public GroupingStrategy getGroupingStrategy() {
+    return operator.getGroupingStrategy();
+  }
 }
