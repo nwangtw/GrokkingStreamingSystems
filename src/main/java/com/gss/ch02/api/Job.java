@@ -1,6 +1,6 @@
-package com.gss.ch03.api;
+package com.gss.ch02.api;
 
-import com.gss.ch03.engine.JobRunner;
+import com.gss.ch02.engine.JobRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Job {
   private final String name;
-  private final List<Source> sourceList = new ArrayList<>();
+  private final List<Source> sourceList = new ArrayList<Source>();
 
   public Job(String jobName) {
     this.name = jobName;

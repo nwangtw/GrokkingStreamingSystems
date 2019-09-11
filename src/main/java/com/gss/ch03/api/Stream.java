@@ -1,5 +1,6 @@
 package com.gss.ch03.api;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * Operators with the correct type can be applied to this stream.
  * @param <T> The data type of the events in the this stream
  */
-public class Stream<T> {
+public class Stream<T> implements Serializable {
   // List of all operators to be applied to this stream.
   private final List<Operator<T, ?>> operationList =
       new ArrayList<Operator<T, ?>>();

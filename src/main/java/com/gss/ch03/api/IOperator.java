@@ -8,4 +8,8 @@ package com.gss.ch03.api;
  * @param <O> The data type of the events in the outgoing stream
  */
 public interface IOperator<I, O> extends IComponent<O> {
+  /**
+   * Set up this operator object.
+   */
+  void setup();
 }

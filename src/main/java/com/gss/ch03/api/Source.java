@@ -1,12 +1,13 @@
 package com.gss.ch03.api;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * This Source class is the base class for all user defined sources.
  * @param <O> The data type of the events in the outgoing stream
  */
-public abstract class Source<O> implements ISource<O> {
+public abstract class Source<O> implements ISource<O>, Serializable {
   private String name;
   private int parallelism;
   protected Stream<O> outgoingStream = new Stream();
@@ -33,6 +34,11 @@ public abstract class Source<O> implements ISource<O> {
    * @return The parallelism (number of instances) of this component.
    */
   public int getParallelism() { return parallelism; }
+
+  /**
+   * Set up this source object.
+   */
+  public void setup() { }
 
   /**
    * Accept events from external into the system.

@@ -7,4 +7,8 @@ package com.gss.ch03.api;
  * @param <O> The data type of the events in the outgoing stream
  */
 public interface ISource<O> extends IComponent<O> {
+  /**
+   * Set up this source object.
+   */
+  void setup();
 }

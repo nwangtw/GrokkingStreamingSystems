@@ -1,8 +1,8 @@
 package com.gss.ch03.engine;
 
-import com.google.gson.Gson;
 import com.gss.ch03.api.GroupingStrategy;
 import com.gss.ch03.api.Operator;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -31,9 +31,9 @@ public class OperatorExecutor<I, O> extends ComponentExecutor<I, O> {
     this.instanceExecutors = new OperatorInstanceExecutor[parallelism];
     this.incomingEventsArray = new BlockingQueue[parallelism];
 
-    Gson gson = new Gson();
     for (int i = 0; i < parallelism; ++i) {
-      Operator<I, O> cloned = gson.fromJson(gson.toJson(operator), operator.getClass());
+      Operator<I, O> cloned = SerializationUtils.clone(operator);
+      cloned.setup();
       incomingEventsArray[i] = new ArrayBlockingQueue<I>(MAX_INCOMNG_QUEUE_SIZE);
       OperatorInstanceExecutor<I, O> operatorInstanceExecutor =
           new OperatorInstanceExecutor<I, O>(i, cloned, incomingEventsArray[i], outgoingEvents);

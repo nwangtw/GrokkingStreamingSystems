@@ -1,5 +1,6 @@
 package com.gss.ch03.api;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @param <I> The data type of the events in the incoming stream
  * @param <O> The data type of the events in the outgoing stream
  */
-public abstract class Operator<I, O> implements IOperator<I, O> {
+public abstract class Operator<I, O> implements IOperator<I, O>, Serializable {
   private final String name;
   private final int parallelism;
   private final GroupingStrategy<I> grouping;
@@ -50,6 +51,11 @@ public abstract class Operator<I, O> implements IOperator<I, O> {
   public GroupingStrategy<I> getGroupingStrategy() {
     return grouping;
   }
+
+  /**
+   * Set up this operator object.
+   */
+  public void setup() { }
 
   /**
    * Apply logic to the incoming event and generate results.

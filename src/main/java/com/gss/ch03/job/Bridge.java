@@ -6,9 +6,16 @@ import java.util.List;
 import java.util.Scanner;
 
 class Bridge extends Source<String> {
-  private Scanner in = new Scanner(System.in);
+  private transient Scanner in;
 
-  public Bridge(String name, int parallelism) {  super(name, parallelism);  }
+  public Bridge(String name, int parallelism) {
+    super(name, parallelism);
+  }
+
+  @Override
+  public void setup() {
+    in = new Scanner(System.in);
+  }
 
   @Override
   public void getEvents(List<String> eventCollector) {

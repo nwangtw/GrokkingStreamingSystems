@@ -1,6 +1,8 @@
 package com.gss.ch03.api;
 
-public abstract class GroupingStrategy<T> {
+import java.io.Serializable;
+
+public abstract class GroupingStrategy<T> implements Serializable {
   public GroupingStrategy() { }
 
   /**

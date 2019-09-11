@@ -16,7 +16,7 @@ public class SourceInstanceExecutor<T> extends InstanceExecutor<Object, T> {
   private final int instanceId;
   private final Source<T> source;
   private final BlockingQueue<T> outgoingEvents;
-  private final ArrayList<T> eventCollector = new ArrayList<>();
+  private final ArrayList<T> eventCollector = new ArrayList<T>();
 
   public SourceInstanceExecutor(int instanceId,
                                 Source<T> source,
@@ -34,6 +34,7 @@ public class SourceInstanceExecutor<T> extends InstanceExecutor<Object, T> {
     // Generate events
     try {
       source.getEvents(eventCollector);
+      System.out.println("instance: " + instanceId + " input: " + eventCollector.get(0));
     } catch (Exception e) {
       return false;  // exit thread
     }

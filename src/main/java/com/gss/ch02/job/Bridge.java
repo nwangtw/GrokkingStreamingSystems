@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 class Bridge extends Source<String> {
-  private Scanner in = new Scanner(System.in);
+  private final Scanner in = new Scanner(System.in);
 
   public Bridge(String name) {  super(name);  }
 

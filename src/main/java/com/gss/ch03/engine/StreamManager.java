@@ -1,4 +1,6 @@
-package com.gss.ch02.engine;
+package com.gss.ch03.engine;
+
+import com.gss.ch03.api.GroupingStrategy;
 
 import java.util.List;
 
@@ -19,26 +21,31 @@ public class StreamManager<T> {
     this.outgoingList = outgoingList;
     this.thread = new Thread() {
       public void run() {
-        while (true) {
-          T event;
-          try {
-            event = incoming.getOutgoingQueue().take();
-          } catch (InterruptedException e) {
-            return;
-          }
-          for (OperatorExecutor<T, ?> outgoing: outgoingList) {
-            try {
-              outgoing.getIncomingQueue().put(event);
-            } catch (InterruptedException e) {
-              return;
-            }
-          }
-        }
+        while (runOnce());
       }
     };
   }
 
   public void start() {
     this.thread.start();
+  }
+  private boolean runOnce() {
+    T event;
+    try {
+      event = incoming.getOutgoingQueue().take();
+    } catch (InterruptedException e) {
+      return false;
+    }
+
+    try {
+      for (OperatorExecutor<T, ?> outgoing: outgoingList) {
+        GroupingStrategy grouping = outgoing.getGroupingStrategy();
+        int key = grouping.getKey(event);
+        outgoing.getIncomingQueueByKey(key).put(event);
+      }
+    } catch (InterruptedException e) {
+      return false;
+    }
+    return true;
   }
 }

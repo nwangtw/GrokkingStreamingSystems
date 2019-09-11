@@ -12,7 +12,8 @@ public class ShuffleGrouping<T> extends GroupingStrategy<T> {
    * @param event The event object to extract key from.
    * @return The integer key of this event.
    */
+  @Override
   public int getKey(T event) {
-    return rand.nextInt();
+    return Math.abs(rand.nextInt());
   }
 }

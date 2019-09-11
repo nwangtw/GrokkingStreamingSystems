@@ -1,7 +1,7 @@
 package com.gss.ch03.engine;
 
-import com.google.gson.Gson;
 import com.gss.ch03.api.Source;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -24,10 +24,9 @@ public class SourceExecutor<T>  extends ComponentExecutor<Object, T> {
     this.source = source;
     this.instanceExecutors = new SourceInstanceExecutor[source.getParallelism()];
 
-    Class sourceClass = source.getClass();
-    Gson gson = new Gson();
     for (int i = 0; i < source.getParallelism(); ++i) {
-      Source<T> cloned = gson.fromJson(gson.toJson(source), source.getClass());
+      Source<T> cloned = SerializationUtils.clone(source);
+      cloned.setup();
       instanceExecutors[i] = new SourceInstanceExecutor<T>(i, cloned, outgoingEvents);
     }
   }

@@ -7,9 +7,16 @@ import java.util.List;
 import java.util.Map;
 
 class Booth extends Operator<String, Object> {
-  private final Map<String, Integer> countMap = new HashMap<String, Integer>();
+  private transient Map<String, Integer> countMap;
 
-  public Booth(String name, int parallelism) {  super(name, parallelism);  }
+  public Booth(String name, int parallelism) {
+    super(name, parallelism);
+  }
+
+  @Override
+  public void setup() {
+    countMap = new HashMap<String, Integer>();
+  }
 
   @Override
   public void apply(String vehicle, List<Object> eventCollector) {

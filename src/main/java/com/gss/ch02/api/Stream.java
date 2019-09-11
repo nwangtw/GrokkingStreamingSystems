@@ -14,7 +14,7 @@ public class Stream<T> {
       new ArrayList<Operator<T, ?>>();
 
   /**
-   * Connect an operator to this stream.
+   * Apply an operator to this stream.
    * @param operator The operator to be connected to the current stream
    * @param <O> The data type of the events in the results
    * @return The outgoing stream of the operator.

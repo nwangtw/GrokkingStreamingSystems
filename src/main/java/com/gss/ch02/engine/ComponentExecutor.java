@@ -1,4 +1,4 @@
-package com.gss.ch03.engine;
+package com.gss.ch02.engine;
 
 /**
  * The executor for source components. When the executor is started,
@@ -7,15 +7,13 @@ package com.gss.ch03.engine;
  * @param <I> The data type of the events in the incoming event queue
  * @param <O> The data type of the events in the outgoing event queue
  */
-public abstract class InstanceExecutor<I, O> implements IInstanceExecutor<I, O> {
+public abstract class ComponentExecutor<I, O> implements IComponentExecutor<I, O> {
   private final Thread thread;
 
-  public InstanceExecutor() {
+  public ComponentExecutor() {
     this.thread = new Thread() {
       public void run() {
-        for (;;) {
-          runOnce();
-        }
+        while (runOnce());
       }
     };
   }
