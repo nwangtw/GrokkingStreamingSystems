@@ -2,7 +2,7 @@ package com.gss.ch03.api;
 
 import java.io.Serializable;
 
-public abstract class GroupingStrategy<T> implements Serializable {
+public abstract class GroupingStrategy implements Serializable {
   public GroupingStrategy() { }
 
   /**
@@ -10,5 +10,5 @@ public abstract class GroupingStrategy<T> implements Serializable {
    * @param event The event object to extract key from.
    * @return The integer key of this event.
    */
-  public abstract int getKey(T event);
+  public abstract int getKey(Event event);
 }

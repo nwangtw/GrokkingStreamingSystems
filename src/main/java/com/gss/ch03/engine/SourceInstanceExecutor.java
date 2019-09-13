@@ -1,26 +1,25 @@
 package com.gss.ch03.engine;
 
+import com.gss.ch03.api.Event;
 import com.gss.ch03.api.Source;
 
 import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
  * The executor for source components. When the executor is started,
  * a new thread is created to call the getEvents() function of
  * the source component repeatedly.
- * @param <T> The data type of the events in the outgoing event queue
  */
-public class SourceInstanceExecutor<T> extends InstanceExecutor<Object, T> {
+public class SourceInstanceExecutor extends InstanceExecutor {
   private final int instanceId;
-  private final Source<T> source;
-  private final BlockingQueue<T> outgoingEvents;
-  private final ArrayList<T> eventCollector = new ArrayList<T>();
+  private final Source source;
+  private final BlockingQueue<Event> outgoingEvents;
+  private final ArrayList<Event> eventCollector = new ArrayList<Event>();
 
   public SourceInstanceExecutor(int instanceId,
-                                Source<T> source,
-                                BlockingQueue<T> outgoingEvents) {
+                                Source source,
+                                BlockingQueue outgoingEvents) {
     this.instanceId = instanceId;
     this.source = source;
     this.outgoingEvents = outgoingEvents;
@@ -41,7 +40,7 @@ public class SourceInstanceExecutor<T> extends InstanceExecutor<Object, T> {
 
     // Emit out
     try {
-      for (T event: eventCollector) {
+      for (Event event: eventCollector) {
         outgoingEvents.put(event);
       }
       eventCollector.clear();
