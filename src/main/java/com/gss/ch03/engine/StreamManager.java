@@ -1,5 +1,6 @@
 package com.gss.ch03.engine;
 
+import com.gss.ch03.api.Event;
 import com.gss.ch03.api.GroupingStrategy;
 
 import java.util.List;
@@ -8,15 +9,14 @@ import java.util.List;
  * StreamManager is responsible for transporting events from
  * the outgoing event queue of the incoming (upstream) component to
  * the incoming event queue of the (outgoing) downstream component.
- * @param <T> The data type of the events in the queues
  */
-public class StreamManager<T> {
-  private final ComponentExecutor<?, T> incoming;
-  private final List<OperatorExecutor<T, ?>> outgoingList;
+public class StreamManager {
+  private final ComponentExecutor incoming;
+  private final List<OperatorExecutor> outgoingList;
   private final Thread thread;
 
-  public StreamManager(ComponentExecutor<?, T> incoming,
-                       List<OperatorExecutor<T, ?>> outgoingList) {
+  public StreamManager(ComponentExecutor incoming,
+                       List<OperatorExecutor> outgoingList) {
     this.incoming = incoming;
     this.outgoingList = outgoingList;
     this.thread = new Thread() {
@@ -30,15 +30,9 @@ public class StreamManager<T> {
     this.thread.start();
   }
   private boolean runOnce() {
-    T event;
     try {
-      event = incoming.getOutgoingQueue().take();
-    } catch (InterruptedException e) {
-      return false;
-    }
-
-    try {
-      for (OperatorExecutor<T, ?> outgoing: outgoingList) {
+      Event event = incoming.getOutgoingQueue().take();
+      for (OperatorExecutor outgoing: outgoingList) {
         GroupingStrategy grouping = outgoing.getGroupingStrategy();
         int key = grouping.getKey(event);
         outgoing.getIncomingQueueByKey(key).put(event);

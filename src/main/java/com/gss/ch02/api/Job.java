@@ -22,14 +22,14 @@ public class Job {
    * @param source The source object to be added into the job
    * @return A stream that can be used to connect to other operators
    */
-  public <T> Stream<T> addSource(Source<T> source) {
+  public Stream addSource(Source source) {
     sourceList.add(source);
     return source.getOutgoingStream();
   }
 
   /**
-   * Get the list sources in this job.
-   * @return The list sources in this job
+   * Get the list sources in this job. This function is used by JobRunner to traverse the graph.
+   * @return The list of sources in this job
    */
   public List<Source> getSourceList() {
     return sourceList;

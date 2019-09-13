@@ -2,7 +2,7 @@ package com.gss.ch03.api;
 
 import java.util.Random;
 
-public class ShuffleGrouping<T> extends GroupingStrategy<T> {
+public class ShuffleGrouping extends GroupingStrategy {
   private final Random rand = new Random();
 
   public ShuffleGrouping() { }
@@ -13,7 +13,7 @@ public class ShuffleGrouping<T> extends GroupingStrategy<T> {
    * @return The integer key of this event.
    */
   @Override
-  public int getKey(T event) {
+  public int getKey(Event event) {
     return Math.abs(rand.nextInt());
   }
 }

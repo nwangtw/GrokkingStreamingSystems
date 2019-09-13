@@ -1,12 +1,13 @@
 package com.gss.ch03.job;
 
+import com.gss.ch03.api.Event;
 import com.gss.ch03.api.Operator;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Booth extends Operator<String, Object> {
+class Booth extends Operator {
   private transient Map<String, Integer> countMap;
 
   public Booth(String name, int parallelism) {
@@ -19,7 +20,8 @@ class Booth extends Operator<String, Object> {
   }
 
   @Override
-  public void apply(String vehicle, List<Object> eventCollector) {
+  public void apply(Event vehicleEvent, List<Event> eventCollector) {
+    String vehicle = ((VehicleEvent)vehicleEvent).getData();
     Integer count = countMap.getOrDefault(vehicle, 0) + 1;
     countMap.put(vehicle, count);
 

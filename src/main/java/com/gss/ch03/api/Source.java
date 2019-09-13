@@ -5,12 +5,11 @@ import java.util.List;
 
 /**
  * This Source class is the base class for all user defined sources.
- * @param <O> The data type of the events in the outgoing stream
  */
-public abstract class Source<O> implements ISource<O>, Serializable {
+public abstract class Source implements ISource, Serializable {
   private String name;
   private int parallelism;
-  protected Stream<O> outgoingStream = new Stream();
+  protected Stream outgoingStream = new Stream();
 
   public Source(String name, int parallelism) {
     this.name = name;
@@ -21,7 +20,7 @@ public abstract class Source<O> implements ISource<O>, Serializable {
    * Get the outgoing stream of the component.
    * @return The outgoing stream
    */
-  public Stream<O> getOutgoingStream() { return outgoingStream; }
+  public Stream getOutgoingStream() { return outgoingStream; }
 
   /**
    * Get the name of this component.
@@ -45,5 +44,5 @@ public abstract class Source<O> implements ISource<O>, Serializable {
    * The function is abstract and needs to be implemented by users.
    * @param eventCollector The outgoing event collector
    */
-  public abstract void getEvents(List<O> eventCollector);
+  public abstract void getEvents(List<Event> eventCollector);
 }

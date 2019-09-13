@@ -3,7 +3,7 @@ package com.gss.ch02.job;
 import com.gss.ch02.api.Job;
 import com.gss.ch02.api.Stream;
 
-public class VehicleCount {
+public class VehicleCountJob {
 
   public static void main(String[] args) {
     Job job = new Job("vehicle_count");

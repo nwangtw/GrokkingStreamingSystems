@@ -1,5 +1,6 @@
 package com.gss.ch02.engine;
 
+import com.gss.ch02.api.Event;
 import com.gss.ch02.api.Source;
 
 import java.util.ArrayList;
@@ -10,21 +11,20 @@ import java.util.concurrent.BlockingQueue;
  * The executor for source components. When the executor is started,
  * a new thread is created to call the getEvents() function of
  * the source component repeatedly.
- * @param <T> The data type of the events in the outgoing event queue
  */
-public class SourceExecutor<T> extends ComponentExecutor<Object, T> {
-  private final Source<T> source;
+public class SourceExecutor extends ComponentExecutor {
+  private final Source source;
 
   private final int MAX_OUTGOING_QUEUE_SIZE = 64;
-  private final BlockingQueue<T> outgoingEvents =
-      new ArrayBlockingQueue<T>(MAX_OUTGOING_QUEUE_SIZE);
-  private final ArrayList<T> eventCollector = new ArrayList<T>();
+  private final BlockingQueue<Event> outgoingEvents =
+      new ArrayBlockingQueue<Event>(MAX_OUTGOING_QUEUE_SIZE);
+  private final ArrayList<Event> eventCollector = new ArrayList<Event>();
 
-  public SourceExecutor(Source<T> source) {
+  public SourceExecutor(Source source) {
     this.source = source;
   }
 
-  public BlockingQueue<T> getOutgoingQueue() { return outgoingEvents; }
+  public BlockingQueue<Event> getOutgoingQueue() { return outgoingEvents; }
 
   /**
    * Run process once.
@@ -40,7 +40,7 @@ public class SourceExecutor<T> extends ComponentExecutor<Object, T> {
 
     // Emit out
     try {
-      for (T event: eventCollector) {
+      for (Event event: eventCollector) {
         getOutgoingQueue().put(event);
       }
       eventCollector.clear();

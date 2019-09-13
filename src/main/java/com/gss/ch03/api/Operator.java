@@ -5,22 +5,20 @@ import java.util.List;
 
 /**
  * This Operator class is the base class for all user defined operators.
- * @param <I> The data type of the events in the incoming stream
- * @param <O> The data type of the events in the outgoing stream
  */
-public abstract class Operator<I, O> implements IOperator<I, O>, Serializable {
+public abstract class Operator implements IOperator, Serializable {
   private final String name;
   private final int parallelism;
-  private final GroupingStrategy<I> grouping;
-  protected final Stream<O> outgoingStream = new Stream<O>();
+  private final GroupingStrategy grouping;
+  protected final Stream outgoingStream = new Stream();
 
   public Operator(String name, int parallelism) {
     this.name = name;
     this.parallelism = parallelism;
-    this.grouping = new ShuffleGrouping<I>();
+    this.grouping = new ShuffleGrouping();
   }
 
-  public Operator(String name, int parallelism, GroupingStrategy<I> grouping) {
+  public Operator(String name, int parallelism, GroupingStrategy grouping) {
     this.name = name;
     this.parallelism = parallelism;
     this.grouping = grouping;
@@ -30,7 +28,7 @@ public abstract class Operator<I, O> implements IOperator<I, O>, Serializable {
    * Get the outgoing stream of the component.
    * @return The outgoing stream
    */
-  public Stream<O> getOutgoingStream() { return outgoingStream; }
+  public Stream getOutgoingStream() { return outgoingStream; }
 
   /**
    * Get the name of this component.
@@ -48,7 +46,7 @@ public abstract class Operator<I, O> implements IOperator<I, O>, Serializable {
    * Get the grouping key of an event.
    * @return The grouping strategy of this operator
    */
-  public GroupingStrategy<I> getGroupingStrategy() {
+  public GroupingStrategy getGroupingStrategy() {
     return grouping;
   }
 
@@ -63,5 +61,5 @@ public abstract class Operator<I, O> implements IOperator<I, O>, Serializable {
    * @param event The incoming event
    * @param eventCollector The outgoing event collector
    */
-  public abstract void apply(I event, List<O> eventCollector);
+  public abstract void apply(Event event, List<Event> eventCollector);
 }

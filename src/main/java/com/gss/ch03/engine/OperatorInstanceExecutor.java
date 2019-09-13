@@ -1,5 +1,6 @@
 package com.gss.ch03.engine;
 
+import com.gss.ch03.api.Event;
 import com.gss.ch03.api.GroupingStrategy;
 import com.gss.ch03.api.Operator;
 
@@ -10,28 +11,26 @@ import java.util.concurrent.BlockingQueue;
  * The executor for operator components. When the executor is started,
  * a new thread is created to call the apply() function of
  * the operator component repeatedly.
- * @param <I> The data type of the events in the incoming event queue
- * @param <O> The data type of the events in the outgoing event queue
  */
-public class OperatorInstanceExecutor<I, O> extends InstanceExecutor<I, O> {
+public class OperatorInstanceExecutor extends InstanceExecutor {
   private final int instanceId;
-  private final Operator<I, O> operator;
-  private final BlockingQueue<I> incomingEvents;
-  private final BlockingQueue<O> outgoingEvents;
+  private final Operator operator;
+  private final BlockingQueue<Event> incomingEvents;
+  private final BlockingQueue<Event> outgoingEvents;
 
-  private final ArrayList<O> eventCollector = new ArrayList<O>();
+  private final ArrayList<Event> eventCollector = new ArrayList<Event>();
 
   public OperatorInstanceExecutor(int instanceId,
-                                  Operator<I, O> operator,
-                                  BlockingQueue<I> incomingEvents,
-                                  BlockingQueue<O> outgoingEvents) {
+                                  Operator operator,
+                                  BlockingQueue<Event> incomingEvents,
+                                  BlockingQueue<Event> outgoingEvents) {
     this.instanceId = instanceId;
     this.operator = operator;
     this.incomingEvents = incomingEvents;
     this.outgoingEvents = outgoingEvents;
   }
 
-  public BlockingQueue<I> getIncomingQueue() {
+  public BlockingQueue<Event> getIncomingQueue() {
     return incomingEvents;
   }
 
@@ -40,7 +39,7 @@ public class OperatorInstanceExecutor<I, O> extends InstanceExecutor<I, O> {
    * @return true if the thread should continue; false if the thread should exist.
    */
   protected boolean runOnce() {
-    I event;
+    Event event;
     try {
       // Read input
       event = incomingEvents.take();
@@ -53,7 +52,7 @@ public class OperatorInstanceExecutor<I, O> extends InstanceExecutor<I, O> {
 
     // Emit out
     try {
-      for (O output : eventCollector) {
+      for (Event output : eventCollector) {
         outgoingEvents.put(output);
       }
       eventCollector.clear();
@@ -63,7 +62,7 @@ public class OperatorInstanceExecutor<I, O> extends InstanceExecutor<I, O> {
     return true;
   }
 
-  public GroupingStrategy<I> getGroupingStrategy() {
+  public GroupingStrategy getGroupingStrategy() {
     return operator.getGroupingStrategy();
   }
 }

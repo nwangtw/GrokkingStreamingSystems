@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
 
 public class JobRunner {
   private class Connection {
@@ -89,15 +88,15 @@ public class JobRunner {
     }
   }
 
-  private <T> SourceExecutor<T> setupSourceRunner(Source<T> source) {
-    SourceExecutor<T> runner = new SourceExecutor<T>(source);
+  private SourceExecutor setupSourceRunner(Source source) {
+    SourceExecutor runner = new SourceExecutor(source);
     runnerList.add(runner);
 
     return runner;
   }
 
-  private <I, T> OperatorExecutor<I, T> setupOperationRunner(Operator<I, T> operation) {
-    OperatorExecutor<I, T> runner = new OperatorExecutor<I, T>(operation);
+  private OperatorExecutor setupOperationRunner(Operator operation) {
+    OperatorExecutor runner = new OperatorExecutor(operation);
     runnerList.add(runner);
 
     return runner;
