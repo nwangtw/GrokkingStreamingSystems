@@ -7,6 +7,7 @@ import com.gss.ch03.api.Source;
 import com.gss.ch03.api.Stream;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;;
@@ -124,6 +125,7 @@ public class JobRunner {
   }
 
   private void startComponentRunners() {
+    Collections.reverse(runnerList);
     for (ComponentExecutor runner: runnerList) {
       runner.start();
     }
