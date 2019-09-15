@@ -1,2 +1,19 @@
 # miniStreaming
 For a book
+
+### Build the project
+```
+$ mvn clean package
+```
+After a successful build of the project you shoudl be able to run all of the examples in the jar from the command line.  
+Follow the instructions for each chapter
+
+### Run the job in chapter 2
+```
+$ java -cp target/miniStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar com.gss.ch02.job.VehicleCountJob
+```
+
+### Run the job in chapter 3
+```
+$ java -cp target/miniStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar com.gss.ch03.job.ParallelizedVehicleCount
+```
