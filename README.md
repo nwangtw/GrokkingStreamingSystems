@@ -15,5 +15,5 @@ $ java -cp target/miniStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar com.gss.c
 
 ### Run the job in chapter 3
 ```
-$ java -cp target/miniStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar com.gss.ch03.job.ParallelizedVehicleCount
+$ java -cp target/miniStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar com.gss.ch03.job.ParallelizedVehicleCountJob
 ```

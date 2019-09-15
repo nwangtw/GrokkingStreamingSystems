@@ -5,7 +5,6 @@ import com.gss.ch03.api.Source;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 class Bridge extends Source {
   private final String [] vehicles = new String[] {
@@ -26,5 +25,6 @@ class Bridge extends Source {
     }
     String vehicle = vehicles[rand.nextInt(vehicles.length)];
     eventCollector.add(new VehicleEvent(vehicle));
+    System.out.println("bridge instance;     " + instance + ", vehicle: " + vehicle);
   }
 }
