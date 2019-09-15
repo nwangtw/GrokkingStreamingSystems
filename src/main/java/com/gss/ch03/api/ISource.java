@@ -6,8 +6,4 @@ package com.gss.ch03.api;
  * via the outgoing stream,
  */
 public interface ISource extends IComponent {
-  /**
-   * Set up this source object.
-   */
-  void setup();
 }

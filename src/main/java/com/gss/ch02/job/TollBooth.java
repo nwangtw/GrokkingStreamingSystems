@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Booth extends Operator {
+class TollBooth extends Operator {
   private final Map<String, Integer> countMap = new HashMap<String, Integer>();
 
-  public Booth(String name) {  super(name);  }
+  public TollBooth(String name) {  super(name);  }
 
   @Override
   public void apply(Event vehicleEvent, List<Event> eventCollector) {
