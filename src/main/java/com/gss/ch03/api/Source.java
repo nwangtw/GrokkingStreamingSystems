@@ -35,14 +35,10 @@ public abstract class Source implements ISource, Serializable {
   public int getParallelism() { return parallelism; }
 
   /**
-   * Set up this source object.
-   */
-  public void setup() { }
-
-  /**
    * Accept events from external into the system.
    * The function is abstract and needs to be implemented by users.
+   * @param instance The instance of this source component.
    * @param eventCollector The outgoing event collector
    */
-  public abstract void getEvents(List<Event> eventCollector);
+  public abstract void getEvents(int instance, List<Event> eventCollector);
 }

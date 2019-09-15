@@ -1,7 +1,7 @@
 package com.gss.ch03.engine;
 
 import com.gss.ch03.api.Event;
-import com.gss.ch03.api.GroupingStrategy;
+import com.gss.ch03.api.IGroupingStrategy;
 import com.gss.ch03.api.Operator;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class OperatorInstanceExecutor extends InstanceExecutor {
     }
 
     // Apply operator
-    operator.apply(event, eventCollector);
+    operator.apply(instanceId, event, eventCollector);
 
     // Emit out
     try {
@@ -62,7 +62,7 @@ public class OperatorInstanceExecutor extends InstanceExecutor {
     return true;
   }
 
-  public GroupingStrategy getGroupingStrategy() {
+  public IGroupingStrategy getGroupingStrategy() {
     return operator.getGroupingStrategy();
   }
 }

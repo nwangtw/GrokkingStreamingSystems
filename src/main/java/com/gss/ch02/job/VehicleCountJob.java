@@ -9,7 +9,7 @@ public class VehicleCountJob {
     Job job = new Job("vehicle_count");
 
     Stream bridgeStream = job.addSource(new Bridge("bridge"));
-    bridgeStream.applyOperator(new Booth("booth"));
+    bridgeStream.applyOperator(new TollBooth("booth"));
 
     System.out.println("This is a streaming job that counts vehicles in real time. " +
         "Please enter vehicle types like 'car' and 'truck' and look at the output");

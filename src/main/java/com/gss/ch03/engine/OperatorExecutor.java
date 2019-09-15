@@ -1,7 +1,7 @@
 package com.gss.ch03.engine;
 
 import com.gss.ch03.api.Event;
-import com.gss.ch03.api.GroupingStrategy;
+import com.gss.ch03.api.IGroupingStrategy;
 import com.gss.ch03.api.Operator;
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -32,7 +32,6 @@ public class OperatorExecutor extends ComponentExecutor {
 
     for (int i = 0; i < parallelism; ++i) {
       Operator cloned = SerializationUtils.clone(operator);
-      cloned.setup();
       incomingEventsArray[i] = new ArrayBlockingQueue<Event>(MAX_INCOMNG_QUEUE_SIZE);
       OperatorInstanceExecutor operatorInstanceExecutor =
           new OperatorInstanceExecutor(i, cloned, incomingEventsArray[i], outgoingEvents);
@@ -58,7 +57,7 @@ public class OperatorExecutor extends ComponentExecutor {
     return outgoingEvents;
   }
 
-  public GroupingStrategy getGroupingStrategy() {
+  public IGroupingStrategy getGroupingStrategy() {
     return operator.getGroupingStrategy();
   }
 }

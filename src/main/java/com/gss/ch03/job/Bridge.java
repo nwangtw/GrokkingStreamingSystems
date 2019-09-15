@@ -4,23 +4,27 @@ import com.gss.ch03.api.Event;
 import com.gss.ch03.api.Source;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 class Bridge extends Source {
-  private transient Scanner in;
+  private final String [] vehicles = new String[] {
+      "car", "truck", "van"
+  };
+  static private final Random rand = new Random();
 
   public Bridge(String name, int parallelism) {
     super(name, parallelism);
   }
 
   @Override
-  public void setup() {
-    in = new Scanner(System.in);
-  }
-
-  @Override
-  public void getEvents(List<Event> eventCollector) {
-    String input = in.nextLine();
-    eventCollector.add(new VehicleEvent(input));
+  public void getEvents(int instance, List<Event> eventCollector) {
+    try {
+      Thread.sleep(2000);  // One vehicle every 2 seconds
+    } catch (InterruptedException e) {
+      // Keep working.
+    }
+    String vehicle = vehicles[rand.nextInt(vehicles.length)];
+    eventCollector.add(new VehicleEvent(vehicle));
   }
 }

@@ -1,7 +1,7 @@
 package com.gss.ch03.engine;
 
 import com.gss.ch03.api.Event;
-import com.gss.ch03.api.GroupingStrategy;
+import com.gss.ch03.api.IGroupingStrategy;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class StreamManager {
     try {
       Event event = incoming.getOutgoingQueue().take();
       for (OperatorExecutor outgoing: outgoingList) {
-        GroupingStrategy grouping = outgoing.getGroupingStrategy();
+        IGroupingStrategy grouping = outgoing.getGroupingStrategy();
         int key = grouping.getKey(event);
         outgoing.getIncomingQueueByKey(key).put(event);
       }

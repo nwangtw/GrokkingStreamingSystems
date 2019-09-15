@@ -6,8 +6,4 @@ package com.gss.ch03.api;
  * and emits result to the outgoing stream.
  */
 public interface IOperator extends IComponent {
-  /**
-   * Set up this operator object.
-   */
-  void setup();
 }

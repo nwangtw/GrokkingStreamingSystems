@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class Operator implements IOperator, Serializable {
   private final String name;
   private final int parallelism;
-  private final GroupingStrategy grouping;
+  private final IGroupingStrategy grouping;
   protected final Stream outgoingStream = new Stream();
 
   public Operator(String name, int parallelism) {
@@ -18,7 +18,7 @@ public abstract class Operator implements IOperator, Serializable {
     this.grouping = new ShuffleGrouping();
   }
 
-  public Operator(String name, int parallelism, GroupingStrategy grouping) {
+  public Operator(String name, int parallelism, IGroupingStrategy grouping) {
     this.name = name;
     this.parallelism = parallelism;
     this.grouping = grouping;
@@ -46,20 +46,16 @@ public abstract class Operator implements IOperator, Serializable {
    * Get the grouping key of an event.
    * @return The grouping strategy of this operator
    */
-  public GroupingStrategy getGroupingStrategy() {
+  public IGroupingStrategy getGroupingStrategy() {
     return grouping;
   }
 
   /**
-   * Set up this operator object.
-   */
-  public void setup() { }
-
-  /**
    * Apply logic to the incoming event and generate results.
    * The function is abstract and needs to be implemented by users.
+   * @param instance The instance of this operator component.
    * @param event The incoming event
    * @param eventCollector The outgoing event collector
    */
-  public abstract void apply(Event event, List<Event> eventCollector);
+  public abstract void apply(int instance, Event event, List<Event> eventCollector);
 }
