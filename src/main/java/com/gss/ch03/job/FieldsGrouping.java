@@ -3,8 +3,8 @@ package com.gss.ch03.job;
 import com.gss.ch03.api.Event;
 import com.gss.ch03.api.IGroupingStrategy;
 
-public class VehicleGrouping implements IGroupingStrategy {
-  public VehicleGrouping() { }
+public class FieldsGrouping implements IGroupingStrategy {
+  public FieldsGrouping() { }
 
   /**
    * Get key from an event.

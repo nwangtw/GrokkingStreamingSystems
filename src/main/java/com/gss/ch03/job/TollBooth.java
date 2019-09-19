@@ -21,8 +21,6 @@ class TollBooth extends Operator {
     Integer count = countMap.getOrDefault(vehicle, 0) + 1;
     countMap.put(vehicle, count);
 
-    System.out.println("instance; " + instance +
-                       ", vehicle: " + vehicle +
-                       ", count: " + count);
+    System.out.println(vehicle + " --> toll booth instance: " + instance + ", total count: " + count);
   }
 }
