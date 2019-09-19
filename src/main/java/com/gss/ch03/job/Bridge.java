@@ -25,6 +25,6 @@ class Bridge extends Source {
     }
     String vehicle = vehicles[rand.nextInt(vehicles.length)];
     eventCollector.add(new VehicleEvent(vehicle));
-    System.out.println("bridge instance;     " + instance + ", vehicle: " + vehicle);
+    System.out.println("bridge instance " + instance + " --> " + vehicle);
   }
 }
