@@ -1,7 +1,6 @@
 package com.gss.ch03.api;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * This Operator class is the base class for all user defined operators.
@@ -49,13 +48,4 @@ public abstract class Operator implements IOperator, Serializable {
   public IGroupingStrategy getGroupingStrategy() {
     return grouping;
   }
-
-  /**
-   * Apply logic to the incoming event and generate results.
-   * The function is abstract and needs to be implemented by users.
-   * @param instance The instance of this operator component.
-   * @param event The incoming event
-   * @param eventCollector The outgoing event collector
-   */
-  public abstract void apply(int instance, Event event, List<Event> eventCollector);
 }

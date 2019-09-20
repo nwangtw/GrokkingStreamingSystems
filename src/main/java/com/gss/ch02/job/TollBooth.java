@@ -18,6 +18,13 @@ class TollBooth extends Operator {
     Integer count = countMap.getOrDefault(vehicle, 0) + 1;
     countMap.put(vehicle, count);
 
-    System.out.println("vehicle: " + vehicle + ", count: " + count);
+    System.out.println("toll booth --> ");
+    printCountMap();
+  }
+
+  private void printCountMap() {
+    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+      System.out.println("  " + entry.getKey() + ": " + entry.getValue());
+    }
   }
 }

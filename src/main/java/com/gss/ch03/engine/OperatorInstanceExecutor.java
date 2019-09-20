@@ -48,7 +48,7 @@ public class OperatorInstanceExecutor extends InstanceExecutor {
     }
 
     // Apply operator
-    operator.apply(instanceId, event, eventCollector);
+    operator.apply(event, eventCollector);
 
     // Emit out
     try {

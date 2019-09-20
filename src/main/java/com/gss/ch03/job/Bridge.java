@@ -3,28 +3,54 @@ package com.gss.ch03.job;
 import com.gss.ch03.api.Event;
 import com.gss.ch03.api.Source;
 
+import java.net.*;
+import java.io.*;
 import java.util.List;
-import java.util.Random;
 
 class Bridge extends Source {
-  private final String [] vehicles = new String[] {
-      "car", "truck", "van"
-  };
-  static private final Random rand = new Random();
+  private final int portBase;
+  private int instance = 0;
+  private BufferedReader reader = null;
 
-  public Bridge(String name, int parallelism) {
+  public Bridge(String name, int parallelism, int port) {
     super(name, parallelism);
+
+    this.portBase = port;
   }
 
   @Override
-  public void getEvents(int instance, List<Event> eventCollector) {
+  public void setupInstance(int instance) {
+    instance = instance;
+    reader = setupSocketReader(portBase + instance);
+  }
+
+  @Override
+  public void getEvents(List<Event> eventCollector) {
     try {
-      Thread.sleep(2000);  // One vehicle every 2 seconds
-    } catch (InterruptedException e) {
-      // Keep working.
+      String vehicle = reader.readLine();
+      if (vehicle == null) {
+        // Exit when user closes the server.
+        System.exit(0);
+      }
+      eventCollector.add(new VehicleEvent(vehicle));
+      System.out.println("bridge :: instance " + instance + " --> " + vehicle);
+    } catch (IOException e) {
+      System.out.println("Failed to read input: " + e);
     }
-    String vehicle = vehicles[rand.nextInt(vehicles.length)];
-    eventCollector.add(new VehicleEvent(vehicle));
-    System.out.println("bridge instance " + instance + " --> " + vehicle);
+  }
+
+  private BufferedReader setupSocketReader(int port) {
+    try {
+      Socket socket = new Socket("localhost", port);
+      InputStream input = socket.getInputStream();
+      return new BufferedReader(new InputStreamReader(input));
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+      System.exit(0);
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.exit(0);
+    }
+    return null;
   }
 }

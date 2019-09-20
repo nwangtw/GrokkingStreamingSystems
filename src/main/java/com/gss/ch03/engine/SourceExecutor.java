@@ -26,6 +26,7 @@ public class SourceExecutor  extends ComponentExecutor {
 
     for (int i = 0; i < source.getParallelism(); ++i) {
       Source cloned = SerializationUtils.clone(source);
+      cloned.setupInstance(i);
       instanceExecutors[i] = new SourceInstanceExecutor(i, cloned, outgoingEvents);
     }
   }

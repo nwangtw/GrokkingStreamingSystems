@@ -67,7 +67,7 @@ public class JobRunner {
       List<OperatorExecutor> operatorRunners = traverseComponent(source);
 
       // Start the current component.
-      SourceExecutor runner = setupSourceRunner(source);
+      SourceExecutor runner = setupSourceExecutor(source);
 
       for (OperatorExecutor operatorRunner : operatorRunners) {
         addConnection(runner, operatorRunner);
@@ -89,14 +89,14 @@ public class JobRunner {
     }
   }
 
-  private SourceExecutor setupSourceRunner(Source source) {
+  private SourceExecutor setupSourceExecutor(Source source) {
     SourceExecutor runner = new SourceExecutor(source);
     runnerList.add(runner);
 
     return runner;
   }
 
-  private OperatorExecutor setupOperationRunner(Operator operation) {
+  private OperatorExecutor setupOperationExecutor(Operator operation) {
     OperatorExecutor runner = new OperatorExecutor(operation);
     runnerList.add(runner);
 
@@ -113,7 +113,7 @@ public class JobRunner {
       // Setup runners for the downstrea operators first.
       List<OperatorExecutor> downstreamRunners = traverseComponent(op);
       // Start the current component.
-      OperatorExecutor runner = setupOperationRunner(op);
+      OperatorExecutor runner = setupOperationExecutor(op);
 
       for (OperatorExecutor downstreamRunner : downstreamRunners) {
         addConnection(runner, downstreamRunner);

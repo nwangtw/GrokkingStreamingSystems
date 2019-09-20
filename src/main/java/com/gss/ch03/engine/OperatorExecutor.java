@@ -32,6 +32,7 @@ public class OperatorExecutor extends ComponentExecutor {
 
     for (int i = 0; i < parallelism; ++i) {
       Operator cloned = SerializationUtils.clone(operator);
+      cloned.setupInstance(i);
       incomingEventsArray[i] = new ArrayBlockingQueue<Event>(MAX_INCOMNG_QUEUE_SIZE);
       OperatorInstanceExecutor operatorInstanceExecutor =
           new OperatorInstanceExecutor(i, cloned, incomingEventsArray[i], outgoingEvents);

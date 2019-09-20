@@ -32,7 +32,7 @@ public class SourceInstanceExecutor extends InstanceExecutor {
   protected boolean runOnce() {
     // Generate events
     try {
-      source.getEvents(instanceId, eventCollector);
+      source.getEvents(eventCollector);
     } catch (Exception e) {
       return false;  // exit thread
     }

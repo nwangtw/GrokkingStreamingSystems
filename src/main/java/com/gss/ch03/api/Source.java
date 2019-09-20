@@ -1,7 +1,6 @@
 package com.gss.ch03.api;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * This Source class is the base class for all user defined sources.
@@ -33,12 +32,4 @@ public abstract class Source implements ISource, Serializable {
    * @return The parallelism (number of instances) of this component.
    */
   public int getParallelism() { return parallelism; }
-
-  /**
-   * Accept events from external into the system.
-   * The function is abstract and needs to be implemented by users.
-   * @param instance The instance of this source component.
-   * @param eventCollector The outgoing event collector
-   */
-  public abstract void getEvents(int instance, List<Event> eventCollector);
 }
