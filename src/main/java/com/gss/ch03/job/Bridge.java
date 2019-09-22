@@ -20,7 +20,7 @@ class Bridge extends Source {
 
   @Override
   public void setupInstance(int instance) {
-    instance = instance;
+    this.instance = instance;
     reader = setupSocketReader(portBase + instance);
   }
 
