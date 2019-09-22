@@ -12,7 +12,8 @@ public class VehicleCountJob {
     bridgeStream.applyOperator(new TollBooth("booth"));
 
     System.out.println("This is a streaming job that counts vehicles in real time. " +
-        "Please enter vehicle types like 'car' and 'truck' and look at the output");
+        "Please enter vehicle types like 'car' and 'truck' in the input terminal " +
+        "and look at the output");
     job.run();
   }
 }
