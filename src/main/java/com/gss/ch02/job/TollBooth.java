@@ -3,6 +3,8 @@ package com.gss.ch02.job;
 import com.gss.ch02.api.Event;
 import com.gss.ch02.api.Operator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +25,11 @@ class TollBooth extends Operator {
   }
 
   private void printCountMap() {
-    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-      System.out.println("  " + entry.getKey() + ": " + entry.getValue());
+    List<String> vehicles = new ArrayList<>(countMap.keySet());
+    Collections.sort(vehicles);
+
+    for (String vehicle: vehicles) {
+      System.out.println("  " + vehicle + ": " + countMap.get(vehicle));
     }
   }
 }
