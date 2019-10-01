@@ -14,6 +14,10 @@ class TollBooth extends Operator {
   private Map<String, Integer> countMap = new HashMap<String, Integer>();
   private int instance = 0;
 
+  public TollBooth(String name, int parallelism) {
+    super(name, parallelism);
+  }
+
   public TollBooth(String name, int parallelism, IGroupingStrategy grouping) {
     super(name, parallelism, grouping);
   }
