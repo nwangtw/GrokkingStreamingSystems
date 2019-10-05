@@ -1,9 +1,13 @@
 package com.gss.ch03.api;
 
-import java.util.Random;
-
+/**
+ * With shuffle grouping, the events are routed to downstream
+ * instances relatively evenly. This implementation is round robin
+ * based instead of random number based because it is simpler and
+ * deterministic.
+ */
 public class ShuffleGrouping implements IGroupingStrategy {
-  private final Random rand = new Random();
+  private int count = 0;
 
   public ShuffleGrouping() { }
 
@@ -14,6 +18,12 @@ public class ShuffleGrouping implements IGroupingStrategy {
    */
   @Override
   public int getKey(Event event) {
-    return Math.abs(rand.nextInt());
+    int r = count;
+    if (count < Integer.MAX_VALUE) {
+      count++;
+    } else {
+      count = 0;
+    }
+    return r;
   }
 }
