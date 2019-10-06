@@ -10,7 +10,8 @@ public class ParallelizedVehicleCountJob2 {
     Job job = new Job("parallelized_vehicle_count");
 
     Stream bridgeStream = job.addSource(new Bridge("bridge", 1, 9990));
-    bridgeStream.applyOperator(new TollBooth("booth", 2, new ShuffleGrouping()));
+    // Shuffle grouping is the default grouping strategy.
+    bridgeStream.applyOperator(new TollBooth("booth", 2));
 
     System.out.println("This is a streaming job that counts vehicles from two input streams " +
             "in real time. Please enter vehicle types like 'car' and 'truck' in any of the " +
