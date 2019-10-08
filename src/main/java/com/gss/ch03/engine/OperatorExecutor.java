@@ -49,8 +49,12 @@ public class OperatorExecutor extends ComponentExecutor {
     }
   }
 
-  public BlockingQueue<Event> getIncomingQueueByKey(int key) {
-    return incomingEventsArray[key % parallelism];
+  public int getParallelism() {
+    return parallelism;
+  }
+
+  public BlockingQueue<Event> getIncomingQueue(int instance) {
+    return incomingEventsArray[instance];
   }
 
   @Override

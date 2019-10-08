@@ -32,10 +32,11 @@ public class StreamManager {
   private boolean runOnce() {
     try {
       Event event = incoming.getOutgoingQueue().take();
+      System.out.println("****event");
       for (OperatorExecutor outgoing: outgoingList) {
         IGroupingStrategy grouping = outgoing.getGroupingStrategy();
-        int key = grouping.getKey(event);
-        outgoing.getIncomingQueueByKey(key).put(event);
+        int instance = grouping.getInstance(event, outgoing.getParallelism());
+        outgoing.getIncomingQueue(instance).put(event);
       }
     } catch (InterruptedException e) {
       return false;

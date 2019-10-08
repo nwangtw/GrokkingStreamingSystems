@@ -12,18 +12,20 @@ public class ShuffleGrouping implements IGroupingStrategy {
   public ShuffleGrouping() { }
 
   /**
-   * Get key from an event.
-   * @param event The event object to extract key from.
+   * Get target instance id from an event and component parallelism.
+   * @param event The event object to route to the component.
+   * @param The parallelism of the component.
    * @return The integer key of this event.
    */
   @Override
-  public int getKey(Event event) {
-    int r = count;
-    if (count < Integer.MAX_VALUE) {
+  public int getInstance(Event event, int parallelism) {
+    if (count < parallelism - 1) {
+      int r = count;
       count++;
+      return r;
     } else {
       count = 0;
+      return parallelism - 1;
     }
-    return r;
   }
 }

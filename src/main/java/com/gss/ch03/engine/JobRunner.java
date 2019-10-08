@@ -27,13 +27,13 @@ public class JobRunner {
   }
 
   private final Job job;
-  private final List<ComponentExecutor> runnerList;
+  private final List<ComponentExecutor> executorList;
   private final Map<ComponentExecutor, List<OperatorExecutor>> connectionMap;
   private final List<StreamManager> streamManagerList;
 
   public JobRunner(Job job) {
     this.job = job;
-    this.runnerList = new ArrayList<ComponentExecutor>();
+    this.executorList = new ArrayList<ComponentExecutor>();
     this.connectionMap = new HashMap<ComponentExecutor, List<OperatorExecutor>>();
     this.streamManagerList = new ArrayList<StreamManager>();
   }
@@ -46,8 +46,8 @@ public class JobRunner {
   }
 
   public void start() {
-    // Set up runners for all the components.
-    setupComponentRunners();
+    // Set up executors for all the components.
+    setupComponentExecutors();
 
     // All components are created now. Build the stream managers for the connections to
     // connect the component together.
@@ -56,21 +56,21 @@ public class JobRunner {
     // Start all stream managers first.
     startStreamManagers();
 
-    // Start all component runners.
-    startComponentRunners();
+    // Start all component executors.
+    startComponentExecutors();
   }
 
-  private void setupComponentRunners() {
+  private void setupComponentExecutors() {
     // Start from sources in the job.
     for (Source source: job.getSourceList()) {
       // For each source, traverse the the operations connected to it.
-      List<OperatorExecutor> operatorRunners = traverseComponent(source);
+      List<OperatorExecutor> operatorExecutors = traverseComponent(source);
 
       // Start the current component.
-      SourceExecutor runner = setupSourceExecutor(source);
+      SourceExecutor executor = setupSourceExecutor(source);
 
-      for (OperatorExecutor operatorRunner : operatorRunners) {
-        addConnection(runner, operatorRunner);
+      for (OperatorExecutor operatorExecutor : operatorExecutors) {
+        addConnection(executor, operatorExecutor);
       }
     }
   }
@@ -90,44 +90,44 @@ public class JobRunner {
   }
 
   private SourceExecutor setupSourceExecutor(Source source) {
-    SourceExecutor runner = new SourceExecutor(source);
-    runnerList.add(runner);
+    SourceExecutor executor = new SourceExecutor(source);
+    executorList.add(executor);
 
-    return runner;
+    return executor;
   }
 
   private OperatorExecutor setupOperationExecutor(Operator operation) {
-    OperatorExecutor runner = new OperatorExecutor(operation);
-    runnerList.add(runner);
+    OperatorExecutor executor = new OperatorExecutor(operation);
+    executorList.add(executor);
 
-    return runner;
+    return executor;
   }
 
   private List<OperatorExecutor> traverseComponent(IComponent component) {
     Stream stream = component.getOutgoingStream();
 
     List<Operator> operationList = stream.getOperationList();
-    List<OperatorExecutor> operatorRunners = new ArrayList<OperatorExecutor>();
+    List<OperatorExecutor> operatorExecutors = new ArrayList<OperatorExecutor>();
 
     for (Operator op: operationList) {
-      // Setup runners for the downstrea operators first.
-      List<OperatorExecutor> downstreamRunners = traverseComponent(op);
+      // Setup executors for the downstrea operators first.
+      List<OperatorExecutor> downstreamExecutors = traverseComponent(op);
       // Start the current component.
-      OperatorExecutor runner = setupOperationExecutor(op);
+      OperatorExecutor executor = setupOperationExecutor(op);
 
-      for (OperatorExecutor downstreamRunner : downstreamRunners) {
-        addConnection(runner, downstreamRunner);
+      for (OperatorExecutor downstreamExecutor : downstreamExecutors) {
+        addConnection(executor, downstreamExecutor);
       }
-      operatorRunners.add(runner);
+      operatorExecutors.add(executor);
     }
 
-    return operatorRunners;
+    return operatorExecutors;
   }
 
-  private void startComponentRunners() {
-    Collections.reverse(runnerList);
-    for (ComponentExecutor runner: runnerList) {
-      runner.start();
+  private void startComponentExecutors() {
+    Collections.reverse(executorList);
+    for (ComponentExecutor executor: executorList) {
+      executor.start();
     }
   }
 

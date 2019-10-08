@@ -13,9 +13,9 @@ public class ParallelizedVehicleCountJob2 {
     // Shuffle grouping is the default grouping strategy.
     bridgeStream.applyOperator(new TollBooth("booth", 2));
 
-    System.out.println("This is a streaming job that counts vehicles from two input streams " +
-            "in real time. Please enter vehicle types like 'car' and 'truck' in any of the " +
-            "input terminals and look at the output");
+    System.out.println("This is a streaming job that counts vehicles from the input stream " +
+            "in real time. Please enter vehicle types like 'car' and 'truck' in the " +
+            "input terminal and look at the output");
     job.run();
   }
 }
