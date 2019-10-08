@@ -19,13 +19,10 @@ public class ShuffleGrouping implements IGroupingStrategy {
    */
   @Override
   public int getInstance(Event event, int parallelism) {
-    if (count < parallelism - 1) {
-      int r = count;
-      count++;
-      return r;
-    } else {
+    if (count >= parallelism) {
       count = 0;
-      return parallelism - 1;
     }
+    count++;
+    return count - 1;
   }
 }
