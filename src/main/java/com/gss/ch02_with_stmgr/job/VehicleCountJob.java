@@ -1,8 +1,8 @@
-package com.gss.ch02.job;
+package com.gss.ch02_with_stmgr.job;
 
 import com.gss.ch02.api.Job;
 import com.gss.ch02.api.Stream;
-import com.gss.ch02.engine.JobStarter;
+import com.gss.ch02_with_stmgr.engine.JobStarter;
 
 public class VehicleCountJob {
 
