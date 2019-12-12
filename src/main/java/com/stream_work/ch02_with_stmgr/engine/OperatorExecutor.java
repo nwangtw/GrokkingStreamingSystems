@@ -1,10 +1,9 @@
-package com.gss.ch02.engine;
+package com.gss.ch02_with_stmgr.engine;
 
 import com.gss.ch02.api.Event;
 import com.gss.ch02.api.Operator;
 
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
 
 /**
  * The executor for operator components. When the executor is started,
