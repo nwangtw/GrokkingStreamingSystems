@@ -11,6 +11,8 @@ import com.stream_work.ch03.api.IGroupingStrategy;
 import com.stream_work.ch03.api.Operator;
 
 class TollBooth extends Operator {
+  private static final long serialVersionUID = -7539387750666415254L;
+
   private Map<String, Integer> countMap = new HashMap<String, Integer>();
   private int instance = 0;
 

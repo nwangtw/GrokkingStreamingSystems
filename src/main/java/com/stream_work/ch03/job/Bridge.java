@@ -8,6 +8,8 @@ import com.stream_work.ch03.api.Event;
 import com.stream_work.ch03.api.Source;
 
 class Bridge extends Source {
+  private static final long serialVersionUID = 6816395787990674050L;
+
   private final int portBase;
   private int instance = 0;
   private BufferedReader reader = null;
