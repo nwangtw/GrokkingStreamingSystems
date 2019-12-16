@@ -1,7 +1,5 @@
 package com.stream_work.ch03.engine;
 
-import java.util.concurrent.BlockingQueue;
-
 import com.stream_work.ch03.api.Event;
 import com.stream_work.ch03.api.IGroupingStrategy;
 
@@ -11,8 +9,8 @@ import com.stream_work.ch03.api.IGroupingStrategy;
  */
 public class EventDispatcher extends Process {
   private final OperatorExecutor downstreamExecutor;
-  private BlockingQueue<Event> incomingQueue = null;
-  private BlockingQueue<Event> [] outgoingQueues = null;
+  private EventQueue incomingQueue = null;
+  private EventQueue [] outgoingQueues = null;
 
   public EventDispatcher(OperatorExecutor downstreamExecutor) {
     this.downstreamExecutor = downstreamExecutor;
@@ -32,11 +30,11 @@ public class EventDispatcher extends Process {
     return true;
   }
 
-  public void setIncomingQueue(BlockingQueue<Event> queue) {
+  public void setIncomingQueue(EventQueue queue) {
     incomingQueue = queue;
   }
 
-  public void setOutgoingQueues(BlockingQueue<Event> [] queues) {
+  public void setOutgoingQueues(EventQueue [] queues) {
     outgoingQueues = queues;
   }
 }

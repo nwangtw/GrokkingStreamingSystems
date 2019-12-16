@@ -34,13 +34,13 @@ public abstract class ComponentExecutor {
     return component;
   }
 
-  public void setIncomingQueues(BlockingQueue<Event> [] queues) {
+  public void setIncomingQueues(EventQueue [] queues) {
     for (int i = 0; i < queues.length; ++i) {
       instanceExecutors[i].setIncomingQueue(queues[i]);
     }
   }
 
-  public void setOutgoingQueue(BlockingQueue<Event> queue) {
+  public void setOutgoingQueue(EventQueue queue) {
     for (InstanceExecutor instance: instanceExecutors) {
       instance.setOutgoingQueue(queue);
     }

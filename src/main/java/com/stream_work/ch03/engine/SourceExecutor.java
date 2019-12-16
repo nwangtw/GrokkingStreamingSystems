@@ -1,8 +1,5 @@
 package com.stream_work.ch03.engine;
 
-import java.util.concurrent.BlockingQueue;
-
-import com.stream_work.ch03.api.Event;
 import com.stream_work.ch03.api.Source;
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -31,7 +28,7 @@ public class SourceExecutor  extends ComponentExecutor {
   }
 
   @Override
-  public void setIncomingQueues(BlockingQueue<Event> [] queues) {
+  public void setIncomingQueues(EventQueue [] queues) {
     throw new RuntimeException("No incoming queue is allowed for source executor");
   }
 }

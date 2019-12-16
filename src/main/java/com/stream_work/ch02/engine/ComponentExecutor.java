@@ -13,17 +13,17 @@ public abstract class ComponentExecutor extends Process {
   // This list is used for accepting events from user logic.
   protected final List<Event> eventCollector = new ArrayList<Event>();
   // Data queues for the upstream processes
-  protected BlockingQueue<Event> incomingQueue = null;
+  protected EventQueue incomingQueue = null;
   // Data queue for the downstream processes
-  protected BlockingQueue<Event> outgoingQueue = null;
+  protected EventQueue outgoingQueue = null;
 
   public ComponentExecutor() { }
 
-  public void setIncomingQueue(BlockingQueue<Event> queue) {
+  public void setIncomingQueue(EventQueue queue) {
     incomingQueue = queue;
   }
 
-  public void setOutgoingQueue(BlockingQueue<Event> queue) {
+  public void setOutgoingQueue(EventQueue queue) {
     outgoingQueue = queue;
   }
 }

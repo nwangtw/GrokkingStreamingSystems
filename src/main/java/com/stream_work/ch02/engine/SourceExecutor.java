@@ -1,7 +1,5 @@
 package com.stream_work.ch02.engine;
 
-import java.util.concurrent.BlockingQueue;
-
 import com.stream_work.ch02.api.Event;
 import com.stream_work.ch02.api.Source;
 
@@ -43,7 +41,7 @@ public class SourceExecutor extends ComponentExecutor {
   }
 
   @Override
-  public void setIncomingQueue(BlockingQueue<Event> queue) {
+  public void setIncomingQueue(EventQueue queue) {
     throw new RuntimeException("No incoming queue is allowed for source executor");
   }
 }
