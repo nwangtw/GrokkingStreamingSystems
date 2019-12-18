@@ -1,25 +1,28 @@
-package com.stream_work.ch03.engine;
+package com.stream_work.ch04.engine;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.stream_work.ch03.api.Component;
-import com.stream_work.ch03.api.Job;
-import com.stream_work.ch03.api.Operator;
-import com.stream_work.ch03.api.Source;
-import com.stream_work.ch03.api.Stream;
+import com.stream_work.ch04.api.Component;
+import com.stream_work.ch04.api.Job;
+import com.stream_work.ch04.api.Operator;
+import com.stream_work.ch04.api.Source;
+import com.stream_work.ch04.api.Stream;
 
 public class JobStarter {
   private final static int QUEUE_SIZE = 64;
 
-  // A util data class for connections between components
   class Connection {
     public final ComponentExecutor from;
     public final OperatorExecutor to;
-    public Connection(ComponentExecutor from, OperatorExecutor to) {
+    public final String channel;
+    public Connection(ComponentExecutor from, OperatorExecutor to, String channel) {
       this.from = from;
       this.to = to;
+      this.channel = channel;
     }
   }
 
@@ -30,7 +33,9 @@ public class JobStarter {
   private final List<EventDispatcher> dispatcherList = new ArrayList<EventDispatcher>();
   
   // Connections between component executors
+  //private final Map<ComponentExecutor, List<OperatorExecutor>> connectionMap = new HashMap<ComponentExecutor, List<OperatorExecutor>>();
   private final List<Connection> connectionList = new ArrayList<Connection>();
+  private final Map<OperatorExecutor, EventQueue> operatorQueueMap = new HashMap<OperatorExecutor, EventQueue>();
   
   public JobStarter(Job job) {
     this.job = job;
@@ -64,6 +69,8 @@ public class JobStarter {
    * Set up connections (intermediate queues) between all component executors.
    */
   private void setupConnections() {
+    // All components are created now. Build the stream managers for the connections to
+    // connect the component together.
     for (Connection connection: connectionList) {
       connectExecutors(connection);
     }
@@ -88,35 +95,43 @@ public class JobStarter {
     // Each instance executor of the upstream executor connects to the all the stream managers
     // of the downstream executors first. And each stream manager connects to all the instance
     // executors of the downstream executor.
-    // Note that in this version, there is no shared "from" component and "to" component.
-    // The job looks like a single linked list.
-    EventDispatcher dispatcher = new EventDispatcher(connection.to);
-    dispatcherList.add(dispatcher);
+    connection.from.registerChannel(connection.channel);
+    if (operatorQueueMap.containsKey(connection.to)) {
+      // Existing operator. Connect to upstream only.
+      EventQueue dispatcherQueue = operatorQueueMap.get(connection.to);
+      connection.from.addOutgoingQueue(connection.channel, dispatcherQueue);
+    } else {
+      // New operator. Create a dispatcher and connect to upstream first.
+      EventDispatcher dispatcher = new EventDispatcher(connection.to);
+      EventQueue dispatcherQueue = new EventQueue(QUEUE_SIZE);
+      operatorQueueMap.put(connection.to, dispatcherQueue);
+      dispatcher.setIncomingQueue(dispatcherQueue);
+      connection.from.addOutgoingQueue(connection.channel, dispatcherQueue);
+      
+      // Connect to downstream (to each instance).
+      int parallelism = connection.to.getComponent().getParallelism();
+      EventQueue [] downstream = new EventQueue[parallelism];
+      for (int i = 0; i < parallelism; ++i) {
+        downstream[i] = new EventQueue(QUEUE_SIZE);
+      }
+      connection.to.setIncomingQueues(downstream);
+      dispatcher.setOutgoingQueues(downstream);
 
-    // Connect to upstream.
-    EventQueue upstream = new EventQueue(QUEUE_SIZE);
-    connection.from.setOutgoingQueue(upstream);
-    dispatcher.setIncomingQueue(upstream);
-    
-    // Connect to downstream (to each instance).
-    int parallelism = connection.to.getComponent().getParallelism();
-    EventQueue [] downstream = new EventQueue[parallelism];
-    for (int i = 0; i < parallelism; ++i) {
-      downstream[i] = new EventQueue(QUEUE_SIZE);
+      dispatcherList.add(dispatcher);
     }
-    connection.to.setIncomingQueues(downstream);
-    dispatcher.setOutgoingQueues(downstream);
   }
 
   private void traverseComponent(Component component, ComponentExecutor executor) {
     Stream stream = component.getOutgoingStream();
 
-    for (Operator operator: stream.getOperators()) {
-      OperatorExecutor operatorExecutor = new OperatorExecutor(operator);
-      executorList.add(executor);
-      connectionList.add(new Connection(executor, operatorExecutor));
-      // Setup executors for the downstream operators.
-      traverseComponent(operator, operatorExecutor);
+    for (String channel: stream.getChannels()) {
+      for (Operator operator: stream.getOperators(channel)) {
+        OperatorExecutor operatorExecutor = new OperatorExecutor(operator);
+        executorList.add(operatorExecutor);
+        connectionList.add(new Connection(executor, operatorExecutor, channel));
+        // Setup executors for the downstream operators.
+        traverseComponent(operator, operatorExecutor);
+      }
     }
   }
 }

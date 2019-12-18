@@ -2,9 +2,7 @@ package com.stream_work.ch02.engine;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.stream_work.ch02.api.Component;
 import com.stream_work.ch02.api.Job;
@@ -15,13 +13,23 @@ import com.stream_work.ch02.api.Stream;
 public class JobStarter {
   private final static int QUEUE_SIZE = 64;
 
+  // A util data class for connections between components
+  class Connection {
+    public final ComponentExecutor from;
+    public final OperatorExecutor to;
+    public Connection(ComponentExecutor from, OperatorExecutor to) {
+      this.from = from;
+      this.to = to;
+    }
+  }
+
   // The job to start
   private final Job job;
   // List of executors
   private final List<ComponentExecutor> executorList = new ArrayList<ComponentExecutor>();
   
   // Connections between component executors
-  private final Map<ComponentExecutor, List<OperatorExecutor>> connectionMap = new HashMap<ComponentExecutor, List<OperatorExecutor>>();
+  private final List<Connection> connectionList = new ArrayList<Connection>();
   
   public JobStarter(Job job) {
     this.job = job;
@@ -47,8 +55,7 @@ public class JobStarter {
       SourceExecutor executor = new SourceExecutor(source);
       executorList.add(executor);
       // For each source, traverse the the operations connected to it.
-      List<OperatorExecutor> operatorExecutors = traverseComponent(source);
-      connectionMap.put(executor, operatorExecutors);
+      traverseComponent(source, executor);
     }
   }
 
@@ -56,10 +63,8 @@ public class JobStarter {
    * Set up connections (intermediate queues) between all component executors.
    */
   private void setupConnections() {
-    for (Map.Entry<ComponentExecutor, List<OperatorExecutor>> entry: connectionMap.entrySet()) {
-      for (OperatorExecutor target: entry.getValue()) {
-        connectExecutors(entry.getKey(), target);
-      }
+    for (Connection connection: connectionList) {
+      connectExecutors(connection);
     }
   }
 
@@ -73,27 +78,23 @@ public class JobStarter {
     }
   }
 
-  private void connectExecutors(ComponentExecutor from, OperatorExecutor to) {
+  private void connectExecutors(Connection connection) {
     // It is a newly connected operator executor. Note that in this version, there is no
     // shared "from" component and "to" component. The job looks like a single linked list.
     EventQueue intermediateQueue = new EventQueue(QUEUE_SIZE);
-    from.setOutgoingQueue(intermediateQueue);
-    to.setIncomingQueue(intermediateQueue);
+    connection.from.setOutgoingQueue(intermediateQueue);
+    connection.to.setIncomingQueue(intermediateQueue);
   }
 
-  private List<OperatorExecutor> traverseComponent(Component component) {
+  private void traverseComponent(Component component, ComponentExecutor executor) {
     Stream stream = component.getOutgoingStream();
 
-    List<OperatorExecutor> operatorExecutors = new ArrayList<OperatorExecutor>();
-    for (Operator op: stream.getOperators()) {
-      OperatorExecutor executor = new OperatorExecutor(op);
-      operatorExecutors.add(executor);
+    for (Operator operator: stream.getOperators()) {
+      OperatorExecutor operatorExecutor = new OperatorExecutor(operator);
       executorList.add(executor);
+      connectionList.add(new Connection(executor, operatorExecutor));
       // Setup executors for the downstream operators.
-      List<OperatorExecutor> downstreamExecutors = traverseComponent(op);
-      connectionMap.put(executor, downstreamExecutors);
+      traverseComponent(operator, operatorExecutor);
     }
-
-    return operatorExecutors;
   }
 }
