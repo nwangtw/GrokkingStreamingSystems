@@ -9,7 +9,7 @@ import java.util.Set;
  * Operators with the correct type can be applied to this stream.
  * Example:
  *   Job job = new Job("my_job");
- *   job.addSource(mySource)  // This call returns a Source object.
+ *   job.addSource(mySource)
  *      .applyOperator(myOperator);
  */
 public class Stream {
@@ -34,7 +34,7 @@ public class Stream {
    * Get the collection of operators applied to this stream.
    * @return The collection of operators applied to this stream
    */
-  public Collection<Operator> getOperators() {
+  public Collection<Operator> getAppliedOperators() {
     return operatorSet;
   }
 }

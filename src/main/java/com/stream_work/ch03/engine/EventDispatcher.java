@@ -1,7 +1,7 @@
 package com.stream_work.ch03.engine;
 
 import com.stream_work.ch03.api.Event;
-import com.stream_work.ch03.api.IGroupingStrategy;
+import com.stream_work.ch03.api.GroupingStrategy;
 
 /**
  * EventDispatcher is responsible for transporting events from
@@ -21,7 +21,7 @@ public class EventDispatcher extends Process {
     try {
       Event event = incomingQueue.take();
 
-      IGroupingStrategy grouping = downstreamExecutor.getGroupingStrategy();
+      GroupingStrategy grouping = downstreamExecutor.getGroupingStrategy();
       int instance = grouping.getInstance(event, outgoingQueues.length);
       outgoingQueues[instance].put(event);
     } catch (InterruptedException e) {

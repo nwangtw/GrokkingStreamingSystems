@@ -12,7 +12,7 @@ import java.util.Set;
  * Operators with the correct type can be applied to this stream.
  * Example:
  *   Job job = new Job("my_job");
- *   job.addSource(mySource)  // This call returns a Source object.
+ *   job.addSource(mySource)
  *      .applyOperator(myOperator);
  */
 public class Stream implements Serializable {
@@ -49,6 +49,10 @@ public class Stream implements Serializable {
     return operator.getOutgoingStream();
   }
 
+  public StreamChannel selectChannel(String channel) {
+    return new StreamChannel(this, channel);
+  }
+
   /**
    * Get the channels in the stream. Note that the channel set
    * is collected from the downstream component's applyOperator() calls.
@@ -62,7 +66,7 @@ public class Stream implements Serializable {
    * Get the collection of operators applied to this stream.
    * @return The collection of operators applied to this stream
    */
-  public Collection<Operator> getOperators(String channel) {
+  public Collection<Operator> getAppliedOperators(String channel) {
     return operatorMap.get(channel);
   }
 }

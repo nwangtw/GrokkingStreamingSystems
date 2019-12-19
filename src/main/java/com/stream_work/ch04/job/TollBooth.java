@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.stream_work.ch04.api.Event;
 import com.stream_work.ch04.api.EventCollector;
-import com.stream_work.ch04.api.IGroupingStrategy;
+import com.stream_work.ch04.api.GroupingStrategy;
 import com.stream_work.ch04.api.Operator;
 
 class TollBooth extends Operator {
@@ -21,7 +21,7 @@ class TollBooth extends Operator {
     super(name, parallelism);
   }
 
-  public TollBooth(String name, int parallelism, IGroupingStrategy grouping) {
+  public TollBooth(String name, int parallelism, GroupingStrategy grouping) {
     super(name, parallelism, grouping);
   }
 
@@ -36,16 +36,18 @@ class TollBooth extends Operator {
     Integer count = countMap.getOrDefault(vehicle, 0) + 1;
     countMap.put(vehicle, count);
 
-    System.out.println("toll booth (" + getName() + ") :: instance " + instance + " --> ");
-    printCountMap();
+    String countMap = printCountMap();
+    Logger.log("toll booth (" + getName() + ") :: instance " + instance + " -->\n" + countMap);
   }
 
-  private void printCountMap() {
+  private String printCountMap() {
+    StringBuilder builder = new StringBuilder();
     List<String> vehicles = new ArrayList<>(countMap.keySet());
     Collections.sort(vehicles);
 
     for (String vehicle: vehicles) {
-      System.out.println("  " + vehicle + ": " + countMap.get(vehicle));
+      builder.append("  " + vehicle + ": " + countMap.get(vehicle) +"\n");
     }
+    return builder.toString();
   }
 }

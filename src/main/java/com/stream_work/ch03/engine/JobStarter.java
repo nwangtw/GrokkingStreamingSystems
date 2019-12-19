@@ -111,7 +111,7 @@ public class JobStarter {
   private void traverseComponent(Component component, ComponentExecutor executor) {
     Stream stream = component.getOutgoingStream();
 
-    for (Operator operator: stream.getOperators()) {
+    for (Operator operator: stream.getAppliedOperators()) {
       OperatorExecutor operatorExecutor = new OperatorExecutor(operator);
       executorList.add(executor);
       connectionList.add(new Connection(executor, operatorExecutor));

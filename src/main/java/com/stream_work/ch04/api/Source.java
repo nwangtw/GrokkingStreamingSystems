@@ -1,7 +1,6 @@
 package com.stream_work.ch04.api;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * This Source class is the base class for all user defined sources.

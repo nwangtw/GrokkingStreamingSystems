@@ -1,9 +1,6 @@
 package com.stream_work.ch03.engine;
 
-import java.util.concurrent.BlockingQueue;
-
 import com.stream_work.ch03.api.Component;
-import com.stream_work.ch03.api.Event;
 
 /**
  * The base class for executors of source and operator.

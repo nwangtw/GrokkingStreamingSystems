@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.stream_work.ch03.api.Event;
-import com.stream_work.ch03.api.IGroupingStrategy;
+import com.stream_work.ch03.api.GroupingStrategy;
 import com.stream_work.ch03.api.Operator;
 
 class TollBooth extends Operator {
@@ -20,7 +20,7 @@ class TollBooth extends Operator {
     super(name, parallelism);
   }
 
-  public TollBooth(String name, int parallelism, IGroupingStrategy grouping) {
+  public TollBooth(String name, int parallelism, GroupingStrategy grouping) {
     super(name, parallelism, grouping);
   }
 

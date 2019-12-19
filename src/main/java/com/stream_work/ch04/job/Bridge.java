@@ -2,29 +2,45 @@ package com.stream_work.ch04.job;
 
 import java.net.*;
 import java.io.*;
-import java.util.List;
 
-import com.stream_work.ch04.api.Event;
 import com.stream_work.ch04.api.EventCollector;
 import com.stream_work.ch04.api.Source;
 
 class Bridge extends Source {
   private static final long serialVersionUID = 4914193100808497571L;
 
-  private final int portBase;
   private int instance = 0;
-  private BufferedReader reader = null;
+  private final int portBase;
+  private boolean clone;
 
-  public Bridge(String name, int parallelism, int port) {
+  private Socket socket;
+  private BufferedReader reader;
+
+  /**
+   * Construct a bridge source.
+   * @param name The name of the source.
+   * @param parallelism
+   * @param port The base port. Ports from number to base port + parallelism - 1
+   *     are used by the instances of this component.
+   * @param clone If this flag is true, events will be emitted into a "clone" channel
+   *     in addition to the default channel.
+   */
+  public Bridge(String name, int parallelism, int port, boolean clone) {
     super(name, parallelism);
 
     this.portBase = port;
+    this.clone = clone;
   }
 
+  /**
+   * Initilize an instance. This function is called from engine after the instance
+   * is constructed.
+   * @param intsance The index of the instance.
+   */
   @Override
   public void setupInstance(int instance) {
     this.instance = instance;
-    reader = setupSocketReader(portBase + instance);
+    setupSocketReader(portBase + instance);
   }
 
   @Override
@@ -35,20 +51,28 @@ class Bridge extends Source {
         // Exit when user closes the server.
         System.exit(0);
       }
+      // This source emits events into two channels.
       eventCollector.add("default", new VehicleEvent(vehicle));
-      eventCollector.add("clone", new VehicleEvent(vehicle + " clone"));
+      if (clone) {
+        eventCollector.add("clone", new VehicleEvent(vehicle + " clone"));
+      }
 
-      System.out.println("bridge :: instance " + instance + " --> " + vehicle);
+      Logger.log("\n");  // A empty line before logging new events.
+      Logger.log("bridge (" + getName() + ") :: instance " + instance + " --> " + vehicle + "\n");
     } catch (IOException e) {
-      System.out.println("Failed to read input: " + e);
+      Logger.log("Failed to read input: " + e);
     }
   }
 
-  private BufferedReader setupSocketReader(int port) {
+  /**
+   * Set up a socket based reader object that reads strings from the port.
+   * @param port
+   */
+  private void setupSocketReader(int port) {
     try {
-      Socket socket = new Socket("localhost", port);
+      socket = new Socket("localhost", port);
       InputStream input = socket.getInputStream();
-      return new BufferedReader(new InputStreamReader(input));
+      reader = new BufferedReader(new InputStreamReader(input));
     } catch (UnknownHostException e) {
       e.printStackTrace();
       System.exit(0);
@@ -56,6 +80,5 @@ class Bridge extends Source {
       e.printStackTrace();
       System.exit(0);
     }
-    return null;
   }
 }

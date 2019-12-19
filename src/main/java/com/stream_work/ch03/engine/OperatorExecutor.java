@@ -1,6 +1,6 @@
 package com.stream_work.ch03.engine;
 
-import com.stream_work.ch03.api.IGroupingStrategy;
+import com.stream_work.ch03.api.GroupingStrategy;
 import com.stream_work.ch03.api.Operator;
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -30,7 +30,7 @@ public class OperatorExecutor extends ComponentExecutor {
     }
   }
 
-  public IGroupingStrategy getGroupingStrategy() {
+  public GroupingStrategy getGroupingStrategy() {
     return operator.getGroupingStrategy();
   }
 }

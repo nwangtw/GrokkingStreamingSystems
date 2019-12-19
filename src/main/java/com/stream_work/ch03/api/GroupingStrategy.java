@@ -1,6 +1,6 @@
-package com.stream_work.ch04.api;
+package com.stream_work.ch03.api;
 
-public interface IGroupingStrategy {
+public interface GroupingStrategy {
   /**
    * Get target instance id from an event and component parallelism.
    * Note that in this implementation, only one instance is selected.

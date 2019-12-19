@@ -2,7 +2,6 @@ package com.stream_work.ch02.engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 
 import com.stream_work.ch02.api.Event;
 

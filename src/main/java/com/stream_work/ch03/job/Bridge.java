@@ -10,10 +10,19 @@ import com.stream_work.ch03.api.Source;
 class Bridge extends Source {
   private static final long serialVersionUID = 6816395787990674050L;
 
-  private final int portBase;
   private int instance = 0;
-  private BufferedReader reader = null;
+  private final int portBase;
 
+  private Socket socket;
+  private BufferedReader reader;
+  
+  /**
+   * Construct a bridge source.
+   * @param name The name of the source.
+   * @param parallelism
+   * @param port The base port. Ports from number to base port + parallelism - 1
+   *     are used by the instances of this component.
+   */
   public Bridge(String name, int parallelism, int port) {
     super(name, parallelism);
 
@@ -23,7 +32,8 @@ class Bridge extends Source {
   @Override
   public void setupInstance(int instance) {
     this.instance = instance;
-    reader = setupSocketReader(portBase + instance);
+
+    setupSocketReader(portBase + instance);
   }
 
   @Override
@@ -35,17 +45,23 @@ class Bridge extends Source {
         System.exit(0);
       }
       eventCollector.add(new VehicleEvent(vehicle));
+
+      System.out.println("");  // A empty line before logging new events.
       System.out.println("bridge :: instance " + instance + " --> " + vehicle);
     } catch (IOException e) {
       System.out.println("Failed to read input: " + e);
     }
   }
 
-  private BufferedReader setupSocketReader(int port) {
+  /**
+   * Set up a socket based reader object that reads strings from the port.
+   * @param port
+   */
+  private void setupSocketReader(int port) {
     try {
-      Socket socket = new Socket("localhost", port);
+      socket = new Socket("localhost", port);
       InputStream input = socket.getInputStream();
-      return new BufferedReader(new InputStreamReader(input));
+      reader = new BufferedReader(new InputStreamReader(input));
     } catch (UnknownHostException e) {
       e.printStackTrace();
       System.exit(0);
@@ -53,6 +69,5 @@ class Bridge extends Source {
       e.printStackTrace();
       System.exit(0);
     }
-    return null;
   }
 }

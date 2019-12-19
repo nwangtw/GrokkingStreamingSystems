@@ -125,7 +125,7 @@ public class JobStarter {
     Stream stream = component.getOutgoingStream();
 
     for (String channel: stream.getChannels()) {
-      for (Operator operator: stream.getOperators(channel)) {
+      for (Operator operator: stream.getAppliedOperators(channel)) {
         OperatorExecutor operatorExecutor = new OperatorExecutor(operator);
         executorList.add(operatorExecutor);
         connectionList.add(new Connection(executor, operatorExecutor, channel));

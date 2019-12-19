@@ -3,9 +3,9 @@ package com.stream_work.ch03.api;
 import java.io.Serializable;
 
 import com.stream_work.ch03.api.Event;
-import com.stream_work.ch03.api.IGroupingStrategy;
+import com.stream_work.ch03.api.GroupingStrategy;
 
-public class FieldsGrouping implements IGroupingStrategy, Serializable {
+public class FieldsGrouping implements GroupingStrategy, Serializable {
   private static final long serialVersionUID = -1121182295793347601L;
 
   public FieldsGrouping() {

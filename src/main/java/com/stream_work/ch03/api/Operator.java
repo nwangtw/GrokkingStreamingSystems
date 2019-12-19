@@ -10,14 +10,14 @@ public abstract class Operator extends Component implements Serializable {
   private static final long serialVersionUID = -1972993710318354151L;
 
   // Grouping strategy for the incoming data
-  private final IGroupingStrategy grouping;
+  private final GroupingStrategy grouping;
 
   public Operator(String name, int parallelism) {
     super(name, parallelism);
     this.grouping = new ShuffleGrouping();  // Default
   }
 
-  public Operator(String name, int parallelism, IGroupingStrategy grouping) {
+  public Operator(String name, int parallelism, GroupingStrategy grouping) {
     super(name, parallelism);
     this.grouping = grouping;
   }
@@ -40,7 +40,7 @@ public abstract class Operator extends Component implements Serializable {
    * Get the grouping key of an event.
    * @return The grouping strategy of this operator
    */
-  public IGroupingStrategy getGroupingStrategy() {
+  public GroupingStrategy getGroupingStrategy() {
     return grouping;
   }
 }

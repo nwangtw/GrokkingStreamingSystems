@@ -8,7 +8,7 @@ import java.io.Serializable;
  * based instead of random number based because it is simpler and
  * deterministic.
  */
-public class ShuffleGrouping implements IGroupingStrategy, Serializable {
+public class ShuffleGrouping implements GroupingStrategy, Serializable {
   private static final long serialVersionUID = -499517859522965945L;
 
   private int count = 0;
