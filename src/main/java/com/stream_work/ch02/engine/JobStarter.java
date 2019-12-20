@@ -91,7 +91,7 @@ public class JobStarter {
 
     for (Operator operator: stream.getAppliedOperators()) {
       OperatorExecutor operatorExecutor = new OperatorExecutor(operator);
-      executorList.add(executor);
+      executorList.add(operatorExecutor);
       connectionList.add(new Connection(executor, operatorExecutor));
       // Setup executors for the downstream operators.
       traverseComponent(operator, operatorExecutor);
