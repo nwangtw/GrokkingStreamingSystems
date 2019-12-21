@@ -11,6 +11,7 @@ public class OperatorExecutor extends ComponentExecutor {
   private final Operator operator;
 
   public OperatorExecutor(Operator operator) {
+    super(operator);
     this.operator = operator;
   }
 

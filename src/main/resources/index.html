@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<head>
+  <script src="https://d3js.org/d3.v4.js"></script>
+</head>
+<body>
+  <h1>Job</h1>
+
+  <div id="logical-plan"></div>
+
+  <script>
+    d3.json("/logicalplan.json",
+      function(data) {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+
+        var svg = d3.select("#logical-plan")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .attr("id", "topology");
+
+        svg.append("g")
+          .append("circle")
+          .attr("r", "20px")
+      }
+    )
+  </script>
+</body>

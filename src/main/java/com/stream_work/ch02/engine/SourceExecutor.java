@@ -12,6 +12,7 @@ public class SourceExecutor extends ComponentExecutor {
   private final Source source;
 
   public SourceExecutor(Source source) {
+    super(source);
     this.source = source;
   }
 

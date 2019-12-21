@@ -15,17 +15,6 @@ import com.stream_work.ch04.api.Stream;
 public class JobStarter {
   private final static int QUEUE_SIZE = 64;
 
-  class Connection {
-    public final ComponentExecutor from;
-    public final OperatorExecutor to;
-    public final String channel;
-    public Connection(ComponentExecutor from, OperatorExecutor to, String channel) {
-      this.from = from;
-      this.to = to;
-      this.channel = channel;
-    }
-  }
-
   // The job to start
   private final Job job;
   // List of executors and stream managers

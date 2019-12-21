@@ -13,16 +13,6 @@ import com.stream_work.ch02.api.Stream;
 public class JobStarter {
   private final static int QUEUE_SIZE = 64;
 
-  // A util data class for connections between components
-  class Connection {
-    public final ComponentExecutor from;
-    public final OperatorExecutor to;
-    public Connection(ComponentExecutor from, OperatorExecutor to) {
-      this.from = from;
-      this.to = to;
-    }
-  }
-
   // The job to start
   private final Job job;
   // List of executors
@@ -44,6 +34,9 @@ public class JobStarter {
 
     // Start all the processes.
     startProcesses();
+
+    // Start web server
+    new WebServer(connectionList).start();
   }
 
   /**
