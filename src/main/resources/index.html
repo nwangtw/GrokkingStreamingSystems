@@ -1,28 +1,16 @@
 <!DOCTYPE html>
 <head>
-  <script src="https://d3js.org/d3.v4.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.6.4/dagre-d3.min.js"></script>
+
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-  <h1>Job</h1>
+  <h1><span id="job-name"></span></h1>
 
-  <div id="logical-plan"></div>
+  <div id="plan">
+    <svg><g/></svg>
+  </div>
 
-  <script>
-    d3.json("/logicalplan.json",
-      function(data) {
-        var width = window.innerWidth;
-        var height = window.innerHeight;
-
-        var svg = d3.select("#logical-plan")
-          .append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .attr("id", "topology");
-
-        svg.append("g")
-          .append("circle")
-          .attr("r", "20px")
-      }
-    )
-  </script>
+  <script src="/js/plan.js"></script>
 </body>

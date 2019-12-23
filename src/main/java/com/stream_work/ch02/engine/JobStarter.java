@@ -36,7 +36,7 @@ public class JobStarter {
     startProcesses();
 
     // Start web server
-    new WebServer(connectionList).start();
+    new WebServer(job.getName(), connectionList).start();
   }
 
   /**
