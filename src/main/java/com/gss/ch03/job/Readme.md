@@ -21,10 +21,10 @@ The following will execute a job with 1 source instance and 2 operator instances
 ```bash
 java -cp ./target/miniStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar \
 com.gss.ch03.job.ParallelizedVehicleCountJob2
-```bash
-The following will execute a job with 1 source instance and 2 operator instances.
+```
+The following will execute a job with 2 source instances and 2 operator instance with a fields grouping
 
 ```bash
 java -cp ./target/miniStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar \
 com.gss.ch03.job.ParallelizedVehicleCountJob3
-```bash
+```
