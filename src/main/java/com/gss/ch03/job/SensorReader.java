@@ -33,7 +33,7 @@ class SensorReader extends Source {
         System.exit(0);
       }
       eventCollector.add(new VehicleEvent(vehicle));
-      System.out.println("bridge :: instance " + instance + " --> " + vehicle);
+      System.out.println("SensorReader :: instance " + instance + " --> " + vehicle);
     } catch (IOException e) {
       System.out.println("Failed to read input: " + e);
     }

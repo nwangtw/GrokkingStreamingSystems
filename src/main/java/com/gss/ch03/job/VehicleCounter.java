@@ -33,7 +33,7 @@ class VehicleCounter extends Operator {
     Integer count = countMap.getOrDefault(vehicle, 0) + 1;
     countMap.put(vehicle, count);
 
-    System.out.println("toll booth :: instance " + instance + " --> ");
+    System.out.println("VehicleCounter :: instance " + instance + " --> ");
     printCountMap();
   }
 
