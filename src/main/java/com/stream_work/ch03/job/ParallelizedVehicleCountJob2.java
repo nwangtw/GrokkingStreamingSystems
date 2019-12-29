@@ -1,7 +1,8 @@
-package com.gss.ch03.job;
+package com.stream_work.ch03.job;
 
-import com.gss.ch03.api.Job;
-import com.gss.ch03.api.Stream;
+import com.stream_work.ch03.api.Job;
+import com.stream_work.ch03.api.Stream;
+import com.stream_work.ch03.engine.JobStarter;
 
 public class ParallelizedVehicleCountJob2 {
 
@@ -15,6 +16,7 @@ public class ParallelizedVehicleCountJob2 {
     System.out.println("This is a streaming job that counts vehicles from the input stream " +
             "in real time. Please enter vehicle types like 'car' and 'truck' in the " +
             "input terminal and look at the output");
-    job.run();
+    JobStarter starter = new JobStarter(job);
+    starter.start();
   }
 }

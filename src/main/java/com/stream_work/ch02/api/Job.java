@@ -1,16 +1,20 @@
-package com.gss.ch02.api;
+package com.stream_work.ch02.api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The Job class is used by users to set up their jobs and run.
+ * Example:
+ *   Job job = new Job("my_job");
+ *   job.addSource(mySource)
+ *      .applyOperator(myOperator);
  */
 public class Job {
   private final String name;
-  private final List<Source> sourceList = new ArrayList<Source>();
-  
+  private final Set<Source> sourceSet = new HashSet<Source>();
+
   public Job(String jobName) {
     this.name = jobName;
   }
@@ -22,15 +26,26 @@ public class Job {
    * @return A stream that can be used to connect to other operators
    */
   public Stream addSource(Source source) {
-    sourceList.add(source);
+    if (sourceSet.contains(source)) {
+      throw new RuntimeException("Source " + source.getName() + " is added to job twice");
+    }
+
+    sourceSet.add(source);
     return source.getOutgoingStream();
+  }
+
+  /**
+   * Get the name of this job.
+   */
+  public String getName() {
+    return name;
   }
 
   /**
    * Get the list sources in this job. This function is used by JobRunner to traverse the graph.
    * @return The list of sources in this job
    */
-  public List<Source> getSourceList() {
-    return sourceList;
+  public Collection<Source> getSources() {
+    return sourceSet;
   }
 }

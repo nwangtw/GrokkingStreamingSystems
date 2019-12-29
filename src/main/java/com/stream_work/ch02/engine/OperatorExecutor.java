@@ -1,22 +1,19 @@
-package com.gss.ch02.engine;
+package com.stream_work.ch02.engine;
 
-import com.gss.ch02.api.Event;
-import com.gss.ch02.api.Operator;
-
-import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
+import com.stream_work.ch02.api.Event;
+import com.stream_work.ch02.api.Operator;
 
 /**
- * The executor for operator components. When the executor is started,
- * a new thread is created to call the apply() function of
- * the operator component repeatedly.
+ * The executor for operator components. When the executor is started, a new thread
+ * is created to call the apply() function of the operator component repeatedly.
  */
 public class OperatorExecutor extends ComponentExecutor {
   private final Operator operator;
 
-  private final ArrayList<Event> eventCollector = new ArrayList<Event>();
-
-  public OperatorExecutor(Operator operator) { this.operator = operator; }
+  public OperatorExecutor(Operator operator) {
+    super(operator);
+    this.operator = operator;
+  }
 
   /**
    * Run process once.
@@ -37,7 +34,7 @@ public class OperatorExecutor extends ComponentExecutor {
 
     // Emit out
     try {
-      for (Event output : eventCollector) {
+      for (Event output: eventCollector) {
         outgoingQueue.put(output);
       }
       eventCollector.clear();

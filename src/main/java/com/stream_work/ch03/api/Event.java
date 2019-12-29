@@ -1,4 +1,4 @@
-package com.gss.ch03.api;
+package com.stream_work.ch03.api;
 
 /**
  * This is the base class for all the event classes.

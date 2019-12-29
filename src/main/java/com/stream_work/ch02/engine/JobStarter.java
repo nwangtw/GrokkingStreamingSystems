@@ -1,39 +1,28 @@
-package com.gss.ch02.engine;
-
-import com.gss.ch02.api.Event;
-import com.gss.ch02.api.IComponent;
-import com.gss.ch02.api.Job;
-import com.gss.ch02.api.Operator;
-import com.gss.ch02.api.Source;
-import com.gss.ch02.api.Stream;
+package com.stream_work.ch02.engine;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+
+import com.stream_work.ch02.api.Component;
+import com.stream_work.ch02.api.Job;
+import com.stream_work.ch02.api.Operator;
+import com.stream_work.ch02.api.Source;
+import com.stream_work.ch02.api.Stream;
 
 public class JobStarter {
   private final static int QUEUE_SIZE = 64;
 
   // The job to start
   private final Job job;
-  // List of executors and stream managers
-  private final List<Process> processList = new ArrayList<Process>();
+  // List of executors
+  private final List<ComponentExecutor> executorList = new ArrayList<ComponentExecutor>();
   
-  private final Map<ComponentExecutor, List<OperatorExecutor>> connectionMap = new HashMap<ComponentExecutor, List<OperatorExecutor>>();
+  // Connections between component executors
+  private final List<Connection> connectionList = new ArrayList<Connection>();
   
   public JobStarter(Job job) {
     this.job = job;
-  }
-
-  public void addConnection(ComponentExecutor from, OperatorExecutor to) {
-    if (!connectionMap.containsKey(from)) {
-      connectionMap.put(from, new ArrayList<OperatorExecutor>());
-    }
-    connectionMap.get(from).add(to);
   }
 
   public void start() {
@@ -45,31 +34,30 @@ public class JobStarter {
 
     // Start all the processes.
     startProcesses();
+
+    // Start web server
+    new WebServer(job.getName(), connectionList).start();
   }
 
+  /**
+   * Create all source and operator executors.
+   */
   private void setupComponentExecutors() {
     // Start from sources in the job and traverse components to create executors
-    for (Source source: job.getSourceList()) {
-      // For each source, traverse the the operations connected to it.
-      List<OperatorExecutor> operatorExecutors = traverseComponent(source);
-
-      // Start the current component.
+    for (Source source: job.getSources()) {
       SourceExecutor executor = new SourceExecutor(source);
-      processList.add(executor);
-
-      for (OperatorExecutor operatorExecutor : operatorExecutors) {
-        addConnection(executor, operatorExecutor);
-      }
+      executorList.add(executor);
+      // For each source, traverse the the operations connected to it.
+      traverseComponent(source, executor);
     }
   }
 
+  /**
+   * Set up connections (intermediate queues) between all component executors.
+   */
   private void setupConnections() {
-    // All components are created now. Build the stream managers for the connections to
-    // connect the component together.
-    for (Map.Entry<ComponentExecutor, List<OperatorExecutor>> entry: connectionMap.entrySet()) {
-      for (OperatorExecutor target: entry.getValue()) {
-        connectExecutors(entry.getKey(), target);
-      }
+    for (Connection connection: connectionList) {
+      connectExecutors(connection);
     }
   }
 
@@ -77,39 +65,29 @@ public class JobStarter {
    * Start all the processes for the job.
    */
   private void startProcesses() {
-    Collections.reverse(processList);
-    for (Process process: processList) {
-      process.start();
+    Collections.reverse(executorList);
+    for (ComponentExecutor executor: executorList) {
+      executor.start();
     }
   }
 
-  private void connectExecutors(ComponentExecutor from, OperatorExecutor to) {
+  private void connectExecutors(Connection connection) {
     // It is a newly connected operator executor. Note that in this version, there is no
-    // shared "from" component and "to" component.
-    BlockingQueue<Event> intermediateQueue = new ArrayBlockingQueue<Event>(QUEUE_SIZE);
-    from.setOutgoingQueue(intermediateQueue);
-    to.setIncomingQueue(intermediateQueue);
+    // shared "from" component and "to" component. The job looks like a single linked list.
+    EventQueue intermediateQueue = new EventQueue(QUEUE_SIZE);
+    connection.from.setOutgoingQueue(intermediateQueue);
+    connection.to.setIncomingQueue(intermediateQueue);
   }
 
-  private List<OperatorExecutor> traverseComponent(IComponent component) {
+  private void traverseComponent(Component component, ComponentExecutor executor) {
     Stream stream = component.getOutgoingStream();
 
-    List<Operator> operationList = stream.getOperationList();
-    List<OperatorExecutor> operatorExecutors = new ArrayList<OperatorExecutor>();
-
-    for (Operator op: operationList) {
-      // Setup executors for the downstrea operators first.
-      List<OperatorExecutor> downstreamExecutors = traverseComponent(op);
-      // Start the current component.
-      OperatorExecutor executor = new OperatorExecutor(op);
-      processList.add(executor);
-
-      for (OperatorExecutor downstreamExecutor : downstreamExecutors) {
-        addConnection(executor, downstreamExecutor);
-      }
-      operatorExecutors.add(executor);
+    for (Operator operator: stream.getAppliedOperators()) {
+      OperatorExecutor operatorExecutor = new OperatorExecutor(operator);
+      executorList.add(operatorExecutor);
+      connectionList.add(new Connection(executor, operatorExecutor));
+      // Setup executors for the downstream operators.
+      traverseComponent(operator, operatorExecutor);
     }
-
-    return operatorExecutors;
   }
 }
