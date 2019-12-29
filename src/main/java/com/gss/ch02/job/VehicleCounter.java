@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class TollBooth extends Operator {
+class VehicleCounter extends Operator {
   private final Map<String, Integer> countMap = new HashMap<String, Integer>();
 
-  public TollBooth(String name) {  super(name);  }
+  public VehicleCounter(String name) {  super(name);  }
 
   @Override
   public void apply(Event vehicleEvent, List<Event> eventCollector) {
@@ -20,7 +20,7 @@ class TollBooth extends Operator {
     Integer count = countMap.getOrDefault(vehicle, 0) + 1;
     countMap.put(vehicle, count);
 
-    System.out.println("toll booth --> ");
+    System.out.println("VehicleCounter --> ");
     printCountMap();
   }
 

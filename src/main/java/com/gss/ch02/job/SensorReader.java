@@ -7,10 +7,10 @@ import java.net.*;
 import java.io.*;
 import java.util.List;
 
-class Bridge extends Source {
+class SensorReader extends Source {
   private final BufferedReader reader;
 
-  public Bridge(String name, int port) {
+  public SensorReader(String name, int port) {
     super(name);
 
     reader = setupSocketReader(port);
@@ -25,7 +25,7 @@ class Bridge extends Source {
         System.exit(0);
       }
       eventCollector.add(new VehicleEvent(vehicle));
-      System.out.println("bridge --> " + vehicle);
+      System.out.println("SensorReader --> " + vehicle);
     } catch (IOException e) {
       System.out.println("Failed to read input: " + e);
     }
