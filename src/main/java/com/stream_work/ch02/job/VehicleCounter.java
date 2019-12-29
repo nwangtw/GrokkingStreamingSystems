@@ -1,7 +1,7 @@
-package com.gss.ch02.job;
+package com.stream_work.ch02.job;
 
-import com.gss.ch02.api.Event;
-import com.gss.ch02.api.Operator;
+import com.stream_work.ch02.api.Event;
+import com.stream_work.ch02.api.Operator;
 
 import java.util.ArrayList;
 import java.util.Collections;

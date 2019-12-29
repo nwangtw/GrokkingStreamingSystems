@@ -1,7 +1,7 @@
-package com.gss.ch02.job;
+package com.stream_work.ch02.job;
 
-import com.gss.ch02.api.Event;
-import com.gss.ch02.api.Source;
+import com.stream_work.ch02.api.Event;
+import com.stream_work.ch02.api.Source;
 
 import java.net.*;
 import java.io.*;
@@ -25,6 +25,7 @@ class SensorReader extends Source {
         System.exit(0);
       }
       eventCollector.add(new VehicleEvent(vehicle));
+      System.out.println("");  // An empty line before logging new events
       System.out.println("SensorReader --> " + vehicle);
     } catch (IOException e) {
       System.out.println("Failed to read input: " + e);

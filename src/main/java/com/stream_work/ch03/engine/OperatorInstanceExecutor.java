@@ -1,11 +1,7 @@
-package com.gss.ch03.engine;
+package com.stream_work.ch03.engine;
 
-import com.gss.ch03.api.Event;
-import com.gss.ch03.api.IGroupingStrategy;
-import com.gss.ch03.api.Operator;
-
-import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
+import com.stream_work.ch03.api.Event;
+import com.stream_work.ch03.api.Operator;
 
 /**
  * The executor for operator components. When the executor is started,
@@ -15,23 +11,11 @@ import java.util.concurrent.BlockingQueue;
 public class OperatorInstanceExecutor extends InstanceExecutor {
   private final int instanceId;
   private final Operator operator;
-  private final BlockingQueue<Event> incomingEvents;
-  private final BlockingQueue<Event> outgoingEvents;
 
-  private final ArrayList<Event> eventCollector = new ArrayList<Event>();
-
-  public OperatorInstanceExecutor(int instanceId,
-                                  Operator operator,
-                                  BlockingQueue<Event> incomingEvents,
-                                  BlockingQueue<Event> outgoingEvents) {
+  public OperatorInstanceExecutor(int instanceId, Operator operator) {
     this.instanceId = instanceId;
     this.operator = operator;
-    this.incomingEvents = incomingEvents;
-    this.outgoingEvents = outgoingEvents;
-  }
-
-  public BlockingQueue<Event> getIncomingQueue() {
-    return incomingEvents;
+    operator.setupInstance(instanceId);
   }
 
   /**
@@ -42,7 +26,7 @@ public class OperatorInstanceExecutor extends InstanceExecutor {
     Event event;
     try {
       // Read input
-      event = incomingEvents.take();
+      event = incomingQueue.take();
     } catch (InterruptedException e) {
       return false;
     }
@@ -53,16 +37,12 @@ public class OperatorInstanceExecutor extends InstanceExecutor {
     // Emit out
     try {
       for (Event output : eventCollector) {
-        outgoingEvents.put(output);
+        outgoingQueue.put(output);
       }
       eventCollector.clear();
     } catch (InterruptedException e) {
       return false;  // exit thread
     }
     return true;
-  }
-
-  public IGroupingStrategy getGroupingStrategy() {
-    return operator.getGroupingStrategy();
   }
 }

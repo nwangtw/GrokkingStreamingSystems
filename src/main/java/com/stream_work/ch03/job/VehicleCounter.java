@@ -1,8 +1,8 @@
-package com.gss.ch03.job;
+package com.stream_work.ch03.job;
 
-import com.gss.ch03.api.Event;
-import com.gss.ch03.api.IGroupingStrategy;
-import com.gss.ch03.api.Operator;
+import com.stream_work.ch03.api.Event;
+import com.stream_work.ch03.api.GroupingStrategy;
+import com.stream_work.ch03.api.Operator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 class VehicleCounter extends Operator {
+  private static final long serialVersionUID = 1L;
+
   private Map<String, Integer> countMap = new HashMap<String, Integer>();
   private int instance = 0;
 
@@ -18,7 +20,7 @@ class VehicleCounter extends Operator {
     super(name, parallelism);
   }
 
-  public VehicleCounter(String name, int parallelism, IGroupingStrategy grouping) {
+  public VehicleCounter(String name, int parallelism, GroupingStrategy grouping) {
     super(name, parallelism, grouping);
   }
 

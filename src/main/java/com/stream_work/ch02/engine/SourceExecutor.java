@@ -1,11 +1,7 @@
-package com.gss.ch02.engine;
+package com.stream_work.ch02.engine;
 
-import com.gss.ch02.api.Event;
-import com.gss.ch02.api.Source;
-
-import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import com.stream_work.ch02.api.Event;
+import com.stream_work.ch02.api.Source;
 
 /**
  * The executor for source components. When the executor is started,
@@ -15,22 +11,17 @@ import java.util.concurrent.BlockingQueue;
 public class SourceExecutor extends ComponentExecutor {
   private final Source source;
 
-  private final int MAX_OUTGOING_QUEUE_SIZE = 64;
-  private final BlockingQueue<Event> outgoingEvents =
-      new ArrayBlockingQueue<Event>(MAX_OUTGOING_QUEUE_SIZE);
-  private final ArrayList<Event> eventCollector = new ArrayList<Event>();
-
   public SourceExecutor(Source source) {
+    super(source);
     this.source = source;
   }
-
-  public BlockingQueue<Event> getOutgoingQueue() { return outgoingEvents; }
 
   /**
    * Run process once.
    * @return true if the thread should continue; false if the thread should exist.
    */
-  protected boolean runOnce() {
+  @Override
+  boolean runOnce() {
     // Generate events
     try {
       source.getEvents(eventCollector);
@@ -41,12 +32,17 @@ public class SourceExecutor extends ComponentExecutor {
     // Emit out
     try {
       for (Event event: eventCollector) {
-        getOutgoingQueue().put(event);
+        outgoingQueue.put(event);
       }
       eventCollector.clear();
     } catch (InterruptedException e) {
       return false;  // exit thread
     }
     return true;
+  }
+
+  @Override
+  public void setIncomingQueue(EventQueue queue) {
+    throw new RuntimeException("No incoming queue is allowed for source executor");
   }
 }

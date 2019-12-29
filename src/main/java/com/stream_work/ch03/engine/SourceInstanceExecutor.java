@@ -1,10 +1,7 @@
-package com.gss.ch03.engine;
+package com.stream_work.ch03.engine;
 
-import com.gss.ch03.api.Event;
-import com.gss.ch03.api.Source;
-
-import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
+import com.stream_work.ch03.api.Event;
+import com.stream_work.ch03.api.Source;
 
 /**
  * The executor for source components. When the executor is started,
@@ -14,15 +11,11 @@ import java.util.concurrent.BlockingQueue;
 public class SourceInstanceExecutor extends InstanceExecutor {
   private final int instanceId;
   private final Source source;
-  private final BlockingQueue<Event> outgoingEvents;
-  private final ArrayList<Event> eventCollector = new ArrayList<Event>();
 
-  public SourceInstanceExecutor(int instanceId,
-                                Source source,
-                                BlockingQueue outgoingEvents) {
+  public SourceInstanceExecutor(int instanceId, Source source) {
     this.instanceId = instanceId;
     this.source = source;
-    this.outgoingEvents = outgoingEvents;
+    source.setupInstance(instanceId);
   }
 
   /**
@@ -40,7 +33,7 @@ public class SourceInstanceExecutor extends InstanceExecutor {
     // Emit out
     try {
       for (Event event: eventCollector) {
-        outgoingEvents.put(event);
+        outgoingQueue.put(event);
       }
       eventCollector.clear();
     } catch (InterruptedException e) {

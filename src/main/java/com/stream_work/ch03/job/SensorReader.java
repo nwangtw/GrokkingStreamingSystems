@@ -1,16 +1,20 @@
-package com.gss.ch03.job;
-
-import com.gss.ch03.api.Event;
-import com.gss.ch03.api.Source;
+package com.stream_work.ch03.job;
 
 import java.net.*;
 import java.io.*;
 import java.util.List;
 
+import com.stream_work.ch03.api.Event;
+import com.stream_work.ch03.api.Source;
+
 class SensorReader extends Source {
-  private final int portBase;
+  private static final long serialVersionUID = 7153550920021993542L;
+
   private int instance = 0;
-  private BufferedReader reader = null;
+  private final int portBase;
+
+  private Socket socket;
+  private BufferedReader reader;
 
   public SensorReader(String name, int parallelism, int port) {
     super(name, parallelism);
@@ -21,7 +25,8 @@ class SensorReader extends Source {
   @Override
   public void setupInstance(int instance) {
     this.instance = instance;
-    reader = setupSocketReader(portBase + instance);
+
+    setupSocketReader(portBase + instance);
   }
 
   @Override
@@ -33,17 +38,22 @@ class SensorReader extends Source {
         System.exit(0);
       }
       eventCollector.add(new VehicleEvent(vehicle));
+      System.out.println("");  // An empty line before logging new events
       System.out.println("SensorReader :: instance " + instance + " --> " + vehicle);
     } catch (IOException e) {
       System.out.println("Failed to read input: " + e);
     }
   }
 
-  private BufferedReader setupSocketReader(int port) {
+  /**
+   * Set up a socket based reader object that reads strings from the port.
+   * @param port
+   */
+  private void setupSocketReader(int port) {
     try {
-      Socket socket = new Socket("localhost", port);
+      socket = new Socket("localhost", port);
       InputStream input = socket.getInputStream();
-      return new BufferedReader(new InputStreamReader(input));
+      reader = new BufferedReader(new InputStreamReader(input));
     } catch (UnknownHostException e) {
       e.printStackTrace();
       System.exit(0);
@@ -51,6 +61,5 @@ class SensorReader extends Source {
       e.printStackTrace();
       System.exit(0);
     }
-    return null;
   }
 }

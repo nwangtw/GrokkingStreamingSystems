@@ -1,8 +1,6 @@
-package com.gss.ch03.api;
+package com.stream_work.ch04.api;
 
-import java.io.Serializable;
-
-public interface IGroupingStrategy extends Serializable {
+public interface GroupingStrategy {
   /**
    * Get target instance id from an event and component parallelism.
    * Note that in this implementation, only one instance is selected.

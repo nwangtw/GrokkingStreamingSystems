@@ -1,35 +1,28 @@
-package com.gss.ch03.api;
+package com.stream_work.ch03.api;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * This Source class is the base class for all user defined sources.
  */
-public abstract class Source implements ISource, Serializable {
-  private String name;
-  private int parallelism;
-  protected Stream outgoingStream = new Stream();
+public abstract class Source extends Component implements Serializable {
+  private static final long serialVersionUID = -4760189183877654639L;
 
   public Source(String name, int parallelism) {
-    this.name = name;
-    this.parallelism = parallelism;
+    super(name, parallelism);
   }
 
   /**
-   * Get the outgoing stream of the component.
-   * @return The outgoing stream
+   * Set up instance.
+   * @param instance The instance id (an index starting from 0) of this source instance.
    */
-  public Stream getOutgoingStream() { return outgoingStream; }
+  public abstract void setupInstance(int instance);
 
   /**
-   * Get the name of this component.
-   * @return The name of this component.
+   * Accept events from external into the system.
+   * The function is abstract and needs to be implemented by users.
+   * @param eventCollector The outgoing event collector
    */
-  public String getName() { return name; }
-
-  /**
-   * Get the parallelism (number of instances) of this component.
-   * @return The parallelism (number of instances) of this component.
-   */
-  public int getParallelism() { return parallelism; }
+  public abstract void getEvents(List<Event> eventCollector);
 }

@@ -1,10 +1,15 @@
-package com.gss.ch03.api;
+package com.stream_work.ch03.api;
 
-import com.gss.ch03.api.Event;
-import com.gss.ch03.api.IGroupingStrategy;
+import java.io.Serializable;
 
-public class FieldsGrouping implements IGroupingStrategy {
-  public FieldsGrouping() { }
+import com.stream_work.ch03.api.Event;
+import com.stream_work.ch03.api.GroupingStrategy;
+
+public class FieldsGrouping implements GroupingStrategy, Serializable {
+  private static final long serialVersionUID = -1121182295793347601L;
+
+  public FieldsGrouping() {
+  }
 
   /**
    * Get key from an event. Child class can override this function

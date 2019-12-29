@@ -1,28 +1,36 @@
-package com.gss.ch02.engine;
+package com.stream_work.ch02.engine;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.stream_work.ch02.api.Component;
+import com.stream_work.ch02.api.Event;
 
 /**
- * The executor for source components. When the executor is started,
- * a new thread is created to call the getEvents() function of
- * the source component repeatedly.
+ * The base class for executors of source and operator.
  */
-public abstract class ComponentExecutor implements IComponentExecutor {
-  private final Thread thread;
+public abstract class ComponentExecutor extends Process {
+  private final Component component;
+  // This list is used for accepting events from user logic.
+  protected final List<Event> eventCollector = new ArrayList<Event>();
+  // Data queues for the upstream processes
+  protected EventQueue incomingQueue = null;
+  // Data queue for the downstream processes
+  protected EventQueue outgoingQueue = null;
 
-  public ComponentExecutor() {
-    this.thread = new Thread() {
-      public void run() {
-        while (runOnce());
-      }
-    };
+  public ComponentExecutor(Component component) {
+    this.component = component;
   }
 
-  public void start() {
-    thread.start();
+  public Component getComponent() {
+    return component;
   }
 
-  /**
-   * Run process once.
-   * @return true if the thread should continue; false if the thread should exist.
-   */
-  abstract boolean runOnce();
+  public void setIncomingQueue(EventQueue queue) {
+    incomingQueue = queue;
+  }
+
+  public void setOutgoingQueue(EventQueue queue) {
+    outgoingQueue = queue;
+  }
 }
