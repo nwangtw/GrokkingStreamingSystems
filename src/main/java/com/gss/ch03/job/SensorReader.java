@@ -7,12 +7,12 @@ import java.net.*;
 import java.io.*;
 import java.util.List;
 
-class Bridge extends Source {
+class SensorReader extends Source {
   private final int portBase;
   private int instance = 0;
   private BufferedReader reader = null;
 
-  public Bridge(String name, int parallelism, int port) {
+  public SensorReader(String name, int parallelism, int port) {
     super(name, parallelism);
 
     this.portBase = port;
