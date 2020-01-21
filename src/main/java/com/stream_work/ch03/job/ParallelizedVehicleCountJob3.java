@@ -15,7 +15,7 @@ public class ParallelizedVehicleCountJob3 {
 
     System.out.println("This is a streaming job that counts vehicles from the input stream " +
             "in real time. Please enter vehicle types like 'car' and 'truck' in the " +
-            "input terminal and look at the output");
+            "input terminals and look at the output");
     JobStarter starter = new JobStarter(job);
     starter.start();
   }
