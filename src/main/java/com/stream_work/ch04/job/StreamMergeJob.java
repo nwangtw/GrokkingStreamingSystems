@@ -19,7 +19,8 @@ public class StreamMergeJob {
     //   Operator operator = new TollBooth("booth", 2, new FieldsGrouping());
     //   bridgeStream1.selectChannel("clone").applyOperator(operator);
     //   bridgeStream2.applyOperator(operator);
-    Streams.merge(bridgeStream1, bridgeStream2.selectChannel("clone"))
+
+    Streams.of(bridgeStream1, bridgeStream2.selectChannel("clone"))
            .applyOperator(new TollBooth("booth", 2, new FieldsGrouping()));
 
     Logger.log("This is a streaming job that has one counting operator linked to " +

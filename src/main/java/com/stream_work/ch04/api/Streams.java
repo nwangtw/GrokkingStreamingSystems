@@ -17,7 +17,7 @@ public class Streams {
     this.streams = streams;
   }
 
-  public static Streams merge(Stream ...streams) {
+  public static Streams of(Stream ...streams) {
     ArrayList<Stream> list = new ArrayList<Stream>();
     for (Stream stream: streams) {
         list.add(stream);
