@@ -15,19 +15,18 @@ public class BackpressureJob {
 
     // The operators will receive exactly the same data and run independently to each other.
     Stream averageTicketStream = bridgeStream.applyOperator(new AverageTicketAnalyzer("average ticket analyzer", 1));
-    Stream proximityStream =  bridgeStream.applyOperator(new WindowedProximityAnalyzer("windowed proximity analyzer", 1));
-    Stream transactionCountAnalyzer = bridgeStream.applyOperator(new WindowedTransactionCountAnalyzer("windowed txn count analyzer", 1));
+    Stream proximityStream =  bridgeStream.applyOperator(new WindowedProximityAnalyzer("proximity analyzer", 1));
+    Stream transactionCountAnalyzer = bridgeStream.applyOperator(new WindowedTransactionCountAnalyzer("txn count analyzer", 1));
 
     // This last operator will receive events from all of the previous operators
     DataStoreWriter dataStoreWriter = new DataStoreWriter("data store writer", 1);
-
     averageTicketStream.applyOperator(dataStoreWriter);
     proximityStream.applyOperator(dataStoreWriter);
     transactionCountAnalyzer.applyOperator(dataStoreWriter);
 
     Logger.log("This is a streaming job that has uses fraud detection to help you understand backpressure" +
      "Enter in dollar amounts such as '45', '20.00', or '150.25' to simulate credit card transactions" +
-      "and view the output");
+      "and view the output\n\n");
     JobStarter starter = new JobStarter(job);
     starter.start();
   }

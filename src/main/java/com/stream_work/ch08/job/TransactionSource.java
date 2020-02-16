@@ -51,12 +51,7 @@ class TransactionSource extends Source {
         // Exit when user closes the server.
         System.exit(0);
       }
-      // This source emits events into two channels.
       eventCollector.add("default", new TransactionEvent(amount));
-
-      eventCollector.add("clone0", new TransactionEvent(amount));
-
-      eventCollector.add("clone1", new TransactionEvent(amount));
 
 
       Logger.log("\n");  // A empty line before logging new events.

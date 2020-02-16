@@ -25,6 +25,6 @@ public class AverageTicketAnalyzer extends Operator {
 
   @Override
   public void apply(Event event, EventCollector eventCollector) {
-
+    Logger.log("apply (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
   }
 }

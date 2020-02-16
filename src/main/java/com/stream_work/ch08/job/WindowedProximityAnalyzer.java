@@ -14,7 +14,6 @@ import java.util.Map;
 class WindowedProximityAnalyzer extends Operator {
   private static final long serialVersionUID = 6898974811832135305L;
 
-  private Map<String, Integer> countMap = new HashMap<String, Integer>();
   private int instance = 0;
 
   public WindowedProximityAnalyzer(String name, int parallelism) {
@@ -31,23 +30,13 @@ class WindowedProximityAnalyzer extends Operator {
   }
 
   @Override
-  public void apply(Event transactionEvent, EventCollector eventCollector) {
-    String vehicle = ((TransactionEvent)transactionEvent).getData();
-    Integer count = countMap.getOrDefault(vehicle, 0) + 1;
-    countMap.put(vehicle, count);
+  public void apply(Event event, EventCollector eventCollector) {
+    //String vehicle = ((TransactionEvent)transactionEvent).getData();
+   // Integer count = countMap.getOrDefault(vehicle, 0) + 1;
+    //countMap.put(vehicle, count);
 
-    String countMap = printCountMap();
-    Logger.log("proximity analyzer (" + getName() + ") :: instance " + instance + " -->\n" + countMap);
+    Logger.log("apply (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
   }
 
-  private String printCountMap() {
-    StringBuilder builder = new StringBuilder();
-    List<String> vehicles = new ArrayList<>(countMap.keySet());
-    Collections.sort(vehicles);
 
-    for (String vehicle: vehicles) {
-      builder.append("  " + vehicle + ": " + countMap.get(vehicle) +"\n");
-    }
-    return builder.toString();
-  }
 }
