@@ -4,14 +4,10 @@ import com.stream_work.ch08.api.Event;
 import com.stream_work.ch08.api.EventCollector;
 import com.stream_work.ch08.api.Operator;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AverageTicketAnalyzer extends Operator {
 
   private static final long serialVersionUID = -1946540737692143313L;
 
-  private Map<String, Integer> countMap = new HashMap<String, Integer>();
   private int instance = 0;
 
   public AverageTicketAnalyzer(String name, int parallelism) {
@@ -25,6 +21,7 @@ public class AverageTicketAnalyzer extends Operator {
 
   @Override
   public void apply(Event event, EventCollector eventCollector) {
-    Logger.log("apply (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
+    Logger.log("average ticket analyzer (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
+    eventCollector.add("default", event);
   }
 }

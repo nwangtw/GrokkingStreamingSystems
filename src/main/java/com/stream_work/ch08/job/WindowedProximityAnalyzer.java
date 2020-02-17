@@ -5,12 +5,6 @@ import com.stream_work.ch08.api.EventCollector;
 import com.stream_work.ch08.api.GroupingStrategy;
 import com.stream_work.ch08.api.Operator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 class WindowedProximityAnalyzer extends Operator {
   private static final long serialVersionUID = 6898974811832135305L;
 
@@ -31,11 +25,9 @@ class WindowedProximityAnalyzer extends Operator {
 
   @Override
   public void apply(Event event, EventCollector eventCollector) {
-    //String vehicle = ((TransactionEvent)transactionEvent).getData();
-   // Integer count = countMap.getOrDefault(vehicle, 0) + 1;
-    //countMap.put(vehicle, count);
+    Logger.log("proximity analyzer (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
 
-    Logger.log("apply (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
+    eventCollector.add("default", event);
   }
 
 

@@ -3,11 +3,16 @@ package com.stream_work.ch08.job;
 import com.stream_work.ch08.api.Job;
 import com.stream_work.ch08.api.Stream;
 import com.stream_work.ch08.engine.JobStarter;
+import com.stream_work.ch08.util.CacheManager;
+import com.stream_work.ch08.util.InMemoryCache;
 
 public class BackpressureJob {
 
   public static void main(String[] args) {
     Job job = new Job("credit_card_fraud_job");
+    InMemoryCache inMemoryCache = new InMemoryCache();
+    CacheManager cacheManager = new CacheManager(inMemoryCache);
+
 
     // Create a stream from a source.
     Stream bridgeStream = job.addSource(new TransactionSource("transaction source", 1, 9990));
@@ -16,18 +21,22 @@ public class BackpressureJob {
     // The operators will receive exactly the same data and run independently to each other.
     Stream averageTicketStream = bridgeStream.applyOperator(new AverageTicketAnalyzer("average ticket analyzer", 1));
     Stream proximityStream =  bridgeStream.applyOperator(new WindowedProximityAnalyzer("proximity analyzer", 1));
-    Stream transactionCountAnalyzer = bridgeStream.applyOperator(new WindowedTransactionCountAnalyzer("txn count analyzer", 1));
+//    Stream transactionCountAnalyzer = bridgeStream.applyOperator(new WindowedTransactionCountAnalyzer("txn count analyzer", 1));
 
     // This last operator will receive events from all of the previous operators
-    DataStoreWriter dataStoreWriter = new DataStoreWriter("data store writer", 1);
+    DataStoreWriter dataStoreWriter = new DataStoreWriter("data store writer", 1, cacheManager);
     averageTicketStream.applyOperator(dataStoreWriter);
     proximityStream.applyOperator(dataStoreWriter);
-    transactionCountAnalyzer.applyOperator(dataStoreWriter);
+//    transactionCountAnalyzer.applyOperator(dataStoreWriter);
 
-    Logger.log("This is a streaming job that has uses fraud detection to help you understand backpressure" +
-     "Enter in dollar amounts such as '45', '20.00', or '150.25' to simulate credit card transactions" +
-      "and view the output\n\n");
+    Logger.log("\n\n\n" +
+     "#################################\n" +
+      "This is a streaming job that has uses fraud detection to help you understand backpressure\n" +
+     "Enter in dollar amounts such as '45', '20.00', or '150.25' to simulate credit card " +
+      "transactions and view the output\n" +
+      "#################################\n\n");
     JobStarter starter = new JobStarter(job);
     starter.start();
   }
+
 }
