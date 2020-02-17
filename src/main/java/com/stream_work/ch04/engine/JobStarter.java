@@ -1,16 +1,16 @@
 package com.stream_work.ch04.engine;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.stream_work.ch04.api.Component;
 import com.stream_work.ch04.api.Job;
 import com.stream_work.ch04.api.Operator;
 import com.stream_work.ch04.api.Source;
 import com.stream_work.ch04.api.Stream;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class JobStarter {
   private final static int QUEUE_SIZE = 64;
@@ -20,12 +20,13 @@ public class JobStarter {
   // List of executors and stream managers
   private final List<ComponentExecutor> executorList = new ArrayList<ComponentExecutor>();
   private final List<EventDispatcher> dispatcherList = new ArrayList<EventDispatcher>();
-  
+
   // Connections between component executors
   //private final Map<ComponentExecutor, List<OperatorExecutor>> connectionMap = new HashMap<ComponentExecutor, List<OperatorExecutor>>();
   private final List<Connection> connectionList = new ArrayList<Connection>();
+  private final Map<Operator, OperatorExecutor> operatorMap = new HashMap<Operator, OperatorExecutor>();
   private final Map<OperatorExecutor, EventQueue> operatorQueueMap = new HashMap<OperatorExecutor, EventQueue>();
-  
+
   public JobStarter(Job job) {
     this.job = job;
   }
@@ -99,10 +100,10 @@ public class JobStarter {
       operatorQueueMap.put(connection.to, dispatcherQueue);
       dispatcher.setIncomingQueue(dispatcherQueue);
       connection.from.addOutgoingQueue(connection.channel, dispatcherQueue);
-      
+
       // Connect to downstream (to each instance).
       int parallelism = connection.to.getComponent().getParallelism();
-      EventQueue [] downstream = new EventQueue[parallelism];
+      EventQueue[] downstream = new EventQueue[parallelism];
       for (int i = 0; i < parallelism; ++i) {
         downstream[i] = new EventQueue(QUEUE_SIZE);
       }
@@ -118,11 +119,18 @@ public class JobStarter {
 
     for (String channel: stream.getChannels()) {
       for (Operator operator: stream.getAppliedOperators(channel)) {
-        OperatorExecutor operatorExecutor = new OperatorExecutor(operator);
-        executorList.add(operatorExecutor);
+        OperatorExecutor operatorExecutor;
+        if (!operatorMap.containsKey(operator)) {
+          operatorExecutor = new OperatorExecutor(operator);
+          operatorMap.put(operator, operatorExecutor);
+          executorList.add(operatorExecutor);
+
+          // Setup executors for the downstream operators.
+          traverseComponent(operator, operatorExecutor);
+        } else {
+          operatorExecutor = operatorMap.get(operator);
+        }
         connectionList.add(new Connection(executor, operatorExecutor, channel));
-        // Setup executors for the downstream operators.
-        traverseComponent(operator, operatorExecutor);
       }
     }
   }
