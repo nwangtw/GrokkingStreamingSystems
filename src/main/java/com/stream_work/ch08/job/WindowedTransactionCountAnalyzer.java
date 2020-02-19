@@ -21,6 +21,7 @@ public class WindowedTransactionCountAnalyzer extends Operator {
     @Override
     public void apply(Event event, EventCollector eventCollector) {
         Logger.log("txn count analyzer (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
+        ((TransactionEvent)event).addToFraudScore();
         eventCollector.add("default", event);
     }
 }

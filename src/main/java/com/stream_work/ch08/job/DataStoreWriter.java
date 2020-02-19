@@ -25,10 +25,11 @@ public class DataStoreWriter extends Operator {
     @Override
 
     public void apply(Event event, EventCollector eventCollector) {
+
         TransactionEvent transactionEvent = (TransactionEvent) event.getData();
+        Logger.log(transactionEvent.toString());
         Logger.log("dataStoreWriter (" + getName() + ") :: instance " + instance + " -->\n" + transactionEvent.getTransactionId()+ " -->\n");
-        this.cacheManager.setEvent(event);
-        this.cacheManager.add();
+        this.cacheManager.add(event);
 
     }
 

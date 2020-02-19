@@ -26,6 +26,9 @@ class WindowedProximityAnalyzer extends Operator {
   @Override
   public void apply(Event event, EventCollector eventCollector) {
     Logger.log("proximity analyzer (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
+    Logger.log("fraud score before: " + ((TransactionEvent)event).getFraudScore() + "\n");
+    ((TransactionEvent)event).addToFraudScore();
+    Logger.log("fraud score after: " + ((TransactionEvent)event).getFraudScore()+ "\n");
 
     eventCollector.add("default", event);
   }

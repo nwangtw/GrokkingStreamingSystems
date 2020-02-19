@@ -16,11 +16,10 @@ public class TransactionEvent extends Event {
   private Double longitude;
   private Integer fraudScore = 0;
 
-  TransactionEvent(String amount) {
+  TransactionEvent(String amount, String transactionId) {
     this.amount = Double.valueOf(amount);
     this.merchandiseId = UUID.randomUUID().toString();
-    //this.transactionId = UUID.randomUUID().toString();
-    this.transactionId = "theid";
+    this.transactionId = transactionId;
     this.transactionTime = new Date();
     this.userAccount = MockDataUtils.getUserAccount();
     MockDataUtils.LatLongHolder holder = MockDataUtils.getTransactionLocation();
@@ -30,7 +29,16 @@ public class TransactionEvent extends Event {
   }
 
   public void addToFraudScore() {
-    this.fraudScore = this.fraudScore++;
+    this.fraudScore++;
+  }
+
+  public Integer getFraudScore() {
+    return fraudScore;
+  }
+
+  public void accumulateFraudScore(Integer componentFraudScore) {
+    Logger.log("accumulating " + this.fraudScore + " and " + componentFraudScore + "\n");
+    this.fraudScore += componentFraudScore;
   }
 
   @Override
@@ -66,4 +74,17 @@ public class TransactionEvent extends Event {
     return longitude;
   }
 
+  @Override
+  public String toString() {
+    return "TransactionEvent{" +
+            "merchandiseId='" + merchandiseId + '\'' +
+            ", transactionId='" + transactionId + '\'' +
+            ", amount=" + amount +
+            ", transactionTime=" + transactionTime +
+            ", userAccount='" + userAccount + '\'' +
+            ", latitude=" + latitude +
+            ", longitude=" + longitude +
+            ", fraudScore=" + fraudScore +
+            '}';
+  }
 }

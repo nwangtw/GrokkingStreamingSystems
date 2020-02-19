@@ -24,6 +24,7 @@ public class JobStarter {
   // Connections between component executors
   //private final Map<ComponentExecutor, List<OperatorExecutor>> connectionMap = new HashMap<ComponentExecutor, List<OperatorExecutor>>();
   private final List<Connection> connectionList = new ArrayList<Connection>();
+  private final Map<Operator, OperatorExecutor> operatorMap = new HashMap<Operator, OperatorExecutor>();
   private final Map<OperatorExecutor, EventQueue> operatorQueueMap = new HashMap<OperatorExecutor, EventQueue>();
 
   public JobStarter(Job job) {
@@ -118,11 +119,18 @@ public class JobStarter {
 
     for (String channel: stream.getChannels()) {
       for (Operator operator: stream.getAppliedOperators(channel)) {
-        OperatorExecutor operatorExecutor = new OperatorExecutor(operator);
-        executorList.add(operatorExecutor);
+        OperatorExecutor operatorExecutor;
+        if (!operatorMap.containsKey(operator)) {
+          operatorExecutor = new OperatorExecutor(operator);
+          operatorMap.put(operator, operatorExecutor);
+          executorList.add(operatorExecutor);
+
+          // Setup executors for the downstream operators.
+          traverseComponent(operator, operatorExecutor);
+        } else {
+          operatorExecutor = operatorMap.get(operator);
+        }
         connectionList.add(new Connection(executor, operatorExecutor, channel));
-        // Setup executors for the downstream operators.
-        traverseComponent(operator, operatorExecutor);
       }
     }
   }

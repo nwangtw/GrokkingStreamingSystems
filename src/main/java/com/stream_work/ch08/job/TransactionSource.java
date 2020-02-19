@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.UUID;
 
 class TransactionSource extends Source {
 
@@ -51,7 +52,16 @@ class TransactionSource extends Source {
         // Exit when user closes the server.
         System.exit(0);
       }
-      eventCollector.add("default", new TransactionEvent(amount));
+      String transactionId = UUID.randomUUID().toString();
+
+      eventCollector.add("default", new TransactionEvent(amount, transactionId));
+
+      eventCollector.add("clone0", new TransactionEvent(amount, transactionId));
+
+      eventCollector.add("clone1", new TransactionEvent(amount, transactionId));
+
+
+
 
 
       Logger.log("\n");  // A empty line before logging new events.

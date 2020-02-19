@@ -22,6 +22,7 @@ public class AverageTicketAnalyzer extends Operator {
   @Override
   public void apply(Event event, EventCollector eventCollector) {
     Logger.log("average ticket analyzer (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
+    ((TransactionEvent)event).addToFraudScore();
     eventCollector.add("default", event);
   }
 }
