@@ -23,7 +23,7 @@ public class TransactionAmountAnalyzer extends Operator {
   public void apply(Event event, EventCollector eventCollector) {
     Logger.log("average ticket analyzer (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
     TransactionEvent transactionEvent = (TransactionEvent) event;
-    if (transactionEvent.getAmount() %2 == 0) {
+    if (transactionEvent.getAmount() % 2 == 0) {
       ((TransactionEvent)event).addToFraudScore();
     }
     eventCollector.add("default", event);

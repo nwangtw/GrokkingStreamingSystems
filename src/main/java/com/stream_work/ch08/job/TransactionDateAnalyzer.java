@@ -25,10 +25,8 @@ public class TransactionDateAnalyzer extends Operator {
         Logger.log("txn count analyzer (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
         TransactionEvent transactionEvent = (TransactionEvent) event;
         if (transactionEvent.getTransactionDate().isEqual(LocalDate.now())) {
-            Logger.log("The transation is good!!!!\n");
         } else {
-            // This
-            Logger.log("it's bad!!!\n");
+            // if the transaction date is not equal to this date we assume it's fraudulent
             ((TransactionEvent)event).addToFraudScore();
         }
 

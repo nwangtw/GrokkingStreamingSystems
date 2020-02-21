@@ -9,7 +9,7 @@ import com.stream_work.ch08.util.InMemoryCache;
 public class BackpressureJob {
 
   public static void main(String[] args) {
-    Job job = new Job("credit_card_fraud_job");
+    Job job = new Job("backpressure_job");
     InMemoryCache inMemoryCache = new InMemoryCache();
     CacheManager cacheManager = new CacheManager(inMemoryCache);
 
@@ -29,7 +29,7 @@ public class BackpressureJob {
     proximityStream.applyOperator(dataStoreWriter);
     transactionCountAnalyzer.applyOperator(dataStoreWriter);
 
-    Logger.log("\n\n\n" +
+    Logger.log("\n\n" +
      "#################################\n" +
       "This is a streaming job that has uses fraud detection to help you understand backpressure\n" +
      "Enter in dollar amounts such as '45', '20.00', or '150.25' to simulate credit card " +
