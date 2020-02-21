@@ -1,5 +1,7 @@
 package com.stream_work.ch08.util;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Random;
 
@@ -27,8 +29,21 @@ public class MockDataUtils {
 
     public static LatLongHolder getTransactionLocation() {
         Random random = new Random();
-        Integer index = random.ints(0, LAT_LONG_LIST.size()).limit(1).findFirst().getAsInt();
+        int index = random.ints(0, LAT_LONG_LIST.size()).limit(1).findFirst().getAsInt();
         return LAT_LONG_LIST.get(index);
+    }
+
+    public static LocalDate getTransactionTime() {
+        Random random = new Random();
+        int index = random.ints(0, 3).limit(1).findFirst().getAsInt();
+
+        if (index == 0) {
+            return LocalDate.of( 2019 , Month.MARCH , 11 );
+        } else if (index == 1) {
+            return LocalDate.now();
+        } else {
+            return LocalDate.of( 2018 , Month.JANUARY , 1 );
+        }
     }
 
     public static class LatLongHolder {

@@ -31,6 +31,7 @@ public class DataStoreWriter extends Operator {
         Logger.log("dataStoreWriter (" + getName() + ") :: instance " + instance + " -->\n" + transactionEvent.getTransactionId()+ " -->\n");
         this.cacheManager.add(event);
 
+
     }
 
 

@@ -5,16 +5,16 @@ import com.stream_work.ch08.api.EventCollector;
 import com.stream_work.ch08.api.GroupingStrategy;
 import com.stream_work.ch08.api.Operator;
 
-class WindowedProximityAnalyzer extends Operator {
+class TransactionLocationAnalyzer extends Operator {
   private static final long serialVersionUID = 6898974811832135305L;
 
   private int instance = 0;
 
-  public WindowedProximityAnalyzer(String name, int parallelism) {
+  public TransactionLocationAnalyzer(String name, int parallelism) {
     super(name, parallelism);
   }
 
-  public WindowedProximityAnalyzer(String name, int parallelism, GroupingStrategy grouping) {
+  public TransactionLocationAnalyzer(String name, int parallelism, GroupingStrategy grouping) {
     super(name, parallelism, grouping);
   }
 

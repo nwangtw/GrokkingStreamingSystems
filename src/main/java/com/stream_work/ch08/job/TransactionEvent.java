@@ -3,14 +3,14 @@ package com.stream_work.ch08.job;
 import com.stream_work.ch08.api.Event;
 import com.stream_work.ch08.util.MockDataUtils;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class TransactionEvent extends Event {
   private String merchandiseId;
   private String transactionId;
   private Double amount;
-  private Date transactionTime;
+  private LocalDate transactionDate;
   private String userAccount;
   private Double latitude;
   private Double longitude;
@@ -20,7 +20,7 @@ public class TransactionEvent extends Event {
     this.amount = Double.valueOf(amount);
     this.merchandiseId = UUID.randomUUID().toString();
     this.transactionId = transactionId;
-    this.transactionTime = new Date();
+    this.transactionDate = MockDataUtils.getTransactionTime();
     this.userAccount = MockDataUtils.getUserAccount();
     MockDataUtils.LatLongHolder holder = MockDataUtils.getTransactionLocation();
     this.latitude = holder.getLatitude();
@@ -58,8 +58,8 @@ public class TransactionEvent extends Event {
     return amount;
   }
 
-  public Date getTransactionTime() {
-    return transactionTime;
+  public LocalDate getTransactionDate() {
+    return transactionDate;
   }
 
   public String getUserAccount() {
@@ -80,7 +80,7 @@ public class TransactionEvent extends Event {
             "merchandiseId='" + merchandiseId + '\'' +
             ", transactionId='" + transactionId + '\'' +
             ", amount=" + amount +
-            ", transactionTime=" + transactionTime +
+            ", transactionTime=" + transactionDate +
             ", userAccount='" + userAccount + '\'' +
             ", latitude=" + latitude +
             ", longitude=" + longitude +
