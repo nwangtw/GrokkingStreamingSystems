@@ -19,15 +19,15 @@ public class BackpressureJob {
     // One stream can be applied to more than one operators.
 
     // The operators will receive exactly the same data and run independently to each other.
-    Stream averageTicketStream = bridgeStream.selectChannel("default").applyOperator(new TransactionAmountAnalyzer("average ticket analyzer", 1));
+    Stream transactionAmountStream = bridgeStream.selectChannel("default").applyOperator(new TransactionAmountAnalyzer("average ticket analyzer", 1));
     Stream proximityStream =  bridgeStream.selectChannel("clone0").applyOperator(new TransactionLocationAnalyzer("proximity analyzer", 1));
-    Stream transactionCountAnalyzer = bridgeStream.selectChannel("clone1").applyOperator(new TransactionDateAnalyzer("txn count analyzer", 1));
+    Stream transactionDateAnalyzer = bridgeStream.selectChannel("clone1").applyOperator(new TransactionDateAnalyzer("txn count analyzer", 1));
 
     // This last operator will receive events from all of the previous operators
     DataStoreWriter dataStoreWriter = new DataStoreWriter("data store writer", 1, cacheManager);
-    averageTicketStream.applyOperator(dataStoreWriter);
+    transactionAmountStream.applyOperator(dataStoreWriter);
     proximityStream.applyOperator(dataStoreWriter);
-    transactionCountAnalyzer.applyOperator(dataStoreWriter);
+    transactionDateAnalyzer.applyOperator(dataStoreWriter);
 
     Logger.log("\n\n" +
      "#################################\n" +
