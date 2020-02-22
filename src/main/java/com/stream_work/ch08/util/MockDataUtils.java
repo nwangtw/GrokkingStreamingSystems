@@ -1,5 +1,7 @@
 package com.stream_work.ch08.util;
 
+import com.stream_work.ch08.job.LatLongHolder;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
@@ -22,18 +24,18 @@ public class MockDataUtils {
             new LatLongHolder(45.512794, -122.679565) // Portland, Oregon
     );
 
-    public static String getUserAccount() {
+    public static String getRandomUserAccount() {
         Random random = new Random();
         return ACCOUNTS[random.ints(0, ACCOUNTS.length).limit(1).findFirst().getAsInt()];
     }
 
-    public static LatLongHolder getTransactionLocation() {
+    public static LatLongHolder getRandomLocation() {
         Random random = new Random();
         int index = random.ints(0, LAT_LONG_LIST.size()).limit(1).findFirst().getAsInt();
         return LAT_LONG_LIST.get(index);
     }
 
-    public static LocalDate getTransactionTime() {
+    public static LocalDate getRandomTransactionLocalDate() {
         Random random = new Random();
         int index = random.ints(0, 3).limit(1).findFirst().getAsInt();
 
@@ -43,24 +45,6 @@ public class MockDataUtils {
             return LocalDate.now();
         } else {
             return LocalDate.of( 2018 , Month.JANUARY , 1 );
-        }
-    }
-
-    public static class LatLongHolder {
-        private Double latitude;
-        private Double longitude;
-
-        public LatLongHolder(Double latitude, Double longitude) {
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
-
-        public Double getLatitude() {
-            return latitude;
-        }
-
-        public Double getLongitude() {
-            return longitude;
         }
     }
 }

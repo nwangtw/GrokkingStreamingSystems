@@ -26,9 +26,11 @@ class TransactionLocationAnalyzer extends Operator {
   @Override
   public void apply(Event event, EventCollector eventCollector) {
     Logger.log("proximity analyzer (" + getName() + ") :: instance " + instance + " -->\n" + event.getData() + "\n");
-    Logger.log("fraud score before: " + ((TransactionEvent)event).getFraudScore() + "\n");
-    ((TransactionEvent)event).addToFraudScore();
-    Logger.log("fraud score after: " + ((TransactionEvent)event).getFraudScore()+ "\n");
+    TransactionEvent transactionEvent = (TransactionEvent)event;
+    if (!transactionEvent.getUserLocation().equals(transactionEvent.getTransactionLocation())) {
+      // transaction occurred in a different physical location.  This could be fraudulent
+      transactionEvent.addToFraudScore();
+    }
 
     eventCollector.add("default", event);
   }

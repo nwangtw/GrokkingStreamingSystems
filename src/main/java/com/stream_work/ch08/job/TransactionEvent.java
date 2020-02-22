@@ -12,20 +12,18 @@ public class TransactionEvent extends Event {
   private Double amount;
   private LocalDate transactionDate;
   private String userAccount;
-  private Double latitude;
-  private Double longitude;
   private Integer fraudScore = 0;
+  private LatLongHolder userLocation;
+  private LatLongHolder transactionLocation;
 
   TransactionEvent(String amount, String transactionId) {
     this.amount = Double.valueOf(amount);
     this.merchandiseId = UUID.randomUUID().toString();
     this.transactionId = transactionId;
-    this.transactionDate = MockDataUtils.getTransactionTime();
-    this.userAccount = MockDataUtils.getUserAccount();
-    MockDataUtils.LatLongHolder holder = MockDataUtils.getTransactionLocation();
-    this.latitude = holder.getLatitude();
-    this.longitude = holder.getLongitude();
-
+    this.transactionDate = MockDataUtils.getRandomTransactionLocalDate();
+    this.userAccount = MockDataUtils.getRandomUserAccount();
+    this.userLocation = MockDataUtils.getRandomLocation();
+    this.transactionLocation = MockDataUtils.getRandomLocation();
   }
 
   public void addToFraudScore() {
@@ -66,12 +64,12 @@ public class TransactionEvent extends Event {
     return userAccount;
   }
 
-  public Double getLatitude() {
-    return latitude;
+  public LatLongHolder getUserLocation() {
+    return userLocation;
   }
 
-  public Double getLongitude() {
-    return longitude;
+  public LatLongHolder getTransactionLocation() {
+    return transactionLocation;
   }
 
   @Override
@@ -80,11 +78,11 @@ public class TransactionEvent extends Event {
             "merchandiseId='" + merchandiseId + '\'' +
             ", transactionId='" + transactionId + '\'' +
             ", amount=" + amount +
-            ", transactionTime=" + transactionDate +
+            ", transactionDate=" + transactionDate +
             ", userAccount='" + userAccount + '\'' +
-            ", latitude=" + latitude +
-            ", longitude=" + longitude +
             ", fraudScore=" + fraudScore +
+            ", userLocation=" + userLocation +
+            ", transactionLocation=" + transactionLocation +
             '}';
   }
 }
