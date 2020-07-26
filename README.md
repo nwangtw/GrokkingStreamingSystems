@@ -5,8 +5,7 @@ For a book
 ```
 $ mvn clean package
 ```
-After a successful build of the project you shoudl be able to run all of the examples in the jar from the command line.  
-Follow the instructions for each chapter
+After a successful build of the project you should be able to run all of the examples in the jar from the command line.
 
 ### Run the job in chapter 2
 ```

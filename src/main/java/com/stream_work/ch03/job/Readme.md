@@ -1,5 +1,9 @@
-To execute this job:
+# Build
+```bash
+mvn clean package
+```
 
+# Run
 In terminal 1:
 ```bash
 nc -lk 9990
