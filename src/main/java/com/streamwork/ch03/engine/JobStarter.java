@@ -1,14 +1,14 @@
-package com.stream_work.ch03.engine;
+package com.streamwork.ch03.engine;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.stream_work.ch03.api.Component;
-import com.stream_work.ch03.api.Job;
-import com.stream_work.ch03.api.Operator;
-import com.stream_work.ch03.api.Source;
-import com.stream_work.ch03.api.Stream;
+import com.streamwork.ch03.api.Component;
+import com.streamwork.ch03.api.Job;
+import com.streamwork.ch03.api.Operator;
+import com.streamwork.ch03.api.Source;
+import com.streamwork.ch03.api.Stream;
 
 public class JobStarter {
   private final static int QUEUE_SIZE = 64;
@@ -18,10 +18,10 @@ public class JobStarter {
   // List of executors and stream managers
   private final List<ComponentExecutor> executorList = new ArrayList<ComponentExecutor>();
   private final List<EventDispatcher> dispatcherList = new ArrayList<EventDispatcher>();
-  
+
   // Connections between component executors
   private final List<Connection> connectionList = new ArrayList<Connection>();
-  
+
   public JobStarter(Job job) {
     this.job = job;
   }
@@ -90,7 +90,7 @@ public class JobStarter {
     EventQueue upstream = new EventQueue(QUEUE_SIZE);
     connection.from.setOutgoingQueue(upstream);
     dispatcher.setIncomingQueue(upstream);
-    
+
     // Connect to downstream (to each instance).
     int parallelism = connection.to.getComponent().getParallelism();
     EventQueue [] downstream = new EventQueue[parallelism];

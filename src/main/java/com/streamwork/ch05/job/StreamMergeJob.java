@@ -1,10 +1,10 @@
-package com.stream_work.ch05.job;
+package com.streamwork.ch05.job;
 
-import com.stream_work.ch05.api.FieldsGrouping;
-import com.stream_work.ch05.api.Job;
-import com.stream_work.ch05.api.Stream;
-import com.stream_work.ch05.api.Streams;
-import com.stream_work.ch05.engine.JobStarter;
+import com.streamwork.ch05.api.FieldsGrouping;
+import com.streamwork.ch05.api.Job;
+import com.streamwork.ch05.api.Stream;
+import com.streamwork.ch05.api.Streams;
+import com.streamwork.ch05.engine.JobStarter;
 
 public class StreamMergeJob {
 

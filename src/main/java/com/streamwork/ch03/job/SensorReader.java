@@ -1,11 +1,11 @@
-package com.stream_work.ch03.job;
+package com.streamwork.ch03.job;
 
 import java.net.*;
 import java.io.*;
 import java.util.List;
 
-import com.stream_work.ch03.api.Event;
-import com.stream_work.ch03.api.Source;
+import com.streamwork.ch03.api.Event;
+import com.streamwork.ch03.api.Source;
 
 class SensorReader extends Source {
   private static final long serialVersionUID = 7153550920021993542L;

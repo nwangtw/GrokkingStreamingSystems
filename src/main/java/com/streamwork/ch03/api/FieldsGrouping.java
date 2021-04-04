@@ -1,9 +1,9 @@
-package com.stream_work.ch03.api;
+package com.streamwork.ch03.api;
 
 import java.io.Serializable;
 
-import com.stream_work.ch03.api.Event;
-import com.stream_work.ch03.api.GroupingStrategy;
+import com.streamwork.ch03.api.Event;
+import com.streamwork.ch03.api.GroupingStrategy;
 
 public class FieldsGrouping implements GroupingStrategy, Serializable {
   private static final long serialVersionUID = -1121182295793347601L;

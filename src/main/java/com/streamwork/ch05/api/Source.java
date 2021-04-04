@@ -1,4 +1,4 @@
-package com.stream_work.ch05.api;
+package com.streamwork.ch05.api;
 
 /**
  * This Source class is the base class for all user defined sources.

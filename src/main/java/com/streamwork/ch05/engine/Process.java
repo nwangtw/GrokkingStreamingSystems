@@ -1,4 +1,4 @@
-package com.stream_work.ch05.engine;
+package com.streamwork.ch05.engine;
 
 /**
  * This is the base class of all processes, including executors and stream managers.

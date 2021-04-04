@@ -1,4 +1,4 @@
-package com.stream_work.ch02.engine;
+package com.streamwork.ch02.engine;
 
 import io.javalin.http.Context;
 

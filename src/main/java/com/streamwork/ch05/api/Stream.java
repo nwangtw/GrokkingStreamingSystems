@@ -1,4 +1,4 @@
-package com.stream_work.ch05.api;
+package com.streamwork.ch05.api;
 
 import java.io.Serializable;
 import java.util.Collection;

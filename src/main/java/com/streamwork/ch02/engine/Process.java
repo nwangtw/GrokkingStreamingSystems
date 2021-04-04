@@ -1,4 +1,4 @@
-package com.stream_work.ch02.engine;
+package com.streamwork.ch02.engine;
 
 /**
  * This is the base class of all processes (executors). When a process is started,

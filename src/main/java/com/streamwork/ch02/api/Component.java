@@ -1,4 +1,4 @@
-package com.stream_work.ch02.api;
+package com.streamwork.ch02.api;
 
 /**
  * The base class for all components, including Source and Operator.

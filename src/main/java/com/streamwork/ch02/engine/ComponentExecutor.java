@@ -1,10 +1,10 @@
-package com.stream_work.ch02.engine;
+package com.streamwork.ch02.engine;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.stream_work.ch02.api.Component;
-import com.stream_work.ch02.api.Event;
+import com.streamwork.ch02.api.Component;
+import com.streamwork.ch02.api.Event;
 
 /**
  * The base class for executors of source and operator.

@@ -1,10 +1,10 @@
-package com.stream_work.ch04.job;
+package com.streamwork.ch04.job;
 
 import java.net.*;
 import java.io.*;
 
-import com.stream_work.ch04.api.EventCollector;
-import com.stream_work.ch04.api.Source;
+import com.streamwork.ch04.api.EventCollector;
+import com.streamwork.ch04.api.Source;
 
 class Bridge extends Source {
   private static final long serialVersionUID = 4914193100808497571L;

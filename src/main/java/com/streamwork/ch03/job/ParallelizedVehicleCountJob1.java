@@ -1,8 +1,8 @@
-package com.stream_work.ch03.job;
+package com.streamwork.ch03.job;
 
-import com.stream_work.ch03.api.Job;
-import com.stream_work.ch03.api.Stream;
-import com.stream_work.ch03.engine.JobStarter;
+import com.streamwork.ch03.api.Job;
+import com.streamwork.ch03.api.Stream;
+import com.streamwork.ch03.engine.JobStarter;
 
 public class ParallelizedVehicleCountJob1 {
 

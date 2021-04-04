@@ -1,8 +1,8 @@
-package com.stream_work.ch03.job;
+package com.streamwork.ch03.job;
 
-import com.stream_work.ch03.api.Event;
-import com.stream_work.ch03.api.GroupingStrategy;
-import com.stream_work.ch03.api.Operator;
+import com.streamwork.ch03.api.Event;
+import com.streamwork.ch03.api.GroupingStrategy;
+import com.streamwork.ch03.api.Operator;
 
 import java.util.ArrayList;
 import java.util.Collections;

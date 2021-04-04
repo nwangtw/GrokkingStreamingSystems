@@ -1,7 +1,7 @@
-package com.stream_work.ch03.engine;
+package com.streamwork.ch03.engine;
 
-import com.stream_work.ch03.api.GroupingStrategy;
-import com.stream_work.ch03.api.Operator;
+import com.streamwork.ch03.api.GroupingStrategy;
+import com.streamwork.ch03.api.Operator;
 import org.apache.commons.lang3.SerializationUtils;
 
 /**

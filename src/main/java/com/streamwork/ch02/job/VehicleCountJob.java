@@ -1,8 +1,8 @@
-package com.stream_work.ch02.job;
+package com.streamwork.ch02.job;
 
-import com.stream_work.ch02.api.Job;
-import com.stream_work.ch02.api.Stream;
-import com.stream_work.ch02.engine.JobStarter;
+import com.streamwork.ch02.api.Job;
+import com.streamwork.ch02.api.Stream;
+import com.streamwork.ch02.engine.JobStarter;
 
 public class VehicleCountJob {
 

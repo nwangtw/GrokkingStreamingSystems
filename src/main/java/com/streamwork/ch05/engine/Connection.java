@@ -1,4 +1,4 @@
-package com.stream_work.ch05.engine;
+package com.streamwork.ch05.engine;
 
 /**
  * A util data class for connections between components.

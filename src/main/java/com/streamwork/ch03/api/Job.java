@@ -1,4 +1,4 @@
-package com.stream_work.ch03.api;
+package com.streamwork.ch03.api;
 
 import java.util.Collection;
 import java.util.HashSet;

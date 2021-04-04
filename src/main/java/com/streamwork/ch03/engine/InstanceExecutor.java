@@ -1,9 +1,9 @@
-package com.stream_work.ch03.engine;
+package com.streamwork.ch03.engine;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.stream_work.ch03.api.Event;
+import com.streamwork.ch03.api.Event;
 
 /**
  * The executor for source components. When the executor is started,

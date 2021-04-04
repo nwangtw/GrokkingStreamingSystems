@@ -1,4 +1,4 @@
-package com.stream_work.ch04.api;
+package com.streamwork.ch04.api;
 
 public interface GroupingStrategy {
   /**

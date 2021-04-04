@@ -1,8 +1,8 @@
-package com.stream_work.ch05.engine;
+package com.streamwork.ch05.engine;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-import com.stream_work.ch05.api.Event;
+import com.streamwork.ch05.api.Event;
 
 /**
  * This is the class for intemediate event queues between processes.

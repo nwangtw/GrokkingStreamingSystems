@@ -1,4 +1,4 @@
-package com.stream_work.ch04.api;
+package com.streamwork.ch04.api;
 
 /**
  * This is the base class for all the event classes.

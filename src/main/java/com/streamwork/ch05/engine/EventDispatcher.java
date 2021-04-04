@@ -1,7 +1,7 @@
-package com.stream_work.ch05.engine;
+package com.streamwork.ch05.engine;
 
-import com.stream_work.ch05.api.Event;
-import com.stream_work.ch05.api.GroupingStrategy;
+import com.streamwork.ch05.api.Event;
+import com.streamwork.ch05.api.GroupingStrategy;
 
 /**
  * EventDispatcher is responsible for transporting events from

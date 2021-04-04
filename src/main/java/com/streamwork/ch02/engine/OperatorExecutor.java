@@ -1,7 +1,7 @@
-package com.stream_work.ch02.engine;
+package com.streamwork.ch02.engine;
 
-import com.stream_work.ch02.api.Event;
-import com.stream_work.ch02.api.Operator;
+import com.streamwork.ch02.api.Event;
+import com.streamwork.ch02.api.Operator;
 
 /**
  * The executor for operator components. When the executor is started, a new thread

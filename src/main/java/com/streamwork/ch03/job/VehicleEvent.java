@@ -1,6 +1,6 @@
-package com.stream_work.ch03.job;
+package com.streamwork.ch03.job;
 
-import com.stream_work.ch03.api.Event;
+import com.streamwork.ch03.api.Event;
 
 public class VehicleEvent extends Event {
   private final String type;

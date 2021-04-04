@@ -1,11 +1,11 @@
-package com.stream_work.ch05.engine;
+package com.streamwork.ch05.engine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.stream_work.ch05.api.EventCollector;
+import com.streamwork.ch05.api.EventCollector;
 
 /**
  * The executor for source components. When the executor is started,

@@ -1,14 +1,14 @@
-package com.stream_work.ch02.engine;
+package com.streamwork.ch02.engine;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.stream_work.ch02.api.Component;
-import com.stream_work.ch02.api.Job;
-import com.stream_work.ch02.api.Operator;
-import com.stream_work.ch02.api.Source;
-import com.stream_work.ch02.api.Stream;
+import com.streamwork.ch02.api.Component;
+import com.streamwork.ch02.api.Job;
+import com.streamwork.ch02.api.Operator;
+import com.streamwork.ch02.api.Source;
+import com.streamwork.ch02.api.Stream;
 
 public class JobStarter {
   private final static int QUEUE_SIZE = 64;
@@ -17,10 +17,10 @@ public class JobStarter {
   private final Job job;
   // List of executors
   private final List<ComponentExecutor> executorList = new ArrayList<ComponentExecutor>();
-  
+
   // Connections between component executors
   private final List<Connection> connectionList = new ArrayList<Connection>();
-  
+
   public JobStarter(Job job) {
     this.job = job;
   }

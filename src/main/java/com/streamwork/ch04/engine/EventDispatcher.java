@@ -1,7 +1,7 @@
-package com.stream_work.ch04.engine;
+package com.streamwork.ch04.engine;
 
-import com.stream_work.ch04.api.Event;
-import com.stream_work.ch04.api.GroupingStrategy;
+import com.streamwork.ch04.api.Event;
+import com.streamwork.ch04.api.GroupingStrategy;
 
 /**
  * EventDispatcher is responsible for transporting events from

@@ -1,10 +1,10 @@
-package com.stream_work.ch04.engine;
+package com.streamwork.ch04.engine;
 
-import com.stream_work.ch04.api.Component;
-import com.stream_work.ch04.api.Job;
-import com.stream_work.ch04.api.Operator;
-import com.stream_work.ch04.api.Source;
-import com.stream_work.ch04.api.Stream;
+import com.streamwork.ch04.api.Component;
+import com.streamwork.ch04.api.Job;
+import com.streamwork.ch04.api.Operator;
+import com.streamwork.ch04.api.Source;
+import com.streamwork.ch04.api.Stream;
 
 import java.util.ArrayList;
 import java.util.Collections;

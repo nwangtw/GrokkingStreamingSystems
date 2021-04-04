@@ -1,4 +1,4 @@
-package com.stream_work.ch05.job;
+package com.streamwork.ch05.job;
 
 class Logger {
     public static synchronized void log(String message) {

@@ -1,9 +1,9 @@
-package com.stream_work.ch04.job;
+package com.streamwork.ch04.job;
 
-import com.stream_work.ch04.api.FieldsGrouping;
-import com.stream_work.ch04.api.Job;
-import com.stream_work.ch04.api.Stream;
-import com.stream_work.ch04.engine.JobStarter;
+import com.streamwork.ch04.api.FieldsGrouping;
+import com.streamwork.ch04.api.Job;
+import com.streamwork.ch04.api.Stream;
+import com.streamwork.ch04.engine.JobStarter;
 
 public class StreamForkJob {
 

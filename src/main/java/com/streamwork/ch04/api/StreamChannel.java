@@ -1,4 +1,4 @@
-package com.stream_work.ch04.api;
+package com.streamwork.ch04.api;
 
 /**
  * The Stream class represents a data stream coming out of a component.

@@ -1,4 +1,4 @@
-package com.stream_work.ch05.job;
+package com.streamwork.ch05.job;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.stream_work.ch05.api.Event;
-import com.stream_work.ch05.api.EventCollector;
-import com.stream_work.ch05.api.GroupingStrategy;
-import com.stream_work.ch05.api.Operator;
+import com.streamwork.ch05.api.Event;
+import com.streamwork.ch05.api.EventCollector;
+import com.streamwork.ch05.api.GroupingStrategy;
+import com.streamwork.ch05.api.Operator;
 
 class TollBooth extends Operator {
   private static final long serialVersionUID = 6898974811832135305L;

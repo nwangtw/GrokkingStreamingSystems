@@ -1,6 +1,6 @@
-package com.stream_work.ch05.engine;
+package com.streamwork.ch05.engine;
 
-import com.stream_work.ch05.api.Source;
+import com.streamwork.ch05.api.Source;
 import org.apache.commons.lang3.SerializationUtils;
 
 /**

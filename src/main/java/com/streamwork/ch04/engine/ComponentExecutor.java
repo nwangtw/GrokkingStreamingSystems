@@ -1,6 +1,6 @@
-package com.stream_work.ch04.engine;
+package com.streamwork.ch04.engine;
 
-import com.stream_work.ch04.api.Component;
+import com.streamwork.ch04.api.Component;
 
 /**
  * The base class for executors of source and operator.
