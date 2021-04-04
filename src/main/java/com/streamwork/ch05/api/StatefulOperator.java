@@ -1,22 +1,17 @@
 package com.streamwork.ch05.api;
 
 /**
- * This Operator class is the base class for all user defined operators.
+ * This Operator class is the base class for all user defined stateful operators.
  */
-public abstract class StatefulOperator extends Component {
+public abstract class StatefulOperator extends Operator {
   private static final long serialVersionUID = -1339819357989957259L;
-
-    // Grouping strategy for the incoming data
-  private final GroupingStrategy grouping;
 
   public StatefulOperator(String name, int parallelism) {
     super(name, parallelism);
-    this.grouping = new ShuffleGrouping();  // Default
   }
 
   public StatefulOperator(String name, int parallelism, GroupingStrategy grouping) {
-    super(name, parallelism);
-    this.grouping = grouping;
+    super(name, parallelism, grouping);
   }
 
   /**
@@ -27,12 +22,11 @@ public abstract class StatefulOperator extends Component {
   public abstract void setupInstance(int instance, State state);
 
   /**
-   * Apply logic to the incoming event and generate results.
-   * The function is abstract and needs to be implemented by users.
-   * @param event The incoming event
-   * @param eventCollector The outgoing event collector
+   * The original instance setup function shouldn't be used any more.
    */
-  public abstract void apply(Event event, EventCollector eventCollector);
+  public final void setupInstance(int instance) {
+    throw new RuntimeException("Stateful component should be set up with a state object");
+  }
 
   /**
    * Get the current state of the component. The state object can be used later
@@ -40,12 +34,4 @@ public abstract class StatefulOperator extends Component {
    * @return the current state of the component.
    */
   public abstract State getState();
-
-  /**
-   * Get the grouping key of an event.
-   * @return The grouping strategy of this operator
-   */
-  public GroupingStrategy getGroupingStrategy() {
-    return grouping;
-  }
 }

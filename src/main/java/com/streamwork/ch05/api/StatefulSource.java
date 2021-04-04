@@ -1,9 +1,9 @@
 package com.streamwork.ch05.api;
 
 /**
- * This Source class is the base class for all user defined sources.
+ * This Source class is the base class for all user defined stateful sources.
  */
-public abstract class StatefulSource extends Component {
+public abstract class StatefulSource extends Source {
   private static final long serialVersionUID = -1605403601010395103L;
 
   public StatefulSource(String name, int parallelism) {
@@ -18,11 +18,11 @@ public abstract class StatefulSource extends Component {
   public abstract void setupInstance(int instance, State state);
 
   /**
-   * Accept events from external into the system.
-   * The function is abstract and needs to be implemented by users.
-   * @param eventCollector The outgoing event collector
+   * The original instance setup function shouldn't be used any more.
    */
-  public abstract void getEvents(EventCollector eventCollector);
+  public final void setupInstance(int instance) {
+    throw new RuntimeException("Stateful component should be set up with a state object");
+  }
 
   /**
    * Get the current state of the component. The state object can be used later

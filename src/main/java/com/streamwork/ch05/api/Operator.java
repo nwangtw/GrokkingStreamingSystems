@@ -10,8 +10,7 @@ public abstract class Operator extends Component {
   private final GroupingStrategy grouping;
 
   public Operator(String name, int parallelism) {
-    super(name, parallelism);
-    this.grouping = new ShuffleGrouping();  // Default
+    this(name, parallelism, new ShuffleGrouping());
   }
 
   public Operator(String name, int parallelism, GroupingStrategy grouping) {
