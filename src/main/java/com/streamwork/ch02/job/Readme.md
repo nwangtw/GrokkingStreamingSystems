@@ -10,5 +10,5 @@ nc -lk 9990
 ```
 In terminal 2:
 ```bash
-java -cp target/miniStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar com.streamwork.ch02.job.VehicleCountJob
+java -cp target/gss.jar com.streamwork.ch02.job.VehicleCountJob
 ```
