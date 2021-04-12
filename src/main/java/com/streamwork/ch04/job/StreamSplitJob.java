@@ -1,7 +1,5 @@
 package com.streamwork.ch04.job;
 
-import com.streamwork.ch04.api.Event;
-import com.streamwork.ch04.api.FieldsGrouping;
 import com.streamwork.ch04.api.Job;
 import com.streamwork.ch04.api.Stream;
 import com.streamwork.ch04.engine.JobStarter;

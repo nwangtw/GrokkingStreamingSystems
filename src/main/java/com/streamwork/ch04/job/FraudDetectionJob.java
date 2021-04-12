@@ -1,7 +1,5 @@
 package com.streamwork.ch04.job;
 
-import com.streamwork.ch04.api.Event;
-import com.streamwork.ch04.api.FieldsGrouping;
 import com.streamwork.ch04.api.Job;
 import com.streamwork.ch04.api.Stream;
 import com.streamwork.ch04.api.Streams;
@@ -24,8 +22,9 @@ public class FraudDetectionJob {
     Stream evalResults3 = transactionOut.applyOperator(new WindowedTransactionCountAnalyzer("windowed transaction count analyzer",
         2, new UserAccountFieldsGrouping()));
 
+    ScoreStorage store = new ScoreStorage();
     Streams.of(evalResults1, evalResults2, evalResults3)
-           .applyOperator(new ScoreAggregator("score aggregator", 2, new TransactionFieldsGrouping()));
+           .applyOperator(new ScoreAggregator("score aggregator", 2, new TransactionFieldsGrouping(), store));
 
     Logger.log("This is a streaming job that detect suspicious transactions." +
                "Input needs to be in this format: {amount},{merchandiseId}. For example: 42.00@3." +
