@@ -1,6 +1,5 @@
 package com.streamwork.ch04.job;
 
-import com.streamwork.ch04.api.FieldsGrouping;
 import com.streamwork.ch04.api.Job;
 import com.streamwork.ch04.api.Stream;
 import com.streamwork.ch04.api.Streams;
@@ -21,7 +20,7 @@ public class StreamMergeJob {
     //   bridgeStream2.applyOperator(operator);
 
     Streams.of(bridgeStream1, bridgeStream2.selectChannel("clone"))
-           .applyOperator(new TollBooth("booth", 2, new FieldsGrouping()));
+           .applyOperator(new TollBooth("booth", 2, new VehicleTypeFieldsGrouping()));
 
     Logger.log("This is a streaming job that has one counting operator linked to " +
            "two input streams. One operator is configured with default " +

@@ -1,5 +1,6 @@
 package com.streamwork.ch04.job;
 
+import com.streamwork.ch04.api.Event;
 import com.streamwork.ch04.api.FieldsGrouping;
 import com.streamwork.ch04.api.Job;
 import com.streamwork.ch04.api.Stream;
@@ -15,7 +16,7 @@ public class StreamForkJob {
     // One stream can be applied to more than one operators.
     // The operators will receive exaclty the same data and run independently to each other.
     bridgeStream.applyOperator(new TollBooth("booth/shuffle grouping", 2));
-    bridgeStream.applyOperator(new TollBooth("booth clone/fields grouping", 2, new FieldsGrouping()));
+    bridgeStream.applyOperator(new TollBooth("booth clone/fields grouping", 2, new VehicleTypeFieldsGrouping()));
 
     Logger.log("This is a streaming job that has two counting operators linked to " +
                "the same input stream. One operator is configured with default " +

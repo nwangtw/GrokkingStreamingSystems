@@ -1,5 +1,6 @@
 package com.streamwork.ch04.job;
 
+import com.streamwork.ch04.api.Event;
 import com.streamwork.ch04.api.FieldsGrouping;
 import com.streamwork.ch04.api.Job;
 import com.streamwork.ch04.api.Stream;
@@ -17,7 +18,7 @@ public class StreamSplitJob {
     // the default channel will be used.
     bridgeStream.applyOperator(new TollBooth("booth/shuffle grouping", 2));
     bridgeStream.selectChannel("clone")
-                .applyOperator(new TollBooth("booth clone/fields grouping", 2, new FieldsGrouping()));
+                .applyOperator(new TollBooth("booth clone/fields grouping", 2, new VehicleTypeFieldsGrouping()));
 
     Logger.log("This is a streaming job that has two counting operators linked to " +
                 "the same input stream. One operator is hooked up to the default channel of " +

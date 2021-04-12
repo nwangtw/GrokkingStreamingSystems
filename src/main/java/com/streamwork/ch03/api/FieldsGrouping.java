@@ -2,9 +2,6 @@ package com.streamwork.ch03.api;
 
 import java.io.Serializable;
 
-import com.streamwork.ch03.api.Event;
-import com.streamwork.ch03.api.GroupingStrategy;
-
 public class FieldsGrouping implements GroupingStrategy, Serializable {
   private static final long serialVersionUID = -1121182295793347601L;
 
@@ -16,11 +13,10 @@ public class FieldsGrouping implements GroupingStrategy, Serializable {
    * to calculate key in different ways. For example, calculate the
    * key from some specific fields.
    * @param event The event object to extract key from.
-   * @return The hash of this event as the key.
+   * @return The data to be hashed.
    */
-  protected int getKey(Event event) {
-    Object data = event.getData();
-    return data.hashCode();
+  protected Object getKey(Event event) {
+    return event.getData();
   }
 
   /**
@@ -31,6 +27,6 @@ public class FieldsGrouping implements GroupingStrategy, Serializable {
    */
   @Override
   public int getInstance(Event event, int parallelism) {
-    return getKey(event) % parallelism;
+    return Math.abs(getKey(event).hashCode()) % parallelism;
   }
 }

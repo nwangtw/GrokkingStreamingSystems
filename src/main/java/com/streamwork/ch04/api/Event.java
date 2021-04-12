@@ -1,13 +1,8 @@
 package com.streamwork.ch04.api;
 
 /**
- * This is the base class for all the event classes.
- * Users should extend this class to implement all their own event classes.
+ * This is the interface for all the event classes.
+ * Users should implement this interface to manage their data.
  */
-public abstract class Event {
-  /**
-   * Get data stored in the event.
-   * @return The data stored in the event
-   */
-  public abstract Object getData();
+public interface Event {
 }

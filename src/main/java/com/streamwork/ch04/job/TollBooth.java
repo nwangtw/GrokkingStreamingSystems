@@ -32,7 +32,7 @@ class TollBooth extends Operator {
 
   @Override
   public void apply(Event vehicleEvent, EventCollector eventCollector) {
-    String vehicle = ((VehicleEvent)vehicleEvent).getData();
+    String vehicle = ((VehicleEvent)vehicleEvent).getType();
     Integer count = countMap.getOrDefault(vehicle, 0) + 1;
     countMap.put(vehicle, count);
 

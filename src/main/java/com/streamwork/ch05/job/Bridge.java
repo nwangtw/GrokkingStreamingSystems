@@ -33,9 +33,9 @@ class Bridge extends Source {
   }
 
   /**
-   * Initilize an instance. This function is called from engine after the instance
+   * Initialize an instance. This function is called from engine after the instance
    * is constructed.
-   * @param intsance The index of the instance.
+   * @param instance The index of the instance.
    */
   @Override
   public void setupInstance(int instance) {

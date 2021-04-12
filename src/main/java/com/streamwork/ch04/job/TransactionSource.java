@@ -2,34 +2,32 @@ package com.streamwork.ch04.job;
 
 import java.net.*;
 import java.io.*;
+import java.util.Date;
+import java.util.UUID;
 
 import com.streamwork.ch04.api.EventCollector;
 import com.streamwork.ch04.api.Source;
 
-class Bridge extends Source {
-  private static final long serialVersionUID = 4914193100808497571L;
+class TransactionSource extends Source {
+  private static final long serialVersionUID = -1791461650661455535L;
 
   private int instance = 0;
   private final int portBase;
-  private boolean clone;
 
   private Socket socket;
   private BufferedReader reader;
 
   /**
-   * Construct a bridge source.
+   * Construct a transaction source to receive transactions.
    * @param name The name of the source.
    * @param parallelism
    * @param port The base port. Ports from number to base port + parallelism - 1
    *     are used by the instances of this component.
-   * @param clone If this flag is true, events will be emitted into a "clone" channel
-   *     in addition to the default channel.
    */
-  public Bridge(String name, int parallelism, int port, boolean clone) {
+  public TransactionSource(String name, int parallelism, int port) {
     super(name, parallelism);
 
     this.portBase = port;
-    this.clone = clone;
   }
 
   /**
@@ -46,19 +44,33 @@ class Bridge extends Source {
   @Override
   public void getEvents(EventCollector eventCollector) {
     try {
-      String vehicle = reader.readLine();
-      if (vehicle == null) {
+      String transaction = reader.readLine();
+      if (transaction == null) {
         // Exit when user closes the server.
         System.exit(0);
       }
-      // This source emits events into two channels.
-      eventCollector.add("default", new VehicleEvent(vehicle));
-      if (clone) {
-        eventCollector.add("clone", new VehicleEvent(vehicle + " clone"));
+
+      float amount;
+      long merchandiseId;
+      // The input is {amount},{merchandiseId}. For example, 42.00,3.
+      try {
+        String[] values = transaction.split(",");
+        amount = Float.parseFloat(values[0]);
+        merchandiseId = Long.parseLong(values[1]);
+      } catch (Exception e) {
+        Logger.log("Input needs to be in this format: {amount},{merchandiseId}. For example: 42.00,3\n");
+        return; // No transaction to emit.
       }
 
+      // Assuming all transactions are from the same user. Transaction id and time are generated automatically.
+      int userAccount = 1;
+      String transactionId = UUID.randomUUID().toString();
+      Date transactionTime = new Date();
+      TransactionEvent event = new TransactionEvent(transactionId, amount, transactionTime, merchandiseId, userAccount);
+      eventCollector.add(event);
+
       Logger.log("\n");  // A empty line before logging new events.
-      Logger.log("bridge (" + getName() + ") :: instance " + instance + " --> " + vehicle + "\n");
+      Logger.log("transaction (" + getName() + ") :: instance " + instance + " --> " + event + "\n");
     } catch (IOException e) {
       Logger.log("Failed to read input: " + e);
     }
