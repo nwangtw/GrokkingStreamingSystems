@@ -16,5 +16,5 @@ nc -lk 9991
 
 In terminal 3:
 ```bash
-java -cp ./target/gss.jar com.streamwork.ch05.job.FraudDetectionJob
+java -cp ./target/gss.jar com.streamwork.ch05.job.SystemUsageJob
 ```
