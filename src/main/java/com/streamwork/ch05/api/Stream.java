@@ -32,7 +32,7 @@ public class Stream implements Serializable {
    * @param operator The operator to be connected to the current stream
    * @return The outgoing stream of the operator.
    */
-  public Stream applyOperator(String channel, Operator operator) {
+  protected Stream applyOperator(String channel, Operator operator) {
     if (operatorMap.containsKey(channel)) {
       Set<Operator> operatorSet = operatorMap.get(channel);
       if (operatorSet.contains(operator)) {

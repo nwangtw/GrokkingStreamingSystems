@@ -1,4 +1,4 @@
-package com.streamwork.ch04.api;
+package com.streamwork.ch07.api;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -64,7 +64,7 @@ public class Stream implements Serializable {
 
   /**
    * Get the collection of operators applied to this stream.
-   * @return The collection of operators applied to this stream
+   * @return The collection of operators applied to this stream.
    */
   public Collection<Operator> getAppliedOperators(String channel) {
     return operatorMap.get(channel);
