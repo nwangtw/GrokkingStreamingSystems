@@ -9,8 +9,8 @@ import com.streamwork.ch07.api.WindowingStrategy;
 class TestWindowedAnalyzer extends WindowedOperator {
   private int instance;
 
-  public TestWindowedAnalyzer(String name, int parallelism, GroupingStrategy grouping, WindowingStrategy windowing) {
-    super(name, parallelism, grouping, windowing);
+  public TestWindowedAnalyzer(String name, int parallelism, WindowingStrategy windowing, GroupingStrategy grouping) {
+    super(name, parallelism, windowing, grouping);
   }
 
   @Override

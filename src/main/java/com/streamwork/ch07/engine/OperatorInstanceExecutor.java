@@ -1,7 +1,13 @@
 package com.streamwork.ch07.engine;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import com.streamwork.ch07.api.Event;
+import com.streamwork.ch07.api.EventWindow;
 import com.streamwork.ch07.api.Operator;
+import com.streamwork.ch07.api.WindowedOperator;
+import com.streamwork.ch07.api.WindowingStrategy;
 
 /**
  * The executor for operator components. When the executor is started,
@@ -25,14 +31,30 @@ public class OperatorInstanceExecutor extends InstanceExecutor {
   protected boolean runOnce() {
     Event event;
     try {
-      // Read input
-      event = incomingQueue.take();
+      // Read input. Time out every one second to check if there is any event windows ready to be processed.
+      event = incomingQueue.poll(1, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
       return false;
     }
 
     // Apply operator
-    operator.apply(event, eventCollector);
+    if (operator instanceof WindowedOperator) {
+      // Windowed operator handles events differently.
+      WindowedOperator windowedOperator = (WindowedOperator) operator;
+      WindowingStrategy strategy = windowedOperator.getWindowingStrategy();
+      long processingTime = System.currentTimeMillis();
+      if (event != null) {
+        strategy.add(event, processingTime);
+      }
+
+      List<EventWindow> windows = strategy.getEventWindows(processingTime);
+      for (EventWindow window: windows) {
+        windowedOperator.apply(window, eventCollector);
+      }
+    } else if (event != null) {
+      // For regular operators.
+      operator.apply(event, eventCollector);
+    }
 
     // Emit out
     try {

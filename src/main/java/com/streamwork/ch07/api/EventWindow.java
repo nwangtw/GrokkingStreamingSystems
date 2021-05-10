@@ -1,5 +1,6 @@
 package com.streamwork.ch07.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,17 +8,30 @@ import java.util.List;
  * Users should implement this interface to manage their data.
  */
 public class EventWindow {
-  public List<Event> getEvents() {
-    return null;
+  private final List<Event> events = new ArrayList<>();
+  private long startTime;
+  private long endTime;
+
+  public EventWindow(long startTime, long endTime) {
+    this.startTime = startTime;
+    this.endTime = endTime;
   }
 
   // Get the start timestamp of the window. The time is *inclusive*.
   public long getStartTime() {
-    return 0;
+    return startTime;
   }
 
   // Get the end timestamp of the window. The time is *exclusive*.
   public long getEndTime() {
-      return 0;
+      return endTime;
+  }
+
+  public void add(Event event) {
+    events.add(event);
+  }
+
+  public List<Event> getEvents() {
+    return events;
   }
 }

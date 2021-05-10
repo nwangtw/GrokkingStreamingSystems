@@ -12,22 +12,23 @@ public abstract class WindowedOperator extends Operator {
     this.windowing = windowing;
   }
 
-  public WindowedOperator(String name, int parallelism, GroupingStrategy grouping, WindowingStrategy windowing) {
+  public WindowedOperator(String name, int parallelism, WindowingStrategy windowing, GroupingStrategy grouping) {
     super(name, parallelism, grouping);
     this.windowing = windowing;
   }
 
+  public WindowingStrategy getWindowingStrategy() {
+    return windowing;
+  }
+
   /**
-   * Apply logic to the incoming event and generate results.
-   * The function is abstract and needs to be implemented by users.
+   * Apply logic to the incoming event. This event based version is already implemented by WindowedOperator.
+   * Users should implement the windowed version of it.
    * @param event The incoming event
    * @param eventCollector The outgoing event collector
    */
   public final void apply(Event event, EventCollector eventCollector) {
-    EventWindow window = windowing.add(event);
-    if (window != null) {
-      apply(window, eventCollector);
-    }
+    throw new RuntimeException("apply(Event, EventCollector) is not supported by WindowedOperator.");
   }
 
   public abstract void apply(EventWindow window, EventCollector eventCollector);

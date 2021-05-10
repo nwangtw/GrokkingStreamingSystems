@@ -3,12 +3,12 @@ package com.streamwork.ch07.job;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.streamwork.ch07.api.Event;
+import com.streamwork.ch07.api.TimedEvent;
 
 /**
  * A simple transaction event used in the fraud detection job.
  */
-public class TransactionEvent implements Event {
+public class TransactionEvent implements TimedEvent {
   public final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
 
   public final String transactionId;
@@ -32,4 +32,8 @@ public class TransactionEvent implements Event {
         transactionId, amount, formatter.format(transactionTime), merchandiseId, userAccount);
   }
 
+  @Override
+  public long getTime() {
+    return transactionTime.getTime();
+  }
 }

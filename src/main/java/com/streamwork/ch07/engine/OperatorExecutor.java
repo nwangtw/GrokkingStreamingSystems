@@ -2,6 +2,8 @@ package com.streamwork.ch07.engine;
 
 import com.streamwork.ch07.api.GroupingStrategy;
 import com.streamwork.ch07.api.Operator;
+import com.streamwork.ch07.api.WindowedOperator;
+
 import org.apache.commons.lang3.SerializationUtils;
 
 /**
@@ -16,7 +18,12 @@ public class OperatorExecutor extends ComponentExecutor {
     this.operator = operator;
     for (int i = 0; i < operator.getParallelism(); ++i) {
       Operator cloned = SerializationUtils.clone(operator);
-      instanceExecutors[i] = new OperatorInstanceExecutor(i, cloned);
+      if (cloned instanceof WindowedOperator) {
+        WindowedOperator windowedOperator = (WindowedOperator) cloned;
+        instanceExecutors[i] = new WindowedOperatorInstanceExecutor(i, windowedOperator, windowedOperator.getWindowingStrategy());
+      } else {
+        instanceExecutors[i] = new OperatorInstanceExecutor(i, cloned);
+      }
     }
   }
 

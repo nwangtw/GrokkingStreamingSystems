@@ -1,14 +1,21 @@
 package com.streamwork.ch07.api;
 
+import java.util.List;
+
 /**
  * This is the interface for all the windowing strategies.
  */
 public interface WindowingStrategy {
     /**
-     * Add an event into the windowing strategy. If an event window is ready to be processed, the event window
-     * object is returned;
+     * Add an event into the windowing strategy. Note that all calculation in this function are event time
+     * based, except the logic to check the event is a late event or not.
      * @param event
-     * @return an event window if it is ready to be processed.
      */
-    EventWindow add(Event event);
+    void add(Event event, long processingTime);
+
+    /**
+     * Get the event windows that are ready to be processed. It is based on the current processing time.
+     * @return the list of event windows to be processed.
+     */
+    List<EventWindow> getEventWindows(long processingTime);
 }
