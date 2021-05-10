@@ -15,9 +15,8 @@ public class WindowingTestJob {
     // Create a stream from a source.
     job.addSource(new TransactionSource("transaction source", 1, 9990))
         // Apply a windowing strategy and then apply a windowed operator.
-        .applyOperator(new TestWindowedAnalyzer("test windowed analyzer", 2,
-            new FixedTimeWindowingStrategy(FIXED_WINDOW_INTERVAL_MS, FIXED_WINDOW_WATERMARK_MS),
-            new UserAccountFieldsGrouping()));
+        .withWindowing(new FixedTimeWindowingStrategy(FIXED_WINDOW_INTERVAL_MS, FIXED_WINDOW_WATERMARK_MS))
+        .applyOperator(new TestWindowedAnalyzer("test windowed analyzer", 2, new UserAccountFieldsGrouping()));
 
     Logger.log("This is a streaming job that works with a windowed strategy and a windowed operator." +
                "Input needs to be in this format: {amount},{merchandiseId}. For example: 42.00@3.");

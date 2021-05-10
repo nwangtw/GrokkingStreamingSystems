@@ -18,12 +18,7 @@ public class OperatorExecutor extends ComponentExecutor {
     this.operator = operator;
     for (int i = 0; i < operator.getParallelism(); ++i) {
       Operator cloned = SerializationUtils.clone(operator);
-      if (cloned instanceof WindowedOperator) {
-        WindowedOperator windowedOperator = (WindowedOperator) cloned;
-        instanceExecutors[i] = new WindowedOperatorInstanceExecutor(i, windowedOperator, windowedOperator.getWindowingStrategy());
-      } else {
-        instanceExecutors[i] = new OperatorInstanceExecutor(i, cloned);
-      }
+      instanceExecutors[i] = new OperatorInstanceExecutor(i, cloned);
     }
   }
 

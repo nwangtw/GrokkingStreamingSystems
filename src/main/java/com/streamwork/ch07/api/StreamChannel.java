@@ -19,7 +19,6 @@ public class StreamChannel extends Stream {
       this.channel = channel;
   }
 
-  @Override
   public Stream applyOperator(Operator operator) {
     return baseStream.applyOperator(channel, operator);
   }

@@ -1,8 +1,10 @@
 package com.streamwork.ch07.job;
 
-import java.net.*;
 import java.io.*;
-import java.util.Date;
+import java.net.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
 import com.streamwork.ch07.api.EventCollector;
@@ -51,22 +53,24 @@ class TransactionSource extends Source {
       }
 
       float amount;
-      long merchandiseId;
+      long timeOffsetSeconds = 0;
       // The input is {amount},{merchandiseId}. For example, 42.00,3.
       try {
         String[] values = transaction.split(",");
         amount = Float.parseFloat(values[0]);
-        merchandiseId = Long.parseLong(values[1]);
+        if (values.length > 1) {
+          timeOffsetSeconds = Long.parseLong(values[1]);
+        }
       } catch (Exception e) {
-        Logger.log("Input needs to be in this format: {amount},{merchandiseId}. For example: 42.00,3\n");
+        Logger.log("Input needs to be in this format: {amount} or {amount},{time_offset_seconds}. For example: 42.00,-3\n");
         return; // No transaction to emit.
       }
 
       // Assuming all transactions are from the same user. Transaction id and time are generated automatically.
       int userAccount = 1;
       String transactionId = UUID.randomUUID().toString();
-      Date transactionTime = new Date();
-      TransactionEvent event = new TransactionEvent(transactionId, amount, transactionTime, merchandiseId, userAccount);
+      Instant transactionTime = LocalDateTime.now().plusSeconds(timeOffsetSeconds).atZone(ZoneId.systemDefault()).toInstant();
+      TransactionEvent event = new TransactionEvent(transactionId, amount, transactionTime, -1, userAccount);
       eventCollector.add(event);
 
       Logger.log("\n");  // A empty line before logging new events.

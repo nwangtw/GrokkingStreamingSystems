@@ -77,8 +77,11 @@ public class SlidingTimeWindowingStrategy implements WindowingStrategy {
             long startTime = entry.getKey();
             if (processingTime >= startTime + lengthMillis + watermarkMillis) {
                 toProcess.add(entry.getValue());
-                eventWindows.remove(startTime);
             }
+        }
+        // Clean up.
+        for (EventWindow window: toProcess) {
+            eventWindows.remove(window.getStartTime());
         }
         return toProcess;
     }

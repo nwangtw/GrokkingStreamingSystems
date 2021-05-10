@@ -5,20 +5,12 @@ package com.streamwork.ch07.api;
  * that support windowed computations.
  */
 public abstract class WindowedOperator extends Operator {
-  private final WindowingStrategy windowing;
-
-  public WindowedOperator(String name, int parallelism, WindowingStrategy windowing) {
+  public WindowedOperator(String name, int parallelism) {
     super(name, parallelism);
-    this.windowing = windowing;
   }
 
-  public WindowedOperator(String name, int parallelism, WindowingStrategy windowing, GroupingStrategy grouping) {
+  public WindowedOperator(String name, int parallelism, GroupingStrategy grouping) {
     super(name, parallelism, grouping);
-    this.windowing = windowing;
-  }
-
-  public WindowingStrategy getWindowingStrategy() {
-    return windowing;
   }
 
   /**
