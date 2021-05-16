@@ -1,11 +1,11 @@
 package com.streamwork.ch02.job;
 
-import com.streamwork.ch02.api.Event;
-import com.streamwork.ch02.api.Source;
-
 import java.net.*;
 import java.io.*;
 import java.util.List;
+
+import com.streamwork.ch02.api.Event;
+import com.streamwork.ch02.api.Source;
 
 class SensorReader extends Source {
   private final BufferedReader reader;

@@ -1,16 +1,16 @@
 package com.streamwork.ch07.engine;
 
-import com.streamwork.ch07.api.Component;
-import com.streamwork.ch07.api.Job;
-import com.streamwork.ch07.api.Operator;
-import com.streamwork.ch07.api.Source;
-import com.streamwork.ch07.api.Stream;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.streamwork.ch07.api.Component;
+import com.streamwork.ch07.api.Job;
+import com.streamwork.ch07.api.Operator;
+import com.streamwork.ch07.api.Source;
+import com.streamwork.ch07.api.Stream;
 
 public class JobStarter {
   private final static int QUEUE_SIZE = 64;

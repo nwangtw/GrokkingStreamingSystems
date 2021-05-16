@@ -1,6 +1,5 @@
 package com.streamwork.ch02.engine;
 
-import io.javalin.http.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 public class WebServer {
 

@@ -1,6 +1,5 @@
 package com.streamwork.ch07.engine;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.streamwork.ch07.api.Event;

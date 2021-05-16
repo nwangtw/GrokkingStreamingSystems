@@ -3,7 +3,6 @@ package com.streamwork.ch08.job;
 import com.streamwork.ch08.api.Job;
 import com.streamwork.ch08.api.Stream;
 import com.streamwork.ch08.api.Streams;
-import com.streamwork.ch08.api.WindowingStrategy;
 import com.streamwork.ch08.engine.JobStarter;
 
 public class FraudDetectionJob {

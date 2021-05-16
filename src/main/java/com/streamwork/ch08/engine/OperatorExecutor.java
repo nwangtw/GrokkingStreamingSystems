@@ -2,8 +2,6 @@ package com.streamwork.ch08.engine;
 
 import com.streamwork.ch08.api.GroupingStrategy;
 import com.streamwork.ch08.api.Operator;
-import com.streamwork.ch08.api.WindowedOperator;
-
 import org.apache.commons.lang3.SerializationUtils;
 
 /**

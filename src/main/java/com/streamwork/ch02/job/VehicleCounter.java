@@ -1,13 +1,13 @@
 package com.streamwork.ch02.job;
 
-import com.streamwork.ch02.api.Event;
-import com.streamwork.ch02.api.Operator;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.streamwork.ch02.api.Event;
+import com.streamwork.ch02.api.Operator;
 
 class VehicleCounter extends Operator {
   private final Map<String, Integer> countMap = new HashMap<String, Integer>();

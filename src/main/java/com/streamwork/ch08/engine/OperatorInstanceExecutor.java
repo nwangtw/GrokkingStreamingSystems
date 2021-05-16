@@ -1,6 +1,5 @@
 package com.streamwork.ch08.engine;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.streamwork.ch08.api.Event;

@@ -1,14 +1,14 @@
 package com.streamwork.ch03.job;
 
-import com.streamwork.ch03.api.Event;
-import com.streamwork.ch03.api.GroupingStrategy;
-import com.streamwork.ch03.api.Operator;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.streamwork.ch03.api.Event;
+import com.streamwork.ch03.api.GroupingStrategy;
+import com.streamwork.ch03.api.Operator;
 
 class VehicleCounter extends Operator {
   private static final long serialVersionUID = 1L;
