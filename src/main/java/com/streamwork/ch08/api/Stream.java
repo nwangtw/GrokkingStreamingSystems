@@ -26,6 +26,16 @@ public class Stream implements Serializable {
     return applyOperator(DEFAULT_CHANNEL, operator);
   }
 
+  // Joins are special type of operations. Side streams are needed for join operators
+  // and materialize() function is applied to these side streams.
+  public Stream join(Operator operator, Map<String, Stream> streams) {
+    return null;
+  }
+
+  public Stream windowedJoin(Operator operator, Map<String, WindowedStream> streams) {
+    return null;
+  }
+
   /**
    * Apply an operator to this stream.
    * @param channel The channel to hook up the operator.
@@ -49,7 +59,7 @@ public class Stream implements Serializable {
     return operator.getOutgoingStream();
   }
 
-  protected Stream applyWindowedOperator(WindowingStrategy strategy, WindowedOperator operator) {
+  protected Stream applyWindowOperator(WindowingStrategy strategy, WindowOperator operator) {
     WindowingOperator windowingOperator = new WindowingOperator(
         operator.getName(), operator.getParallelism(), strategy, operator, operator.getGroupingStrategy());
     applyOperator(windowingOperator);

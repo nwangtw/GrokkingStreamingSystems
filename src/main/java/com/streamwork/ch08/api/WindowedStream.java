@@ -1,5 +1,7 @@
 package com.streamwork.ch08.api;
 
+import java.util.Map;
+
 /**
  * The Stream class represents a data stream coming out of a component.
  * Operators with the correct type can be applied to this stream.
@@ -18,7 +20,18 @@ public class WindowedStream extends Stream {
       this.strategy = strategy;
   }
 
-  public Stream applyOperator(WindowedOperator operator) {
-    return baseStream.applyWindowedOperator(strategy, operator);
+  public Stream applyOperator(WindowOperator operator) {
+    return baseStream.applyWindowOperator(strategy, operator);
   }
+
+    // Joins are special type of operations. Side streams are needed for join operators
+  // and materialize() function is applied to these side streams.
+  public Stream join(Operator operator, Map<String, Stream> streams) {
+    return null;
+  }
+
+  public Stream windowedJoin(Operator operator, Map<String, WindowedStream> streams) {
+    return null;
+  }
+
 }

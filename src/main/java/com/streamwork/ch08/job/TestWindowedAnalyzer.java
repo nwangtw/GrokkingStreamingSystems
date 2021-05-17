@@ -4,9 +4,9 @@ import com.streamwork.ch08.api.Event;
 import com.streamwork.ch08.api.EventCollector;
 import com.streamwork.ch08.api.EventWindow;
 import com.streamwork.ch08.api.GroupingStrategy;
-import com.streamwork.ch08.api.WindowedOperator;
+import com.streamwork.ch08.api.WindowOperator;
 
-class TestWindowedAnalyzer extends WindowedOperator {
+class TestWindowedAnalyzer extends WindowOperator {
   private int instance;
 
   public TestWindowedAnalyzer(String name, int parallelism, GroupingStrategy grouping) {

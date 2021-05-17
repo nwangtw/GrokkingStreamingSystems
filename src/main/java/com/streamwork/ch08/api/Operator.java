@@ -32,6 +32,15 @@ public abstract class Operator extends Component {
   public abstract void apply(Event event, EventCollector eventCollector);
 
   /**
+   * Apply materialize logic to the incoming events. The results should be stored internally to be referenced
+   * by the apply() function.
+   * @param streamName
+   * @param event
+   */
+  public void materialize(String streamName, Event event) {
+  }
+
+  /**
    * Get the grouping key of an event.
    * @return The grouping strategy of this operator
    */

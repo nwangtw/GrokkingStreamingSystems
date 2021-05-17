@@ -18,7 +18,7 @@ public class WindowedStream extends Stream {
       this.strategy = strategy;
   }
 
-  public Stream applyOperator(WindowedOperator operator) {
-    return baseStream.applyWindowedOperator(strategy, operator);
+  public Stream applyOperator(WindowOperator operator) {
+    return baseStream.applyWindowOperator(strategy, operator);
   }
 }

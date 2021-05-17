@@ -3,15 +3,15 @@ package com.streamwork.ch07.api;
 import java.util.List;
 
 /**
- * This is a class used internally. Users should use WindowedOperator instead.
- * The class compose a WindowingStrategy and a WindowedOperator together into a "regular"
+ * This is a class used internally. Users should use WindowOperator instead.
+ * The class compose a WindowingStrategy and a WindowOperator together into a "regular"
  * Operator object to be used with Stream.
  */
 public final class WindowingOperator extends Operator {
   private final WindowingStrategy strategy;
-  private final WindowedOperator operator;
+  private final WindowOperator operator;
 
-  public WindowingOperator(String name, int parallelism, WindowingStrategy strategy, WindowedOperator operator, GroupingStrategy grouping) {
+  public WindowingOperator(String name, int parallelism, WindowingStrategy strategy, WindowOperator operator, GroupingStrategy grouping) {
     super(name, parallelism, grouping);
     this.strategy = strategy;
     this.operator = operator;
@@ -26,7 +26,7 @@ public final class WindowingOperator extends Operator {
   }
 
   /**
-   * Apply logic to the incoming event. This event based version is already implemented by WindowedOperator.
+   * Apply logic to the incoming event. This event based version is already implemented by WindowOperator.
    * Users should implement the windowed version of it.
    * @param event The incoming event
    * @param eventCollector The outgoing event collector

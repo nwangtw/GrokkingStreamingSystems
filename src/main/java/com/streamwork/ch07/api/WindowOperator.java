@@ -1,15 +1,15 @@
-package com.streamwork.ch08.api;
+package com.streamwork.ch07.api;
 
 /**
  * This WindowedOperator class is the base class for all user defined operators
  * that support windowed computations.
  */
-public abstract class WindowedOperator extends Operator {
-  public WindowedOperator(String name, int parallelism) {
+public abstract class WindowOperator extends Operator {
+  public WindowOperator(String name, int parallelism) {
     super(name, parallelism);
   }
 
-  public WindowedOperator(String name, int parallelism, GroupingStrategy grouping) {
+  public WindowOperator(String name, int parallelism, GroupingStrategy grouping) {
     super(name, parallelism, grouping);
   }
 
