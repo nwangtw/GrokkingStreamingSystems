@@ -1,6 +1,8 @@
 package com.streamwork.ch08.api;
 
 public interface GroupingStrategy {
+  public final int ALL_INSTANCES = -1; // A special value for ALL instances.
+
   /**
    * Get target instance id from an event and component parallelism.
    * Note that in this implementation, only one instance is selected.

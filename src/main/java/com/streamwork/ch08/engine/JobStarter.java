@@ -22,9 +22,9 @@ public class JobStarter {
   private final List<EventDispatcher> dispatcherList = new ArrayList<EventDispatcher>();
 
   // Connections between component executors
-  //private final Map<ComponentExecutor, List<OperatorExecutor>> connectionMap = new HashMap<ComponentExecutor, List<OperatorExecutor>>();
   private final List<Connection> connectionList = new ArrayList<Connection>();
   private final Map<Operator, OperatorExecutor> operatorMap = new HashMap<Operator, OperatorExecutor>();
+  // A map from Operator executor to the incoming event queue of the event distributor in front of the operator.
   private final Map<OperatorExecutor, EventQueue> operatorQueueMap = new HashMap<OperatorExecutor, EventQueue>();
 
   public JobStarter(Job job) {
@@ -96,7 +96,7 @@ public class JobStarter {
     } else {
       // New operator. Create a dispatcher and connect to upstream first.
       EventDispatcher dispatcher = new EventDispatcher(connection.to);
-      EventQueue dispatcherQueue = new EventQueue(QUEUE_SIZE);
+      EventQueue dispatcherQueue = new EventQueue(QUEUE_SIZE, connection.streamName);
       operatorQueueMap.put(connection.to, dispatcherQueue);
       dispatcher.setIncomingQueue(dispatcherQueue);
       connection.from.addOutgoingQueue(connection.channel, dispatcherQueue);
@@ -105,7 +105,7 @@ public class JobStarter {
       int parallelism = connection.to.getComponent().getParallelism();
       EventQueue[] downstream = new EventQueue[parallelism];
       for (int i = 0; i < parallelism; ++i) {
-        downstream[i] = new EventQueue(QUEUE_SIZE);
+        downstream[i] = new EventQueue(QUEUE_SIZE, connection.streamName);
       }
       connection.to.setIncomingQueues(downstream);
       dispatcher.setOutgoingQueues(downstream);
@@ -118,7 +118,10 @@ public class JobStarter {
     Stream stream = component.getOutgoingStream();
 
     for (String channel: stream.getChannels()) {
-      for (Operator operator: stream.getAppliedOperators(channel)) {
+      for (Map.Entry<Operator, String> operatorAndName:
+          stream.getAppliedOperators(channel).entrySet()) {
+        Operator operator = operatorAndName.getKey();
+        String name = operatorAndName.getValue();
         OperatorExecutor operatorExecutor;
         if (!operatorMap.containsKey(operator)) {
           operatorExecutor = new OperatorExecutor(operator);
@@ -130,7 +133,7 @@ public class JobStarter {
         } else {
           operatorExecutor = operatorMap.get(operator);
         }
-        connectionList.add(new Connection(executor, operatorExecutor, channel));
+        connectionList.add(new Connection(executor, operatorExecutor, channel, name));
       }
     }
   }

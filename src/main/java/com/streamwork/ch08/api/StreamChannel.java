@@ -20,6 +20,10 @@ public class StreamChannel extends Stream {
   }
 
   public Stream applyOperator(Operator operator) {
-    return baseStream.applyOperator(channel, operator);
+    return baseStream.applyOperator(channel, operator, null);
+  }
+
+  public Stream applyOperator(Operator operator, String streamName) {
+    return baseStream.applyOperator(channel, operator, streamName);
   }
 }

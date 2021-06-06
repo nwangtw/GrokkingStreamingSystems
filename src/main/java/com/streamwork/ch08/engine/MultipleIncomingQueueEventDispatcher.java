@@ -1,18 +1,23 @@
 package com.streamwork.ch08.engine;
 
+import java.util.Map;
+
 import com.streamwork.ch08.api.Event;
 import com.streamwork.ch08.api.GroupingStrategy;
 
 /**
- * EventDispatcher is responsible for transporting events from
- * the incoming queue to the outgoing queues with a grouping strategy.
+ * MultipleIncomingQueueEventDispatcher is a special type of EventDispatcher. It is
+ * responsible for transporting events from multiple named incoming queue to
+ * one outgoing queues to a JoiningOperator.
+ * The events in the outgoing queue are NameEventPairs instead of Events.
  */
-public class EventDispatcher extends Process {
+/*
+public class MultipleIncomingQueueEventDispatcher extends EventDispatcher {
   private final OperatorExecutor downstreamExecutor;
-  private EventQueue incomingQueue = null;
+  private Map<EventQueue, String> incomingQueues = null;
   private EventQueue [] outgoingQueues = null;
 
-  public EventDispatcher(OperatorExecutor downstreamExecutor) {
+  public MultipleIncomingQueueEventDispatcher(OperatorExecutor downstreamExecutor) {
     this.downstreamExecutor = downstreamExecutor;
   }
 
@@ -21,7 +26,6 @@ public class EventDispatcher extends Process {
     try {
       Event event = incomingQueue.take();
 
-      // TODO
       GroupingStrategy grouping = downstreamExecutor.getGroupingStrategy();
       int instance = grouping.getInstance(event, outgoingQueues.length);
       if (instance == GroupingStrategy.ALL_INSTANCES) {
@@ -37,11 +41,12 @@ public class EventDispatcher extends Process {
     return true;
   }
 
-  public void setIncomingQueue(EventQueue queue) {
-    incomingQueue = queue;
+  public void setIncomingQueues(Map<EventQueue, String> queues) {
+    incomingQueues = queues;
   }
 
   public void setOutgoingQueues(EventQueue [] queues) {
     outgoingQueues = queues;
   }
 }
+*/

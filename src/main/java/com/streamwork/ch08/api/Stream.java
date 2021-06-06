@@ -20,20 +20,15 @@ public class Stream implements Serializable {
   private static final String DEFAULT_CHANNEL = "default";
 
   // List of all operators to be applied to channels in this stream.
-  private final Map<String, Set<Operator>> operatorMap = new HashMap<String, Set<Operator>>();
+  private final Map<String, Map<Operator, String>> operatorMap =
+    new HashMap<String, Map<Operator, String>>();
 
   public Stream applyOperator(Operator operator) {
-    return applyOperator(DEFAULT_CHANNEL, operator);
+    return applyOperator(DEFAULT_CHANNEL, operator, null);
   }
 
-  // Joins are special type of operations. Side streams are needed for join operators
-  // and materialize() function is applied to these side streams.
-  public Stream join(Operator operator, Map<String, Stream> streams) {
-    return null;
-  }
-
-  public Stream windowedJoin(Operator operator, Map<String, WindowedStream> streams) {
-    return null;
+  Stream applyOperator(Operator operator, String streamName) {
+    return applyOperator(DEFAULT_CHANNEL, operator, streamName);
   }
 
   /**
@@ -42,18 +37,18 @@ public class Stream implements Serializable {
    * @param operator The operator to be connected to the current stream
    * @return The outgoing stream of the operator.
    */
-  protected Stream applyOperator(String channel, Operator operator) {
+  protected Stream applyOperator(String channel, Operator operator, String streamName) {
     if (operatorMap.containsKey(channel)) {
-      Set<Operator> operatorSet = operatorMap.get(channel);
-      if (operatorSet.contains(operator)) {
+      Map<Operator, String> operatorToName = operatorMap.get(channel);
+      if (operatorToName.containsKey(operator)) {
         throw new RuntimeException("Operator " + operator.getName() + " is added to job twice");
       }
-      operatorSet.add(operator);
+      operatorToName.put(operator, streamName);
     } else {
-        // This is a new channel.
-      Set<Operator> operatorSet = new HashSet<Operator>();
-      operatorSet.add(operator);
-      operatorMap.put(channel, operatorSet);
+      // This is a new channel.
+      Map<Operator, String> operatorToName = new HashMap<Operator, String>();
+      operatorToName.put(operator, streamName);
+      operatorMap.put(channel, operatorToName);
     }
 
     return operator.getOutgoingStream();
@@ -87,7 +82,7 @@ public class Stream implements Serializable {
    * Get the collection of operators applied to this stream.
    * @return The collection of operators applied to this stream.
    */
-  public Collection<Operator> getAppliedOperators(String channel) {
+  public Map<Operator, String> getAppliedOperators(String channel) {
     return operatorMap.get(channel);
   }
 }

@@ -3,14 +3,15 @@ package com.streamwork.ch08.job;
 import com.streamwork.ch08.api.Event;
 
 public class VehicleEvent implements Event {
-  private final String type;
-  private final long time = System.currentTimeMillis();
+  public final String make;
+  public final String model;
+  public final int year;
+  public final int zone;
 
-  public VehicleEvent(String type) {
-    this.type = type;
-  }
-
-  public String getType() {
-    return type;
+  public VehicleEvent(String make, String model, int year, int zone) {
+    this.make = make;
+    this.model = model;
+    this.year = year;
+    this.zone = zone;
   }
 }

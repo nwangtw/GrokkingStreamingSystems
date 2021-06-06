@@ -6,10 +6,10 @@ import com.streamwork.ch08.api.EventWindow;
 import com.streamwork.ch08.api.GroupingStrategy;
 import com.streamwork.ch08.api.WindowOperator;
 
-class TestWindowedAnalyzer extends WindowOperator {
+class WindowedAggregator extends WindowOperator {
   private int instance;
 
-  public TestWindowedAnalyzer(String name, int parallelism, GroupingStrategy grouping) {
+  public WindowedAggregator(String name, int parallelism, GroupingStrategy grouping) {
     super(name, parallelism, grouping);
   }
 

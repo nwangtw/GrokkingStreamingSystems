@@ -10,7 +10,7 @@ import java.util.UUID;
 import com.streamwork.ch08.api.EventCollector;
 import com.streamwork.ch08.api.Source;
 
-class TemperatureSource extends Source {
+class VehicleEventSource extends Source {
   private int instance = 0;
   private final int portBase;
 
@@ -24,7 +24,7 @@ class TemperatureSource extends Source {
    * @param port The base port. Ports from number to base port + parallelism - 1
    *     are used by the instances of this component.
    */
-  public TemperatureSource(String name, int parallelism, int port) {
+  public VehicleEventSource(String name, int parallelism, int port) {
     super(name, parallelism);
 
     this.portBase = port;

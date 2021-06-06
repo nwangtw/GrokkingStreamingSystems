@@ -10,9 +10,7 @@ import java.util.UUID;
 import com.streamwork.ch08.api.EventCollector;
 import com.streamwork.ch08.api.Source;
 
-class TransactionSource extends Source {
-  private static final long serialVersionUID = -1791461650661455535L;
-
+class TemperatureEventSource extends Source {
   private int instance = 0;
   private final int portBase;
 
@@ -26,7 +24,7 @@ class TransactionSource extends Source {
    * @param port The base port. Ports from number to base port + parallelism - 1
    *     are used by the instances of this component.
    */
-  public TransactionSource(String name, int parallelism, int port) {
+  public TemperatureEventSource(String name, int parallelism, int port) {
     super(name, parallelism);
 
     this.portBase = port;
@@ -52,29 +50,24 @@ class TransactionSource extends Source {
         System.exit(0);
       }
 
-      float amount;
-      long timeOffsetSeconds = 0;
-      // The input is {amount},{merchandiseId}. For example, 42.00,3.
+      float temperature;
+      int zoneId;
+      // The input is {temperature},{zoneId}. For example, 90,3.
       try {
         String[] values = transaction.split(",");
-        amount = Float.parseFloat(values[0]);
-        if (values.length > 1) {
-          timeOffsetSeconds = Long.parseLong(values[1]);
-        }
+        temperature = Float.parseFloat(values[0]);
+        zoneId = Integer.parseInt(values[1]);
       } catch (Exception e) {
-        Logger.log("Input needs to be in this format: {amount} or {amount},{time_offset_seconds}. For example: 42.00,-3\n");
+        Logger.log("Input needs to be in this format: {temperature},{zoneId}. For example: 90,3\n");
         return; // No transaction to emit.
       }
 
       // Assuming all transactions are from the same user. Transaction id and time are generated automatically.
-      int userAccount = 1;
-      String transactionId = UUID.randomUUID().toString();
-      Instant transactionTime = LocalDateTime.now().plusSeconds(timeOffsetSeconds).atZone(ZoneId.systemDefault()).toInstant();
-      TransactionEvent event = new TransactionEvent(transactionId, amount, transactionTime, -1, userAccount);
+      TemperatureEvent event = new TemperatureEvent(zoneId, temperature);
       eventCollector.add(event);
 
       Logger.log("\n");  // A empty line before logging new events.
-      Logger.log("transaction (" + getName() + ") :: instance " + instance + " --> " + event + "\n");
+      Logger.log("temperature (" + getName() + ") :: instance " + instance + " --> " + event + "\n");
     } catch (IOException e) {
       Logger.log("Failed to read input: " + e);
     }
