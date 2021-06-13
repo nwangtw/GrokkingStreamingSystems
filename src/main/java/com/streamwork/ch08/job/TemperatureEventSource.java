@@ -57,17 +57,17 @@ class TemperatureEventSource extends Source {
         String[] values = transaction.split(",");
         temperature = Float.parseFloat(values[0]);
         zoneId = Integer.parseInt(values[1]);
+
+        TemperatureEvent event = new TemperatureEvent(zoneId, temperature);
+        eventCollector.add(event);
+
+        Logger.log("\n");  // A empty line before logging new events.
+        Logger.log("temperature (" + getName() + ") :: instance " + instance + " --> " + event + "\n");
       } catch (Exception e) {
-        Logger.log("Input needs to be in this format: {temperature},{zoneId}. For example: 90,3\n");
+        Logger.log("Temperature input needs to be in this format: {temperature},{zoneId}. For example: 90,3\n");
         return; // No transaction to emit.
       }
 
-      // Assuming all transactions are from the same user. Transaction id and time are generated automatically.
-      TemperatureEvent event = new TemperatureEvent(zoneId, temperature);
-      eventCollector.add(event);
-
-      Logger.log("\n");  // A empty line before logging new events.
-      Logger.log("temperature (" + getName() + ") :: instance " + instance + " --> " + event + "\n");
     } catch (IOException e) {
       Logger.log("Failed to read input: " + e);
     }

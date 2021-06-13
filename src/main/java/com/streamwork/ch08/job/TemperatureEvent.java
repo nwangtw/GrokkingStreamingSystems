@@ -16,6 +16,6 @@ public class TemperatureEvent implements Event {
 
   @Override
   public String toString() {
-    return String.format("[temperature:%d; amount:%f]", zoneId, temperature);
+    return String.format("[zone:%d; temperature:%f]", zoneId, temperature);
   }
 }

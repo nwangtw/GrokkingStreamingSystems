@@ -16,7 +16,7 @@ public abstract class InstanceExecutor extends Process {
   // This list is used for accepting events from user logic.
   protected final EventCollector eventCollector = new EventCollector();
   // Data queues for the upstream processes
-  protected EventQueue incomingQueue = null;
+  protected NamedEventQueue incomingQueue = null;
   // Data queue for the downstream processes
   protected Map<String, List<EventQueue>> outgoingQueueMap = new HashMap<String, List<EventQueue>>();
 
@@ -26,7 +26,7 @@ public abstract class InstanceExecutor extends Process {
     eventCollector.registerChannel(channel);
   }
 
-  public void setIncomingQueue(EventQueue queue) {
+  public void setIncomingQueue(NamedEventQueue queue) {
     incomingQueue = queue;
   }
 

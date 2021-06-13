@@ -2,10 +2,6 @@ package com.streamwork.ch08.job;
 
 import java.io.*;
 import java.net.*;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.UUID;
 
 import com.streamwork.ch08.api.EventCollector;
 import com.streamwork.ch08.api.Source;
@@ -50,24 +46,23 @@ class VehicleEventSource extends Source {
         System.exit(0);
       }
 
-      float temperature;
-      int zoneId;
-      // The input is {temperature},{zoneId}. For example, 90,3.
+      // The input is {vehicle_make},{vehicle_model},{vehicle_year},{zoneId}. For example, xxx,aa,2020,3.
       try {
         String[] values = transaction.split(",");
-        temperature = Float.parseFloat(values[0]);
-        zoneId = Integer.parseInt(values[1]);
+        String make = values[0];
+        String model = values[1];
+        int year = Integer.parseInt(values[2]);
+        int zoneId = Integer.parseInt(values[3]);
+
+        VehicleEvent event = new VehicleEvent(make, model, year, zoneId);
+        eventCollector.add(event);
+
+        Logger.log("\n");  // A empty line before logging new events.
+        Logger.log("vehicle (" + getName() + ") :: instance " + instance + " --> " + event + "\n");
       } catch (Exception e) {
-        Logger.log("Input needs to be in this format: {temperature},{zoneId}. For example: 90,3\n");
+        Logger.log("Vehicle input needs to be in this format: {make},{model},{year},{zoneId}. For example: xxx,aa,2020,3\n");
         return; // No transaction to emit.
       }
-
-      // Assuming all transactions are from the same user. Transaction id and time are generated automatically.
-      TemperatureEvent event = new TemperatureEvent(zoneId, temperature);
-      eventCollector.add(event);
-
-      Logger.log("\n");  // A empty line before logging new events.
-      Logger.log("temperature (" + getName() + ") :: instance " + instance + " --> " + event + "\n");
     } catch (IOException e) {
       Logger.log("Failed to read input: " + e);
     }

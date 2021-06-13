@@ -14,4 +14,9 @@ public class VehicleEvent implements Event {
     this.year = year;
     this.zone = zone;
   }
+
+  @Override
+  public String toString() {
+    return String.format("[make:%s; model:%s, year:%d, zone:%d]", make, model, year, zone);
+  }
 }

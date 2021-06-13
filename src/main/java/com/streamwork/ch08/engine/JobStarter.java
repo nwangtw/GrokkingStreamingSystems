@@ -103,9 +103,11 @@ public class JobStarter {
 
       // Connect to downstream (to each instance).
       int parallelism = connection.to.getComponent().getParallelism();
-      EventQueue[] downstream = new EventQueue[parallelism];
+      // The incoming queue for instance executor and the outgoing queue for event dispatcher
+      // need to be named event queue so that the events contain stream name.
+      NamedEventQueue[] downstream = new NamedEventQueue[parallelism];
       for (int i = 0; i < parallelism; ++i) {
-        downstream[i] = new EventQueue(QUEUE_SIZE, connection.streamName);
+        downstream[i] = new NamedEventQueue(QUEUE_SIZE, connection.streamName);
       }
       connection.to.setIncomingQueues(downstream);
       dispatcher.setOutgoingQueues(downstream);

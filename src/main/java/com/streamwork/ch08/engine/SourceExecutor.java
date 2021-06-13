@@ -28,7 +28,7 @@ public class SourceExecutor  extends ComponentExecutor {
   }
 
   @Override
-  public void setIncomingQueues(EventQueue [] queues) {
+  public void setIncomingQueues(NamedEventQueue [] queues) {
     throw new RuntimeException("No incoming queue is allowed for source executor");
   }
 }

@@ -37,7 +37,7 @@ public abstract class ComponentExecutor {
     }
   }
 
-  public void setIncomingQueues(EventQueue [] queues) {
+  public void setIncomingQueues(NamedEventQueue [] queues) {
     for (int i = 0; i < queues.length; ++i) {
       instanceExecutors[i].setIncomingQueue(queues[i]);
     }

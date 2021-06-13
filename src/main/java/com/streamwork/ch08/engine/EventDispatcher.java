@@ -2,6 +2,7 @@ package com.streamwork.ch08.engine;
 
 import com.streamwork.ch08.api.Event;
 import com.streamwork.ch08.api.GroupingStrategy;
+import com.streamwork.ch08.api.NameEventPair;
 
 /**
  * EventDispatcher is responsible for transporting events from
@@ -10,7 +11,7 @@ import com.streamwork.ch08.api.GroupingStrategy;
 public class EventDispatcher extends Process {
   private final OperatorExecutor downstreamExecutor;
   private EventQueue incomingQueue = null;
-  private EventQueue [] outgoingQueues = null;
+  private NamedEventQueue [] outgoingQueues = null;
 
   public EventDispatcher(OperatorExecutor downstreamExecutor) {
     this.downstreamExecutor = downstreamExecutor;
@@ -25,11 +26,11 @@ public class EventDispatcher extends Process {
       GroupingStrategy grouping = downstreamExecutor.getGroupingStrategy();
       int instance = grouping.getInstance(event, outgoingQueues.length);
       if (instance == GroupingStrategy.ALL_INSTANCES) {
-        for (EventQueue queue: outgoingQueues) {
-          queue.put(event);
+        for (NamedEventQueue queue: outgoingQueues) {
+          queue.put(new NameEventPair(incomingQueue.streamName, event));
         }
       } else {
-        outgoingQueues[instance].put(event);
+        outgoingQueues[instance].put(new NameEventPair(incomingQueue.streamName, event));
       }
     } catch (InterruptedException e) {
       return false;
@@ -41,7 +42,7 @@ public class EventDispatcher extends Process {
     incomingQueue = queue;
   }
 
-  public void setOutgoingQueues(EventQueue [] queues) {
+  public void setOutgoingQueues(NamedEventQueue [] queues) {
     outgoingQueues = queues;
   }
 }
