@@ -19,7 +19,7 @@ class WindowedAggregator extends WindowOperator {
   }
 
   @Override
-  public void apply(EventWindow window, EventCollector eventCollector) {
+  public void apply(String streamName, EventWindow window, EventCollector eventCollector) {
     Logger.log(String.format("%d transactions are received between %d and %d\n",
         window.getEvents().size(), window.getStartTime(), window.getEndTime()));
     for (Event event: window.getEvents()) {

@@ -3,6 +3,7 @@ package com.streamwork.ch08.engine;
 import java.util.concurrent.TimeUnit;
 
 import com.streamwork.ch08.api.Event;
+import com.streamwork.ch08.api.NameEventPair;
 import com.streamwork.ch08.api.Operator;
 import com.streamwork.ch08.api.WindowingOperator;
 
@@ -26,10 +27,10 @@ public class OperatorInstanceExecutor extends InstanceExecutor {
    * @return true if the thread should continue; false if the thread should exist.
    */
   protected boolean runOnce() {
-    Event event;
+    NameEventPair pair;
     try {
       // Read input. Time out every one second to check if there is any event windows ready to be processed.
-      event = incomingQueue.poll(1, TimeUnit.SECONDS);
+      pair = incomingQueue.poll(1, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
       return false;
     }
@@ -37,10 +38,10 @@ public class OperatorInstanceExecutor extends InstanceExecutor {
     // Apply operator
     if (operator instanceof WindowingOperator) {
       // WindowingOperator handles null events too.
-      operator.apply(event, eventCollector);
-    } else if (event != null) {
+      operator.apply(pair.getStreamName(), pair.getEvent(), eventCollector);
+    } else if (pair != null) {
       // For regular operators.
-      operator.apply(event, eventCollector);
+      operator.apply(pair.getStreamName(), pair.getEvent(), eventCollector);
     }
 
     // Emit out

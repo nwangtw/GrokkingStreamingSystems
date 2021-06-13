@@ -11,8 +11,8 @@ import com.streamwork.ch08.api.NameEventPair;
 class EventJoiner extends JoinOperator {
   private int instance;
 
-  public EventJoiner(String name, int parallelism, Map<String, GroupingStrategy> namedGroupingStrategies) {
-    super(name, parallelism, namedGroupingStrategies);
+  public EventJoiner(String name, int parallelism, Map<String, GroupingStrategy> groupingMap) {
+    super(name, parallelism, groupingMap);
   }
 
   @Override
@@ -21,7 +21,13 @@ class EventJoiner extends JoinOperator {
   }
 
   @Override
-  public void apply(NameEventPair event, EventCollector eventCollector) {
-    Logger.log(String.format("Event pair: %s\n", event.toString()));
+  public void apply(String streamName, Event event, EventCollector eventCollector) {
+    Logger.log(String.format("EventJoiner: Stream: %s Event: %s\n", streamName, event.toString()));
+    if (streamName.equals("temperature")) {
+      // Temperature events. Materialize into the in memory table.
+    } else {
+      // Vehicle events. Join with the in memory table.
+    }
+
   }
 }

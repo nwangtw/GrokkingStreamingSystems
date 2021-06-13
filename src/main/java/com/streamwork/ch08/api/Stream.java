@@ -54,9 +54,9 @@ public class Stream implements Serializable {
     return operator.getOutgoingStream();
   }
 
-  protected Stream applyWindowOperator(WindowingStrategy strategy, WindowOperator operator) {
+  protected Stream applyWindowOperator(Map<String, WindowingStrategy> windowingMap, WindowOperator operator) {
     WindowingOperator windowingOperator = new WindowingOperator(
-        operator.getName(), operator.getParallelism(), strategy, operator, operator.getGroupingStrategy());
+        operator.getName(), operator.getParallelism(), windowingMap, operator, operator.getGroupingStrategyMap());
     applyOperator(windowingOperator);
     return operator.getOutgoingStream();
   }
@@ -65,8 +65,12 @@ public class Stream implements Serializable {
     return new StreamChannel(this, channel);
   }
 
-  public WindowedStream withWindowing(WindowingStrategy strategy) {
-    return new WindowedStream(this, strategy);
+  public WindowedStream withWindowing(WindowingStrategy windowingStrategy) {
+    return withWindowing(Map.of("default", windowingStrategy));
+  }
+
+  public WindowedStream withWindowing(Map<String, WindowingStrategy> windowingMap) {
+    return new WindowedStream(this, windowingMap);
   }
 
   /**

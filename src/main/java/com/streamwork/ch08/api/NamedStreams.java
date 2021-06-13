@@ -25,7 +25,7 @@ public class NamedStreams {
   public Stream join(JoinOperator operator) {
     for (Map.Entry<Stream, String> namedStream: namedStreams.entrySet()) {
       String streamName = namedStream.getValue();
-      GroupingStrategy grouping = operator.getGroupingStrategyByStreamName(streamName);
+      GroupingStrategy grouping = operator.getGroupingStrategy(streamName);
       namedStream.getKey().applyOperator(operator, streamName);
     }
     return operator.getOutgoingStream();

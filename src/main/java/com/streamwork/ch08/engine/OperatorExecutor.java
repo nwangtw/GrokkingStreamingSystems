@@ -1,5 +1,7 @@
 package com.streamwork.ch08.engine;
 
+import java.util.Map;
+
 import com.streamwork.ch08.api.GroupingStrategy;
 import com.streamwork.ch08.api.Operator;
 import org.apache.commons.lang3.SerializationUtils;
@@ -29,7 +31,7 @@ public class OperatorExecutor extends ComponentExecutor {
     }
   }
 
-  public GroupingStrategy getGroupingStrategy() {
-    return operator.getGroupingStrategy();
+  public GroupingStrategy getGroupingStrategy(String streamName) {
+    return operator.getGroupingStrategy(streamName);
   }
 }
