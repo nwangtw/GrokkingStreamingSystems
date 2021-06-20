@@ -31,9 +31,9 @@ nc -lk 9991
 java -cp target/gss.jar com.streamwork.ch02.job.VehicleCountJob
 # Chapter 3. A vehicle count job with two source instances and one operator instance.
 java -cp ./target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob1
-# Chapter 3. A vehicle count job with one source instance and two operator instances.
+# Chapter 3. A vehicle count job with two source instances and two operator instances, shuffle grouping.
 java -cp ./target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob2
-# Chapter 3. A vehicle count job with two source instances and two operator instances.
+# Chapter 3. A vehicle count job with two source instances and two operator instances, fields grouping.
 java -cp ./target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob3
 # Chapter 4. A job with a forked stream.
 java -cp ./target/gss.jar com.streamwork.ch04.job.StreamForkJob
@@ -50,3 +50,5 @@ java -cp ./target/gss.jar com.streamwork.ch08.job.EmissionJob
 ```
 3. Input events in the readers and examine the output in the output terminal.
 4. Have fun~
+
+By the way, after a job is started, you can view the structure of your job by opening a browser and visiting http://localhost:7000.

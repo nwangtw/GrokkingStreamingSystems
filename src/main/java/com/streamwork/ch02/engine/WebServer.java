@@ -1,6 +1,5 @@
 package com.streamwork.ch02.engine;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,13 +57,28 @@ public class WebServer {
 
   public void start() {
     Javalin app = Javalin.create(config -> {
-        config.addSinglePageRoot("/", "/index.html");
         config.addStaticFiles("/public");
-        config.showJavalinBanner = false;
       })
       .start(7000);
 
+    app.get("/", ctx -> indexHandler(ctx));
     app.get("/plan.json", ctx -> planHandler(ctx));
+  }
+
+  private void indexHandler(Context ctx) {
+    StringBuilder graph = new StringBuilder();
+    for (Edge edge : edges) {
+      String from = edge.get("from");
+      String to = edge.get("to");
+      graph.append(String.format(
+        "%s(%s) ---> %s(%s)\n",
+        from.replaceAll("\\s",""),
+        from,
+        to.replaceAll("\\s",""),
+        to
+      ));
+    }
+    ctx.render("index.twig", Map.of("job", jobName, "graph", graph));
   }
 
   private void planHandler(Context ctx) {

@@ -25,7 +25,7 @@ public class EmissionJob {
     NamedStreams.of(Map.of(vehicles, "vehicle", temperatures, "temperature"))
       .join(new EventJoiner("join operator", 2,
           Map.of("vehicle", new ShuffleGrouping(), "temperature", new AllGrouping())))
-      .applyOperator(new EmissionResolver("emission resolver", 2))
+      .applyOperator(new EmissionResolver("emission resolver", 1))
       .withWindowing(new FixedTimeWindowingStrategy(FIXED_WINDOW_INTERVAL_MS, FIXED_WINDOW_WATERMARK_MS))
       .applyOperator(new WindowedAggregator("windowed aggregator", 2, new ZoneFieldsGrouping()));
 
