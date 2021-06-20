@@ -1,5 +1,13 @@
 # miniStreaming
-For a book
+The source code for this book: [Grokking Streaming Systems: Real-time Event Processing](https://www.manning.com/books/grokking-streaming-systems).
+
+The objective is to demonstrate how streaming systems work with a simple local engine and example jobs.
+
+### Tools required
+- Git: it is used to fetch the source code.
+- JDK 11: the source code is in Java 11.
+- Apache maven: the build tool used by the projects.
+- netcat (Mac and Linux) or nmap (Windows, Mac and Linux): the tool used as the event reader.
 
 ### Build the project
 ```
@@ -7,12 +15,38 @@ $ mvn clean package
 ```
 After a successful build of the project you should be able to run all of the examples in the jar from the command line.
 
-### Run the job in chapter 2
+### Run the example jobs
+Example jobs are developed on Mac but they should work for Linux and Windows too (some commands are slightly different on Windows). The jobs read input events from one or two terminals. So the basic steps of running an example job are:
+1. Start the readers in two input terminals (some examples read input from only one reader but it doesn't hurt to have the second one running). If you are using `nmap` instead of `netcat`, the command is `ncat` instead of `nc` and the arguments are the same.
+```bash
+nc -lk 9990
 ```
-$ java -cp target/gss.jar com.streamwork.ch02.job.VehicleCountJob
+and
+```bash
+nc -lk 9991
 ```
-
-### Run the job in chapter 3
+2. Start the job in the output (the third) terminal. Replace `/` with `\` on windows.
+```bash
+# Chapter 2. A basic vehicle count job.
+java -cp target/gss.jar com.streamwork.ch02.job.VehicleCountJob
+# Chapter 3. A vehicle count job with two source instances and one operator instance.
+java -cp ./target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob1
+# Chapter 3. A vehicle count job with one source instance and two operator instances.
+java -cp ./target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob2
+# Chapter 3. A vehicle count job with two source instances and two operator instances.
+java -cp ./target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob3
+# Chapter 4. A job with a forked stream.
+java -cp ./target/gss.jar com.streamwork.ch04.job.StreamForkJob
+# Chapter 4. A job with a merged stream.
+java -cp ./target/gss.jar com.streamwork.ch04.job.StreamMergeJob
+# Chapter 4. A job with a split stream.
+java -cp ./target/gss.jar com.streamwork.ch04.job.StreamSplitJob
+# Chapter 5. A system usage job.
+java -cp ./target/gss.jar com.streamwork.ch05.job.SystemUsageJob
+# Chapter 7. A test job with windowing support.
+java -cp ./target/gss.jar com.streamwork.ch07.job.WindowingTestJob
+# Chapter 8. A emission monitor job with a join operator.
+java -cp ./target/gss.jar com.streamwork.ch08.job.EmissionJob
 ```
-$ java -cp target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob
-```
+3. Input events in the readers and examine the output in the output terminal.
+4. Have fun~
