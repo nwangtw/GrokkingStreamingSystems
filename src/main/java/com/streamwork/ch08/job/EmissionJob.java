@@ -22,10 +22,10 @@ public class EmissionJob {
     Stream temperatures = job.addSource(new TemperatureEventSource("temperature source", 1, 9991));
 
     NamedStreams.of(Map.of(vehicles, "vehicle", temperatures, "temperature"))
-      .join(new EventJoiner("join operator", 2, Map.of("vehicle", new ShuffleGrouping())))
-      .applyOperator(new EmissionResolver("emission resolver", 2))
-      .withWindowing(new FixedTimeWindowingStrategy(FIXED_WINDOW_INTERVAL_MS, FIXED_WINDOW_WATERMARK_MS))
-      .applyOperator(new WindowedAggregator("windowed aggregator", 2, new ZoneFieldsGrouping()));
+      .join(new EventJoiner("join operator", 2, Map.of("vehicle", new ShuffleGrouping())));
+      //.applyOperator(new EmissionResolver("emission resolver", 2))
+      //.withWindowing(new FixedTimeWindowingStrategy(FIXED_WINDOW_INTERVAL_MS, FIXED_WINDOW_WATERMARK_MS))
+      //.applyOperator(new WindowedAggregator("windowed aggregator", 2, new ZoneFieldsGrouping()));
 
     Logger.log("This is a streaming job that joins vehicle and temperature events calculate the CO2" +
               "emission in real time. Input needs to be in this format:\n" +

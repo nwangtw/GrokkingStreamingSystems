@@ -32,6 +32,7 @@ public class EventDispatcher extends Process {
           queue.put(new NameEventPair(incomingQueue.streamName, event));
         }
       } else {
+System.out.printf("***event dispatcher %s reads an event %s from %s\n", this, event, incomingQueue.streamName);
         outgoingQueues[instance].put(new NameEventPair(incomingQueue.streamName, event));
       }
     } catch (InterruptedException e) {

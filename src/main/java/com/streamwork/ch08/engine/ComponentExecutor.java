@@ -8,6 +8,7 @@ import com.streamwork.ch08.api.Component;
 public abstract class ComponentExecutor {
   protected Component component;
   protected InstanceExecutor [] instanceExecutors;
+  protected NamedEventQueue [] incomingQueues;
 
   public ComponentExecutor(Component component) {
     this.component = component;
@@ -38,10 +39,16 @@ public abstract class ComponentExecutor {
   }
 
   public void setIncomingQueues(NamedEventQueue [] queues) {
+    incomingQueues = queues;
     for (int i = 0; i < queues.length; ++i) {
       instanceExecutors[i].setIncomingQueue(queues[i]);
     }
   }
+
+  public NamedEventQueue[] getIncomingQueues() {
+    return incomingQueues;
+  }
+
 
   public void addOutgoingQueue(String channel, EventQueue queue) {
     for (InstanceExecutor instance: instanceExecutors) {

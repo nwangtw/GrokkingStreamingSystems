@@ -25,7 +25,8 @@ public class JobStarter {
   private final List<Connection> connectionList = new ArrayList<Connection>();
   private final Map<Operator, OperatorExecutor> operatorMap = new HashMap<Operator, OperatorExecutor>();
   // A map from Operator executor to the incoming event queue of the event distributor in front of the operator.
-  private final Map<OperatorExecutor, EventQueue> operatorQueueMap = new HashMap<OperatorExecutor, EventQueue>();
+  // Note that there is one event dispatcher and incoming queue for each incoming stream.
+  private final Map<OperatorExecutor, Map<String, EventQueue>> operatorQueueMap = new HashMap<>();
 
   public JobStarter(Job job) {
     this.job = job;
@@ -91,13 +92,37 @@ public class JobStarter {
     connection.from.registerChannel(connection.channel);
     if (operatorQueueMap.containsKey(connection.to)) {
       // Existing operator. Connect to upstream only.
-      EventQueue dispatcherQueue = operatorQueueMap.get(connection.to);
-      connection.from.addOutgoingQueue(connection.channel, dispatcherQueue);
+      Map<String, EventQueue> dispatcherQueues = operatorQueueMap.get(connection.to);
+      EventQueue currentDispatcherQueue = dispatcherQueues.get(connection.streamName);
+      if (currentDispatcherQueue != null) {
+        connection.from.addOutgoingQueue(connection.channel, currentDispatcherQueue);
+      } else {
+        // The operator has upstream event dispatchers already, but this is a new incoming stream.
+        EventDispatcher dispatcher = new EventDispatcher(connection.to);
+        EventQueue dispatcherQueue = new EventQueue(QUEUE_SIZE, connection.streamName);
+        dispatcherQueues.put(connection.streamName, dispatcherQueue);
+        dispatcher.setIncomingQueue(dispatcherQueue);
+        connection.from.addOutgoingQueue(connection.channel, dispatcherQueue);
+
+        // Connect to downstream (to each instance).
+        int parallelism = connection.to.getComponent().getParallelism();
+        // The incoming queue for instance executor and the outgoing queue for event dispatcher
+        // need to be named event queue so that the events contain stream name.
+        //NamedEventQueue[] downstream = new NamedEventQueue[parallelism];
+        //for (int i = 0; i < parallelism; ++i) {
+        //  downstream[i] = new NamedEventQueue(QUEUE_SIZE, connection.streamName);
+        //}
+        //connection.to.setIncomingQueues(downstream);
+        dispatcher.setOutgoingQueues(connection.to.getIncomingQueues());
+
+        dispatcherList.add(dispatcher);
+      }
+
     } else {
       // New operator. Create a dispatcher and connect to upstream first.
       EventDispatcher dispatcher = new EventDispatcher(connection.to);
       EventQueue dispatcherQueue = new EventQueue(QUEUE_SIZE, connection.streamName);
-      operatorQueueMap.put(connection.to, dispatcherQueue);
+      operatorQueueMap.put(connection.to, Map.of(connection.streamName, dispatcherQueue));
       dispatcher.setIncomingQueue(dispatcherQueue);
       connection.from.addOutgoingQueue(connection.channel, dispatcherQueue);
 
