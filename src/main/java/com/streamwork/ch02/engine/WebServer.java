@@ -71,7 +71,7 @@ public class WebServer {
       String from = edge.get("from");
       String to = edge.get("to");
       graph.append(String.format(
-        "%s(%s) ---> %s(%s)\n",
+        "%s(%s) --> %s(%s)\n",
         from.replaceAll("\\s",""),
         from,
         to.replaceAll("\\s",""),
