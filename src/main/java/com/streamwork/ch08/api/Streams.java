@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *   Streams.merge(stream1.selectChannel("second_channel"), stream2, stream3).applyOperator(operator)
  */
 public class Streams {
-  ArrayList<Stream> streams;
+  private final ArrayList<Stream> streams;
 
   private Streams(ArrayList<Stream> streams) {
     this.streams = streams;

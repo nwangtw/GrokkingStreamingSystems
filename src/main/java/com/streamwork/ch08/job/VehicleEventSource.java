@@ -54,7 +54,7 @@ class VehicleEventSource extends Source {
         int year = Integer.parseInt(values[2]);
         int zoneId = Integer.parseInt(values[3]);
 
-        VehicleEvent event = new VehicleEvent(make, model, year, zoneId);
+        VehicleEvent event = new VehicleEvent(make, model, year, zoneId, System.currentTimeMillis());
         eventCollector.add(event);
 
         Logger.log("\n");  // A empty line before logging new events.

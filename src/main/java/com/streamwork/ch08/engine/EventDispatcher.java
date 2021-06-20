@@ -1,7 +1,5 @@
 package com.streamwork.ch08.engine;
 
-import java.util.Map;
-
 import com.streamwork.ch08.api.Event;
 import com.streamwork.ch08.api.GroupingStrategy;
 import com.streamwork.ch08.api.NameEventPair;
@@ -24,7 +22,6 @@ public class EventDispatcher extends Process {
     try {
       Event event = incomingQueue.take();
 
-      // TODO
       final GroupingStrategy grouping = downstreamExecutor.getGroupingStrategy(incomingQueue.streamName);
       int instance = grouping.getInstance(event, outgoingQueues.length);
       if (instance == GroupingStrategy.ALL_INSTANCES) {
@@ -32,7 +29,6 @@ public class EventDispatcher extends Process {
           queue.put(new NameEventPair(incomingQueue.streamName, event));
         }
       } else {
-System.out.printf("***event dispatcher %s reads an event %s from %s\n", this, event, incomingQueue.streamName);
         outgoingQueues[instance].put(new NameEventPair(incomingQueue.streamName, event));
       }
     } catch (InterruptedException e) {

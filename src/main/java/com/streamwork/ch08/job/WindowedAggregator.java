@@ -1,5 +1,8 @@
 package com.streamwork.ch08.job;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.streamwork.ch08.api.Event;
 import com.streamwork.ch08.api.EventCollector;
 import com.streamwork.ch08.api.EventWindow;
@@ -20,10 +23,22 @@ class WindowedAggregator extends WindowOperator {
 
   @Override
   public void apply(String streamName, EventWindow window, EventCollector eventCollector) {
-    Logger.log(String.format("%d transactions are received between %d and %d\n",
-        window.getEvents().size(), window.getStartTime(), window.getEndTime()));
+    Map<Integer, Double> emissions = new HashMap<>();
     for (Event event: window.getEvents()) {
-      Logger.log(String.format("Event: %s\n", event));
+      EmissionEvent emissionEvent = (EmissionEvent) event;
+      int zone = emissionEvent.zone;
+      if (emissions.containsKey(zone)) {
+        emissions.put(zone, emissions.get(zone) + emissionEvent.emission);
+      } else {
+        emissions.put(zone, emissionEvent.emission);
+      }
+    }
+    for (Map.Entry<Integer, Double> entry: emissions.entrySet()) {
+      Logger.log(
+          String.format("WindowedAggregator :: instance %d --> total emission for zone %d  between %d and %d is %f\n",
+              instance, entry.getKey(), window.getStartTime(), window.getEndTime(), entry.getValue()
+          )
+      );
     }
   }
 }

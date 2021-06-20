@@ -6,7 +6,7 @@ import java.util.Map;
  * This Operator class is the base class for all user defined operators.
  */
 public abstract class Operator extends Component {
-  // Grouping strategy for the incoming data
+  // Grouping strategy for the incoming data.
   private final Map<String, GroupingStrategy> groupingMap;
 
   public Operator(String name, int parallelism) {

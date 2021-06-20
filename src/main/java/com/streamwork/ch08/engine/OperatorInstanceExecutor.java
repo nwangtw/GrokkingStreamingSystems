@@ -38,7 +38,11 @@ public class OperatorInstanceExecutor extends InstanceExecutor {
     // Apply operator
     if (operator instanceof WindowingOperator) {
       // WindowingOperator handles null events too.
-      operator.apply(pair.getStreamName(), pair.getEvent(), eventCollector);
+      if (pair == null) {
+        operator.apply(null, null, eventCollector);
+      } else {
+        operator.apply(pair.getStreamName(), pair.getEvent(), eventCollector);
+      }
     } else if (pair != null) {
       // For regular operators.
       operator.apply(pair.getStreamName(), pair.getEvent(), eventCollector);

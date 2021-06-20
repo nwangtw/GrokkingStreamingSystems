@@ -19,9 +19,16 @@ class EmissionResolver extends Operator {
 
   @Override
   public void apply(String streamName, Event event, EventCollector eventCollector) {
-    VehicleEvent vehicleEvent = (VehicleEvent) event;
+    VehicleTemperatureEvent vehicleTemp = (VehicleTemperatureEvent) event;
     double emission = emissionTable.getEmission(
-        vehicleEvent.make, vehicleEvent.model, vehicleEvent.year, 4);
-    eventCollector.add(new EmissionEvent(vehicleEvent.zone, emission) );
+      vehicleTemp.make, vehicleTemp.model, vehicleTemp.year, vehicleTemp.temperature, 4);
+    EmissionEvent emissionEvent = new EmissionEvent(vehicleTemp.time, vehicleTemp.zone, emission);
+    eventCollector.add(emissionEvent);
+    Logger.log(
+        String.format(
+            "EmissionResolver :: instance %d --> resolved emission %s\n",
+            instance, emissionEvent.toString()
+        )
+    );
   }
 }

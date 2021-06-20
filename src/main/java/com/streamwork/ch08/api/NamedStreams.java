@@ -19,8 +19,8 @@ public class NamedStreams {
 
   /**
    * Apply the operator to the streams. This object is used by Join operator only.
-   * @param operator
-   * @return
+   * @param operator the join operator applied to the named streams.
+   * @return the outgoing stream of the operator.
    */
   public Stream join(JoinOperator operator) {
     for (Map.Entry<Stream, String> namedStream: namedStreams.entrySet()) {

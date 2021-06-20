@@ -18,13 +18,14 @@ import java.util.Set;
 public class Stream implements Serializable {
   private static final long serialVersionUID = -4375024141519119762L;
   private static final String DEFAULT_CHANNEL = "default";
+  private static final String DEFAULT_STREAM = "default";
 
   // List of all operators to be applied to channels in this stream.
   private final Map<String, Map<Operator, String>> operatorMap =
     new HashMap<String, Map<Operator, String>>();
 
   public Stream applyOperator(Operator operator) {
-    return applyOperator(DEFAULT_CHANNEL, operator, null);
+    return applyOperator(DEFAULT_CHANNEL, operator, DEFAULT_STREAM);
   }
 
   Stream applyOperator(Operator operator, String streamName) {
@@ -34,7 +35,8 @@ public class Stream implements Serializable {
   /**
    * Apply an operator to this stream.
    * @param channel The channel to hook up the operator.
-   * @param operator The operator to be connected to the current stream
+   * @param operator The operator to be connected to the current stream.
+   * @param streamName The stream name the
    * @return The outgoing stream of the operator.
    */
   protected Stream applyOperator(String channel, Operator operator, String streamName) {

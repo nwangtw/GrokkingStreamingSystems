@@ -122,8 +122,10 @@ public class JobStarter {
       // New operator. Create a dispatcher and connect to upstream first.
       EventDispatcher dispatcher = new EventDispatcher(connection.to);
       EventQueue dispatcherQueue = new EventQueue(QUEUE_SIZE, connection.streamName);
-      operatorQueueMap.put(connection.to, Map.of(connection.streamName, dispatcherQueue));
       dispatcher.setIncomingQueue(dispatcherQueue);
+      Map<String, EventQueue> dispatcherQueues = new HashMap<>();
+      dispatcherQueues.put(connection.streamName, dispatcherQueue);
+      operatorQueueMap.put(connection.to, dispatcherQueues);
       connection.from.addOutgoingQueue(connection.channel, dispatcherQueue);
 
       // Connect to downstream (to each instance).
@@ -145,6 +147,7 @@ public class JobStarter {
     Stream stream = component.getOutgoingStream();
 
     for (String channel: stream.getChannels()) {
+      // Create one connection for each downstream operator.
       for (Map.Entry<Operator, String> operatorAndName:
           stream.getAppliedOperators(channel).entrySet()) {
         Operator operator = operatorAndName.getKey();

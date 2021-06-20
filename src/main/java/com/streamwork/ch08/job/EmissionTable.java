@@ -12,8 +12,8 @@ class EmissionTable implements Serializable {
 
   public EmissionTable() {
     data = Map.of(
-      "XXX:AA:2020", 3.3,
-      "YYY:CC:2021", 4.2
+      "XXX:AA:2020:90", 3.3,
+      "YYY:CC:2021:90", 4.2
     );
   }
 
@@ -23,8 +23,8 @@ class EmissionTable implements Serializable {
    * @param default
    * @return
    */
-  double getEmission(String make, String model, int year, double defaultValue) {
-    String key = make + KEY_DELIMITER + model + KEY_DELIMITER + year;
+  double getEmission(String make, String model, int year, float temperature, double defaultValue) {
+    String key = make + KEY_DELIMITER + model + KEY_DELIMITER + year + KEY_DELIMITER + Math.round(temperature);
     Double value = data.get(key);
     if (value == null) {
         return defaultValue;

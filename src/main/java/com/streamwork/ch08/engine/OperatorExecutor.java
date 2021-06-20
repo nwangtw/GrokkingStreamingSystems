@@ -1,7 +1,5 @@
 package com.streamwork.ch08.engine;
 
-import java.util.Map;
-
 import com.streamwork.ch08.api.GroupingStrategy;
 import com.streamwork.ch08.api.Operator;
 import org.apache.commons.lang3.SerializationUtils;

@@ -40,14 +40,25 @@ public final class WindowingOperator extends Operator {
    */
   public final void apply(String streamName, Event event, EventCollector eventCollector) {
     long processingTime = System.currentTimeMillis();
-    WindowingStrategy strategy = windowingMap.get(streamName);
-    if (event != null) {
-      strategy.add(event, processingTime);
+    if (streamName != null) {
+      WindowingStrategy strategy = windowingMap.get(streamName);
+      if (event != null) {
+        strategy.add(event, processingTime);
+      }
+      List<EventWindow> windows = strategy.getEventWindows(processingTime);
+      for (EventWindow window: windows) {
+        operator.apply(streamName, window, eventCollector);
+      }
+    } else {
+      // If stream name is null, check all stream windows.
+      for (Map.Entry<String, WindowingStrategy> entry: windowingMap.entrySet()) {
+        List<EventWindow> windows = entry.getValue().getEventWindows(processingTime);
+        for (EventWindow window: windows) {
+          operator.apply(entry.getKey(), window, eventCollector);
+        }
+      }
     }
 
-    List<EventWindow> windows = strategy.getEventWindows(processingTime);
-    for (EventWindow window: windows) {
-      operator.apply(streamName, window, eventCollector);
-    }
+
   }
 }
