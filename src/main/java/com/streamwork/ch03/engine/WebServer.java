@@ -74,7 +74,7 @@ public class WebServer {
       String from = edge.get("from");
       String to = edge.get("to");
       graph.append(String.format(
-        "%s(%s x%s) ---> %s(%s x%s)\n",
+        "%s(%s x%s) --> %s(%s x%s)\n",
         from.replaceAll("\\s",""),
         from,
         edge.get("from_parallelism"),
