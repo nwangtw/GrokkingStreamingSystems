@@ -1,4 +1,4 @@
-# miniStreaming
+# Streamwork
 The source code for this book: [Grokking Streaming Systems: Real-time Event Processing](https://www.manning.com/books/grokking-streaming-systems).
 
 The objective is to demonstrate how streaming systems work with a simple local engine and example jobs.
