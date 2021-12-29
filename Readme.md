@@ -5,7 +5,7 @@ This is a simple local stream processing engine with some example jobs. The obje
 
 To download the code, run this command in your terminal:
 ```
-git https://github.com/nwangtw/GrokkingStreamingSystems.git
+git clone https://github.com/nwangtw/GrokkingStreamingSystems.git
 ```
 
 ### Tools required
