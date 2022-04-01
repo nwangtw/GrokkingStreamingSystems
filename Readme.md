@@ -56,4 +56,4 @@ java -cp ./target/gss.jar com.streamwork.ch08.job.EmissionJob
 3. Input events in the readers and examine the output in the output terminal.
 4. Have fun~
 
-By the way, after a job is started, you can view the structure of your job by opening a browser and visiting http://localhost:7000.
+One more thing, after a job is started, you can view the structure of your job by opening a browser and visiting http://localhost:7000.
