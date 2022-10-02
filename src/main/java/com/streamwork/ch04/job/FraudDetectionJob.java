@@ -24,7 +24,7 @@ public class FraudDetectionJob {
 
     ScoreStorage store = new ScoreStorage();
     Streams.of(evalResults1, evalResults2, evalResults3)
-           .applyOperator(new ScoreAggregator("score aggregator", 2, new TransactionFieldsGrouping(), store));
+           .applyOperator(new ScoreAggregator("score aggregator", 2, new GroupByTransactionId(), store));
 
     Logger.log("This is a streaming job that detect suspicious transactions." +
                "Input needs to be in this format: {amount},{merchandiseId}. For example: 42.00@3." +
