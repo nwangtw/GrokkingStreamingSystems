@@ -40,6 +40,8 @@ java -cp ./target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob1
 java -cp ./target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob2
 # Chapter 3. A vehicle count job with two source instances and two operator instances, fields grouping.
 java -cp ./target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob3
+# Chapter 4. A fraud detection job
+java -cp ./target/gss.jar com.streamwork.ch04.job.FraudDetectionJob
 # Chapter 4. A job with a forked stream.
 java -cp ./target/gss.jar com.streamwork.ch04.job.StreamForkJob
 # Chapter 4. A job with a merged stream.
