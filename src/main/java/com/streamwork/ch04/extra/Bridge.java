@@ -1,10 +1,14 @@
-package com.streamwork.ch04.job;
-
-import java.net.*;
-import java.io.*;
+package com.streamwork.ch04.extra;
 
 import com.streamwork.ch04.api.EventCollector;
 import com.streamwork.ch04.api.Source;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 class Bridge extends Source {
   private static final long serialVersionUID = 4914193100808497571L;
