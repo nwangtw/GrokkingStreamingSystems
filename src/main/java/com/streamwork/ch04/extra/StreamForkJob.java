@@ -1,4 +1,4 @@
-package com.streamwork.ch04.job;
+package com.streamwork.ch04.extra;
 
 import com.streamwork.ch04.api.Job;
 import com.streamwork.ch04.api.Stream;
@@ -11,7 +11,7 @@ public class StreamForkJob {
 
     // Create a stream from a source.
     Stream bridgeStream = job.addSource(new Bridge("bridge", 1, 9990, false));
-    // One stream can be applied to more than one operators.
+    // One stream can be applied to more than one operator.
     // The operators will receive exaclty the same data and run independently to each other.
     bridgeStream.applyOperator(new TollBooth("booth/shuffle grouping", 2));
     bridgeStream.applyOperator(new TollBooth("booth clone/fields grouping", 2, new VehicleTypeFieldsGrouping()));

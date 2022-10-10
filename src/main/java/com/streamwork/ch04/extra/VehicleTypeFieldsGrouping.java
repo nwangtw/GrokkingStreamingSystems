@@ -1,4 +1,4 @@
-package com.streamwork.ch04.job;
+package com.streamwork.ch04.extra;
 
 import com.streamwork.ch04.api.Event;
 import com.streamwork.ch04.api.FieldsGrouping;

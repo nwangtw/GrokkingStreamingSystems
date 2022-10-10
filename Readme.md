@@ -43,11 +43,11 @@ java -cp ./target/gss.jar com.streamwork.ch03.job.ParallelizedVehicleCountJob3
 # Chapter 4. A fraud detection job
 java -cp ./target/gss.jar com.streamwork.ch04.job.FraudDetectionJob
 # Chapter 4. A job with a forked stream.
-java -cp ./target/gss.jar com.streamwork.ch04.job.StreamForkJob
+java -cp ./target/gss.jar com.streamwork.ch04.extra.StreamForkJob
 # Chapter 4. A job with a merged stream.
-java -cp ./target/gss.jar com.streamwork.ch04.job.StreamMergeJob
+java -cp ./target/gss.jar com.streamwork.ch04.extra.StreamMergeJob
 # Chapter 4. A job with a split stream.
-java -cp ./target/gss.jar com.streamwork.ch04.job.StreamSplitJob
+java -cp ./target/gss.jar com.streamwork.ch04.extra.StreamSplitJob
 # Chapter 5. A system usage job.
 java -cp ./target/gss.jar com.streamwork.ch05.job.SystemUsageJob
 # Chapter 7. A test job with windowing support.
