@@ -53,7 +53,7 @@ public class JobStarter {
     for (Source source: job.getSources()) {
       SourceExecutor executor = new SourceExecutor(source);
       executorList.add(executor);
-      // For each source, traverse the the operations connected to it.
+      // For each source, traverse the operations connected to it.
       traverseComponent(source, executor);
     }
   }
