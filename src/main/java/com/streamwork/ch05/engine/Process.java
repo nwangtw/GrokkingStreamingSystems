@@ -26,7 +26,7 @@ public abstract class Process {
 
   /**
    * Run process once.
-   * @return true if the thread should continue; false if the thread should exist.
+   * @return true if the thread should continue; false if the thread should exit.
    */
   abstract boolean runOnce();
 }
