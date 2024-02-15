@@ -24,7 +24,7 @@ public class OperatorInstanceExecutor extends InstanceExecutor {
 
   /**
    * Run process once.
-   * @return true if the thread should continue; false if the thread should exist.
+   * @return true if the thread should continue; false if the thread should exit.
    */
   protected boolean runOnce() {
     NameEventPair pair;
